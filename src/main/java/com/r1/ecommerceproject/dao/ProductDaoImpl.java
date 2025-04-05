@@ -1,6 +1,6 @@
 package com.r1.ecommerceproject.dao;
 
-import com.r1.ecommerceproject.utils.DriverManagerConnectionPool;
+import com.r1.ecommerceproject.utils.DataSourceConnectionPool;
 import com.r1.ecommerceproject.model.ProductBean;
 
 import java.sql.Connection;
@@ -16,64 +16,39 @@ public class ProductDaoImpl implements ProductDao {
 
 	@Override
 	public synchronized void doSave(ProductBean product) throws SQLException {
+		String insertSQL = "INSERT INTO " + TABLE_NAME + " (NAME, DESCRIPTION, PRICE, QUANTITY) VALUES (?, ?, ?, ?)";
 
-		Connection connection = null;
-		PreparedStatement preparedStatement = null;
+		try (Connection connection = DataSourceConnectionPool.getConnection();
+			 PreparedStatement preparedStatement = connection.prepareStatement(insertSQL)) {
 
-		String insertSQL = "INSERT INTO " + ProductDaoImpl.TABLE_NAME
-				+ " (NAME, DESCRIPTION, PRICE, QUANTITY) VALUES (?, ?, ?, ?)";
-
-		try {
-			connection = DriverManagerConnectionPool.getConnection();
-			preparedStatement = connection.prepareStatement(insertSQL);
 			preparedStatement.setString(1, product.getName());
 			preparedStatement.setString(2, product.getDescription());
 			preparedStatement.setInt(3, product.getPrice());
 			preparedStatement.setInt(4, product.getQuantity());
 
 			preparedStatement.executeUpdate();
-
 			connection.commit();
-		} finally {
-			try {
-				if (preparedStatement != null)
-					preparedStatement.close();
-			} finally {
-				DriverManagerConnectionPool.releaseConnection(connection);
-			}
 		}
 	}
 
 	@Override
 	public synchronized ProductBean doRetrieveByKey(int code) throws SQLException {
-		Connection connection = null;
-		PreparedStatement preparedStatement = null;
+		String selectSQL = "SELECT * FROM " + TABLE_NAME + " WHERE CODE = ?";
+		ProductBean bean = null;
 
-		ProductBean bean = new ProductBean();
+		try (Connection connection = DataSourceConnectionPool.getConnection();
+			 PreparedStatement preparedStatement = connection.prepareStatement(selectSQL)) {
 
-		String selectSQL = "SELECT * FROM " + ProductDaoImpl.TABLE_NAME + " WHERE CODE = ?";
-
-		try {
-			connection = DriverManagerConnectionPool.getConnection();
-			preparedStatement = connection.prepareStatement(selectSQL);
 			preparedStatement.setInt(1, code);
-
-			ResultSet rs = preparedStatement.executeQuery();
-
-			while (rs.next()) {
-				bean.setCode(rs.getInt("CODE"));
-				bean.setName(rs.getString("NAME"));
-				bean.setDescription(rs.getString("DESCRIPTION"));
-				bean.setPrice(rs.getInt("PRICE"));
-				bean.setQuantity(rs.getInt("QUANTITY"));
-			}
-
-		} finally {
-			try {
-				if (preparedStatement != null)
-					preparedStatement.close();
-			} finally {
-				DriverManagerConnectionPool.releaseConnection(connection);
+			try (ResultSet rs = preparedStatement.executeQuery()) {
+				if (rs.next()) {
+					bean = new ProductBean();
+					bean.setCode(rs.getInt("CODE"));
+					bean.setName(rs.getString("NAME"));
+					bean.setDescription(rs.getString("DESCRIPTION"));
+					bean.setPrice(rs.getInt("PRICE"));
+					bean.setQuantity(rs.getInt("QUANTITY"));
+				}
 			}
 		}
 		return bean;
@@ -81,53 +56,33 @@ public class ProductDaoImpl implements ProductDao {
 
 	@Override
 	public synchronized boolean doDelete(int code) throws SQLException {
-		Connection connection = null;
-		PreparedStatement preparedStatement = null;
+		String deleteSQL = "DELETE FROM " + TABLE_NAME + " WHERE CODE = ?";
+		int result;
 
-		int result = 0;
+		try (Connection connection = DataSourceConnectionPool.getConnection();
+			 PreparedStatement preparedStatement = connection.prepareStatement(deleteSQL)) {
 
-		String deleteSQL = "DELETE FROM " + ProductDaoImpl.TABLE_NAME + " WHERE CODE = ?";
-
-		try {
-			connection = DriverManagerConnectionPool.getConnection();
-			preparedStatement = connection.prepareStatement(deleteSQL);
 			preparedStatement.setInt(1, code);
-
 			result = preparedStatement.executeUpdate();
-
-		} finally {
-			try {
-				if (preparedStatement != null)
-					preparedStatement.close();
-			} finally {
-				DriverManagerConnectionPool.releaseConnection(connection);
-			}
 		}
-		return (result != 0);
+		return result != 0;
 	}
 
 	@Override
 	public synchronized Collection<ProductBean> doRetrieveAll(String order) throws SQLException {
-		Connection connection = null;
-		PreparedStatement preparedStatement = null;
-
-		Collection<ProductBean> products = new LinkedList<ProductBean>();
-
-		String selectSQL = "SELECT * FROM " + ProductDaoImpl.TABLE_NAME;
-
-		if (order != null && !order.equals("")) {
+		String selectSQL = "SELECT * FROM " + TABLE_NAME;
+		if (order != null && !order.isBlank()) {
 			selectSQL += " ORDER BY " + order;
 		}
 
-		try {
-			connection = DriverManagerConnectionPool.getConnection();
-			preparedStatement = connection.prepareStatement(selectSQL);
+		Collection<ProductBean> products = new LinkedList<>();
 
-			ResultSet rs = preparedStatement.executeQuery();
+		try (Connection connection = DataSourceConnectionPool.getConnection();
+			 PreparedStatement preparedStatement = connection.prepareStatement(selectSQL);
+			 ResultSet rs = preparedStatement.executeQuery()) {
 
 			while (rs.next()) {
 				ProductBean bean = new ProductBean();
-
 				bean.setCode(rs.getInt("CODE"));
 				bean.setName(rs.getString("NAME"));
 				bean.setDescription(rs.getString("DESCRIPTION"));
@@ -135,16 +90,7 @@ public class ProductDaoImpl implements ProductDao {
 				bean.setQuantity(rs.getInt("QUANTITY"));
 				products.add(bean);
 			}
-
-		} finally {
-			try {
-				if (preparedStatement != null)
-					preparedStatement.close();
-			} finally {
-				DriverManagerConnectionPool.releaseConnection(connection);
-			}
 		}
 		return products;
 	}
-
 }
