@@ -6,62 +6,147 @@ public class ProductBean implements Serializable {
 
 	private static final long serialVersionUID = 1L;
 
-	int code;
-	String name;
-	String description;
-	int price;
-	int quantity;
+	
+	int codiceProdotto;
+	String materiale;
+	String categoria;
+	String taglia;
+	String marca;
+	double prezzo;
+	Stato stato;
+	String modello;
+	String descrizione;
+	String nome;
+	
+	public enum Stato{ ATTIVATO, DISATTIVATO}
 
-	public ProductBean() {
-		code = -1;
-		name = "";
-		description = "";
-		quantity = 0;
+
+    // Costruttore completo
+    public ProductBean(int codiceProdotto, String materiale, String categoria, String taglia, String marca,double prezzo, Stato stato, String modello, String descrizione, String nome) {
+        this.codiceProdotto = codiceProdotto;
+        this.materiale = materiale;
+        this.categoria = categoria;
+        this.taglia = taglia;
+        this.marca = marca;
+        this.prezzo = prezzo;
+        this.stato = stato;
+        this.modello = modello;
+        this.descrizione = descrizione;
+        this.nome = nome;
+    }
+
+    // Costruttore vuoto
+    public ProductBean() {
+    }
+    
+    
+    
+    //metodi setter e getter
+    public int getCodiceProdotto() {
+		return codiceProdotto;
 	}
 
-	public int getCode() {
-		return code;
+	public void setCodiceProdotto(int codiceProdotto) {
+		this.codiceProdotto = codiceProdotto;
 	}
 
-	public void setCode(int code) {
-		this.code = code;
+	public String getMateriale() {
+		return materiale;
 	}
 
-	public String getName() {
-		return name;
+	public void setMateriale(String materiale) {
+		this.materiale = materiale;
 	}
 
-	public void setName(String name) {
-		this.name = name;
+	public String getCategoria() {
+		return categoria;
 	}
 
-	public String getDescription() {
-		return description;
+	public void setCategoria(String categoria) {
+		this.categoria = categoria;
 	}
 
-	public void setDescription(String description) {
-		this.description = description;
+	public String getTaglia() {
+		return taglia;
 	}
 
-	public int getPrice() {
-		return price;
+	public void setTaglia(String taglia) {
+		this.taglia = taglia;
 	}
 
-	public void setPrice(int price) {
-		this.price = price;
+	public String getMarca() {
+		return marca;
 	}
 
-	public int getQuantity() {
-		return quantity;
+	public void setMarca(String marca) {
+		this.marca = marca;
 	}
 
-	public void setQuantity(int quantity) {
-		this.quantity = quantity;
+	public double getPrezzo() {
+		return prezzo;
 	}
 
+	public void setPrezzo(double prezzo) {
+		this.prezzo = prezzo;
+	}
+
+	public Stato getStato() {
+		return stato;
+	}
+
+	public void setStato(Stato stato) {
+		this.stato = stato;
+	}
+
+	public String getModello() {
+		return modello;
+	}
+
+	public void setModello(String modello) {
+		this.modello = modello;
+	}
+
+	public String getDescrizione() {
+		return descrizione;
+	}
+
+	public void setDescrizione(String descrizione) {
+		this.descrizione = descrizione;
+	}
+
+	public String getNome() {
+		return nome;
+	}
+
+	public void setNome(String nome) {
+		this.nome = nome;
+	}
+
+	public static long getSerialversionuid() {
+		return serialVersionUID;
+	}
+
+
+
+
+	
+    
+    
+    //metodo toString
 	@Override
-	public String toString() {
-		return name + " (" + code + "), " + price + " " + quantity + ". " + description;
-	}
+    public String toString() {
+        return "Prodotto{" +
+                "codiceProdotto=" + codiceProdotto +
+                ", materiale='" + materiale + '\'' +
+                ", categoria='" + categoria + '\'' +
+                ", taglia='" + taglia + '\'' +
+                ", marca='" + marca + '\'' +
+                ", prezzo=" + prezzo +
+                ", stato=" + stato +
+                ", modello='" + modello + '\'' +
+                ", descrizione='" + descrizione + '\'' +
+                ", nome='" + nome + '\'' +
+                '}';
+    }
 
 }

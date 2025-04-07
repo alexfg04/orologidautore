@@ -2,6 +2,7 @@ package com.r1.ecommerceproject.servlet;
 
 import com.r1.ecommerceproject.dao.ProductDaoImpl;
 import com.r1.ecommerceproject.model.ProductBean;
+import com.r1.ecommerceproject.model.ProductBean.Stato;
 import com.r1.ecommerceproject.dao.ProductDao;
 
 import java.io.IOException;
@@ -40,16 +41,27 @@ public class ProductServlet extends HttpServlet {
 					int id = Integer.parseInt(request.getParameter("id"));
 					model.doDelete(id);
 				} else if (action.equalsIgnoreCase("insert")) {
-					String name = request.getParameter("name");
-					String description = request.getParameter("description");
-					int price = Integer.parseInt(request.getParameter("price"));
-					int quantity = Integer.parseInt(request.getParameter("quantity"));
+					String materiale = request.getParameter("materiale");
+					String categoria = request.getParameter("categoria");
+					String taglia = request.getParameter("taglia");
+					String marca = request.getParameter("marca");
+					double prezzo = Double.parseDouble(request.getParameter("prezzo"));
+					Stato stato = Stato.valueOf(request.getParameter("stato"));
+					String modello = request.getParameter("modello");
+					String descrizione = request.getParameter("descrizione");
+					String nome = request.getParameter("nome");
+
 
 					ProductBean bean = new ProductBean();
-					bean.setName(name);
-					bean.setDescription(description);
-					bean.setPrice(price);
-					bean.setQuantity(quantity);
+					bean.setMateriale(materiale);
+					bean.setCategoria(categoria);
+					bean.setTaglia(taglia);
+					bean.setMarca(marca);
+					bean.setPrezzo(prezzo);
+					bean.setStato(stato);
+					bean.setModello(modello);
+					bean.setDescrizione(descrizione);
+					bean.setNome(nome);
 					model.doSave(bean);
 				}
 			}
