@@ -22,14 +22,14 @@ public class ProductBean implements Serializable {
 
 
     // Costruttore completo
-    public ProductBean(int codiceProdotto, String materiale, String categoria, String taglia, String marca,double prezzo, Stato stato, String modello, String descrizione, String nome) {
+    public ProductBean(int codiceProdotto, String materiale, String categoria, String taglia, String marca, double prezzo, String modello, String descrizione, String nome) {
         this.codiceProdotto = codiceProdotto;
         this.materiale = materiale;
         this.categoria = categoria;
         this.taglia = taglia;
         this.marca = marca;
         this.prezzo = prezzo;
-        this.stato = stato;
+        this.stato = Stato.ATTIVATO;
         this.modello = modello;
         this.descrizione = descrizione;
         this.nome = nome;
@@ -121,17 +121,6 @@ public class ProductBean implements Serializable {
 	public void setNome(String nome) {
 		this.nome = nome;
 	}
-
-	public static long getSerialversionuid() {
-		return serialVersionUID;
-	}
-
-
-
-
-	
-    
-    
     //metodo toString
 	@Override
     public String toString() {
