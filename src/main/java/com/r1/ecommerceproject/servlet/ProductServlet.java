@@ -2,7 +2,6 @@ package com.r1.ecommerceproject.servlet;
 
 import com.r1.ecommerceproject.dao.ProductDaoImpl;
 import com.r1.ecommerceproject.model.ProductBean;
-import com.r1.ecommerceproject.model.ProductBean.Stato;
 import com.r1.ecommerceproject.dao.ProductDao;
 
 import java.io.IOException;
@@ -10,6 +9,7 @@ import java.sql.SQLException;
 
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
+import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -17,11 +17,12 @@ import javax.servlet.http.HttpServletResponse;
 /**
  * Servlet implementation class ProductControl
  */
+@WebServlet("/product")
 public class ProductServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
-	
+
 	static ProductDao model = new ProductDaoImpl();
-	
+
 	public ProductServlet() {
 		super();
 	}
@@ -46,7 +47,6 @@ public class ProductServlet extends HttpServlet {
 					String taglia = request.getParameter("taglia");
 					String marca = request.getParameter("marca");
 					double prezzo = Double.parseDouble(request.getParameter("prezzo"));
-					Stato stato = Stato.valueOf(request.getParameter("stato"));
 					String modello = request.getParameter("modello");
 					String descrizione = request.getParameter("descrizione");
 					String nome = request.getParameter("nome");
@@ -58,7 +58,6 @@ public class ProductServlet extends HttpServlet {
 					bean.setTaglia(taglia);
 					bean.setMarca(marca);
 					bean.setPrezzo(prezzo);
-					bean.setStato(stato);
 					bean.setModello(modello);
 					bean.setDescrizione(descrizione);
 					bean.setNome(nome);
