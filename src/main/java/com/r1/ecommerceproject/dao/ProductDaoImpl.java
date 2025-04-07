@@ -18,20 +18,20 @@ public class ProductDaoImpl implements ProductDao {
     @Override
     public synchronized void doSave(ProductBean product) throws SQLException {
         String insertSQL = "INSERT INTO " + TABLE_NAME +
-                " (materiale, categoria, taglia, marca, prezzo, stato, modello, descrizione , nome)" +
-                "VALUES ( ?, ?, ?,?, ?, ?, ?, ?, ?)";
+                " (nome, descrizione, prezzo, modello, marca, categoria, taglia , materiale)" +
+                "VALUES ( ?, ?, ?,?, ?, ?, ?, ?)";
 
         try (Connection connection = DataSourceConnectionPool.getConnection();
              PreparedStatement preparedStatement = connection.prepareStatement(insertSQL)) {
 
-            preparedStatement.setString(1, product.getMateriale());
-            preparedStatement.setString(2, product.getCategoria());
-            preparedStatement.setString(3, product.getTaglia());
-            preparedStatement.setString(4, product.getMarca());
-            preparedStatement.setDouble(5, product.getPrezzo());
-            preparedStatement.setString(7, product.getModello());
-            preparedStatement.setString(8, product.getDescrizione());
-            preparedStatement.setString(9, product.getNome());
+            preparedStatement.setString(1, product.getNome());
+            preparedStatement.setString(2, product.getDescrizione());
+            preparedStatement.setDouble(3, product.getPrezzo());
+            preparedStatement.setString(4, product.getModello());
+            preparedStatement.setString(5, product.getMarca());
+            preparedStatement.setString(6, product.getCategoria());
+            preparedStatement.setString(7, product.getTaglia());
+            preparedStatement.setString(8, product.getMateriale());
 
 
             preparedStatement.executeUpdate();
@@ -41,7 +41,7 @@ public class ProductDaoImpl implements ProductDao {
 
     @Override
     public synchronized ProductBean doRetrieveByKey(int code) throws SQLException {
-        String selectSQL = "SELECT * FROM " + TABLE_NAME + " WHERE CODE = ?";
+        String selectSQL = "SELECT * FROM " + TABLE_NAME + " WHERE codice_prodotto = ?";
         ProductBean bean = null;
 
         try (Connection connection = DataSourceConnectionPool.getConnection();

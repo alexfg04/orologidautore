@@ -18,7 +18,7 @@ public class ProductBean implements Serializable {
 	String descrizione;
 	String nome;
 	
-	public enum Stato{ ATTIVATO, DISATTIVATO}
+	public enum Stato{ attivato, disattivato}
 
 
     // Costruttore completo
@@ -29,7 +29,7 @@ public class ProductBean implements Serializable {
         this.taglia = taglia;
         this.marca = marca;
         this.prezzo = prezzo;
-        this.stato = Stato.ATTIVATO;
+        this.stato = Stato.attivato;
         this.modello = modello;
         this.descrizione = descrizione;
         this.nome = nome;
