@@ -23,7 +23,7 @@
 
 <body>
 	<div class="container">
-		<h2>Products</h2>
+		<h2>Prodotti</h2>
 		<table>
 			<tr>
 				<th>Codice <a href="product?sort=codice_prodotto">Sort</a></th>
@@ -55,14 +55,14 @@
 				} else {
 			%>
 			<tr>
-				<td colspan="6">No products available</td>
+				<td colspan="6">Non ci sono prodotti disponibili</td>
 			</tr>
 			<%
 				}
 			%>
 		</table>
 		
-		<h2>Details</h2>
+		<h2>Dettagli Prodotto</h2>
 		<%
 			if (product != null) {
 		%>
@@ -92,17 +92,21 @@
 			</tr>
 		</table>
 		<%
+			} else {
+		%>
+		<p>Seleziona un prodotto per visualizzarne i dettagli.</p>
+		<%
 			}
 		%>
-		<h2>Insert</h2>
+		<h2>Inserisci nuovo prodotto</h2>
 		<form action="product" method="post">
 			<input type="hidden" name="action" value="insert">
 			
 			<label for="name">Name:</label>
-			<input id="name" name="nome" type="text" maxlength="20" required placeholder="inserisci nome...">
+			<input id="name" name="nome" type="text" maxlength="20" required>
 			
 			<label for="description">Description:</label>
-			<textarea id="description" name="descrizione" maxlength="100" rows="3" required placeholder="inserisci descrizione..."></textarea>
+			<textarea id="description" name="descrizione" maxlength="100" rows="3" required></textarea>
 			
 			<label for="price">Prezzo:</label>
 			<input id="price" name="prezzo" type="number" min="0" value="0" required>
