@@ -35,11 +35,11 @@ public class ProductServlet extends HttpServlet {
 		try {
 			if (action != null) {
 				if (action.equalsIgnoreCase("read")) {
-					int id = Integer.parseInt(request.getParameter("id"));
+					Long id = Long.parseLong(request.getParameter("id"));
 					request.removeAttribute("product");
-					request.setAttribute("product", model.doRetrieveByKey(id));
+					request.setAttribute("product", model.doRetrieveById(id));
 				} else if (action.equalsIgnoreCase("delete")) {
-					int id = Integer.parseInt(request.getParameter("id"));
+					Long id = Long.parseLong(request.getParameter("id"));
 					model.doDelete(id);
 				} else if (action.equalsIgnoreCase("insert")) {
 					String materiale = request.getParameter("materiale");

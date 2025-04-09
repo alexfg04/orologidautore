@@ -35,7 +35,7 @@
 				<th>Action</th>
 			</tr>
 			<%
-				if (products != null && !products.isEmpty()) {
+				if (!products.isEmpty()) {
 					Iterator<?> it = products.iterator();
 					while (it.hasNext()) {
 						ProductBean bean = (ProductBean) it.next();
