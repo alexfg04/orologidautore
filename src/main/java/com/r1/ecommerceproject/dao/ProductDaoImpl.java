@@ -40,14 +40,14 @@ public class ProductDaoImpl implements ProductDao {
     }
 
     @Override
-    public synchronized ProductBean doRetrieveByKey(int code) throws SQLException {
+    public synchronized ProductBean doRetrieveById(Long id) throws SQLException {
         String selectSQL = "SELECT * FROM " + TABLE_NAME + " WHERE codice_prodotto = ?";
         ProductBean bean = null;
 
         try (Connection connection = DataSourceConnectionPool.getConnection();
              PreparedStatement preparedStatement = connection.prepareStatement(selectSQL)) {
 
-            preparedStatement.setInt(1, code);
+            preparedStatement.setLong(1, id);
             try (ResultSet rs = preparedStatement.executeQuery()) {
                 if (rs.next()) {
                     bean = getProductBean(rs);
@@ -74,24 +74,22 @@ public class ProductDaoImpl implements ProductDao {
     }
 
     @Override
-    public synchronized boolean doDelete(int code) throws SQLException {
+    public synchronized void doDelete(Long id) throws SQLException {
         String deleteSQL = "DELETE FROM " + TABLE_NAME + " WHERE codice_prodotto = ?";
-        int result;
 
         try (Connection connection = DataSourceConnectionPool.getConnection();
              PreparedStatement preparedStatement = connection.prepareStatement(deleteSQL)) {
 
-            preparedStatement.setInt(1, code);
-            result = preparedStatement.executeUpdate();
+            preparedStatement.setLong(1, id);
+            preparedStatement.executeUpdate();
         }
-        return result != 0;
     }
 
     @Override
-    public synchronized Collection<ProductBean> doRetrieveAll(String order) throws SQLException {
+    public synchronized Collection<ProductBean> doRetrieveAll(String orderBy) throws SQLException {
         String selectSQL = "SELECT * FROM " + TABLE_NAME;
-        if (order != null && !order.isBlank()) {
-            selectSQL += " ORDER BY " + order;
+        if (orderBy != null && !orderBy.isBlank()) {
+            selectSQL += " ORDER BY " + orderBy;
         }
 
         Collection<ProductBean> products = new LinkedList<>();
@@ -108,4 +106,7 @@ public class ProductDaoImpl implements ProductDao {
         }
         return products;
     }
+
+    @Override
+    public synchronized void doUpdate(ProductBean product) { }
 }
