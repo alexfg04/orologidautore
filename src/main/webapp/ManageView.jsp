@@ -4,7 +4,7 @@
 <%
 	Collection<?> products = (Collection<?>) request.getAttribute("products");
 	if(products == null) {
-	response.sendRedirect("./product");	
+		response.sendRedirect("./product");
 		return;
 	}
 	ProductBean product = (ProductBean) request.getAttribute("product");
@@ -18,7 +18,7 @@
 <head>
 	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 	<link href="${pageContext.request.contextPath}/assets/css/ProductStyle.css" rel="stylesheet" type="text/css">
-	<title>Storage DS/BF</title>
+	<title>Gestione Prodotti</title>
 </head>
 
 <body>
@@ -26,13 +26,13 @@
 		<h2>Prodotti</h2>
 		<table>
 			<tr>
-				<th>Codice <a href="product?sort=codice_prodotto">Sort</a></th>
-				<th>Nome <a href="product?sort=nome">Sort</a></th>
-				<th>Descrizione <a href="product?sort=descrizione">Sort</a></th>
-				<th>Modello <a href="product?sort=modello">Sort</a></th>
-				<th>Prezzo <a href="product?sort=prezzo">Sort</a></th>
-				<th>Stato <a href="product?sort=stato">Sort</a></th>
-				<th>Action</th>
+				<th>Codice <a href="gestione?sort=codice_prodotto">Sort</a></th>
+				<th>Nome <a href="gestione?sort=nome">Sort</a></th>
+				<th>Descrizione <a href="gestione?sort=descrizione">Sort</a></th>
+				<th>Modello <a href="gestione?sort=modello">Sort</a></th>
+				<th>Prezzo <a href="gestione?sort=prezzo">Sort</a></th>
+				<th>Stato <a href="gestione?sort=stato">Sort</a></th>
+				<th>Azione</th>
 			</tr>
 			<%
 				if (!products.isEmpty()) {
@@ -47,8 +47,8 @@
 				<td><%=bean.getDescrizione()%></td>
 				<td><%=bean.getPrezzo()%></td>
 				<td><%= bean.getStato()%></td>
-				<td><a href="product?action=delete&id=<%=bean.getCodiceProdotto()%>">Delete</a><br>
-					<a href="product?action=read&id=<%=bean.getCodiceProdotto()%>">Details</a></td>
+				<td><a href="gestione?action=delete&product_id=<%=bean.getCodiceProdotto()%>">Delete</a><br>
+					<a href="gestione?action=read&product_id=<%=bean.getCodiceProdotto()%>">Details</a></td>
 			</tr>
 			<%
 					}
@@ -99,9 +99,7 @@
 			}
 		%>
 		<h2>Inserisci nuovo prodotto</h2>
-		<form action="product" method="post">
-			<input type="hidden" name="action" value="insert">
-			
+		<form action="gestione" method="post" enctype="multipart/form-data">
 			<label for="name">Name:</label>
 			<input id="name" name="nome" type="text" maxlength="20" required>
 			
@@ -125,10 +123,12 @@
 
 			<label for="material">Materiale</label>
 			<input id="material" name="materiale" type="text" maxlength="20" required>
+
+			<label>Immagine del prodotto</label>
+			<input type="file" name="image" accept=".jpg,.jpeg,.png,.gif" required>
 	
 			<input type="submit" value="Add">
 			<input type="reset" value="Reset">
-	
 		</form>
 		</div>
 </body>

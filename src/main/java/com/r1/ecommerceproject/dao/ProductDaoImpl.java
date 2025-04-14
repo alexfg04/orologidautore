@@ -18,8 +18,8 @@ public class ProductDaoImpl implements ProductDao {
     @Override
     public synchronized void doSave(ProductBean product) throws SQLException {
         String insertSQL = "INSERT INTO " + TABLE_NAME +
-                " (nome, descrizione, prezzo, modello, marca, categoria, taglia , materiale)" +
-                "VALUES ( ?, ?, ?,?, ?, ?, ?, ?)";
+                " (nome, descrizione, prezzo, modello, marca, categoria, taglia , materiale, immagine)" +
+                "VALUES ( ?, ?, ?,?, ?, ?, ?, ?, ?)";
 
         try (Connection connection = DataSourceConnectionPool.getConnection();
              PreparedStatement preparedStatement = connection.prepareStatement(insertSQL)) {
@@ -32,6 +32,7 @@ public class ProductDaoImpl implements ProductDao {
             preparedStatement.setString(6, product.getCategoria());
             preparedStatement.setString(7, product.getTaglia());
             preparedStatement.setString(8, product.getMateriale());
+            preparedStatement.setString(9, product.getImmagine());
 
 
             preparedStatement.executeUpdate();
@@ -70,6 +71,7 @@ public class ProductDaoImpl implements ProductDao {
         bean.setModello(rs.getString("modello"));
         bean.setDescrizione(rs.getString("descrizione"));
         bean.setNome(rs.getString("nome"));
+        bean.setImmagine(rs.getString("immagine"));
         return bean;
     }
 
@@ -89,7 +91,11 @@ public class ProductDaoImpl implements ProductDao {
     public synchronized Collection<ProductBean> doRetrieveAll(String orderBy) throws SQLException {
         String selectSQL = "SELECT * FROM " + TABLE_NAME;
         if (orderBy != null && !orderBy.isBlank()) {
-            selectSQL += " ORDER BY " + orderBy;
+            if (orderBy.matches("^[a-zA-Z_]+$")) { // Allow only letters and underscores
+                selectSQL += " ORDER BY " + orderBy;
+            } else {
+                throw new IllegalArgumentException("Invalid orderBy parameter");
+            }
         }
 
         Collection<ProductBean> products = new LinkedList<>();

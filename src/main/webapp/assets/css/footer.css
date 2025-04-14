@@ -1,0 +1,50 @@
+.footer-main {
+  display: flex;
+  justify-content: space-between;
+  padding: 20px;
+  background-color: #009688;
+}
+
+.footer-section {
+  flex: 1;
+  color: white;
+}
+
+.footer-section h3 {
+  color: white;
+}
+
+.footer-section ul {
+  list-style: none;
+  padding: 0;
+  color: white;
+}
+
+.footer-section li {
+  margin-bottom: 5px;
+}
+
+.footer-social {
+  display: flex;
+  justify-content: center;  /* Centra orizzontalmente le immagini */
+  align-items: center;      /* Centra verticalmente le immagini */
+  padding: 10px;
+  background-color: #009688;
+}
+
+.footer-social img {
+  width: 30px;
+  height: 30px;
+  filter: brightness(0) invert(1);
+  transition: transform 0.3s;
+  margin: 0 10px;  /* Spaziatura tra le immagini, margine a sinistra e destra */
+}
+
+.footer-social img:hover {
+  transform: scale(1.2);
+}
+
+.footer-section a {
+  color: white;            /* Colore del testo dei link */
+  text-decoration: none;   /* Rimuove la sottolineatura */
+}

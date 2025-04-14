@@ -6,6 +6,6 @@ import java.sql.SQLException;
 import java.util.Collection;
 
 public interface ProductDao extends BaseDao<ProductBean, Long> {
-	//Collection<String> doRetrieveAllImages(Long id) throws SQLException;
+	//Collection<String> doRetrieveAllImages(Long idProduct) throws SQLException;
 
 }

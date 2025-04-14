@@ -17,6 +17,8 @@ public class ProductBean implements Serializable {
 	String modello;
 	String descrizione;
 	String nome;
+
+	String immagine;
 	
 	public enum Stato{ attivato, disattivato}
 
@@ -38,8 +40,14 @@ public class ProductBean implements Serializable {
     // Costruttore vuoto
     public ProductBean() {
     }
-    
-    
+
+	public String getImmagine() {
+		return immagine;
+	}
+
+	public void setImmagine(String immagine) {
+		this.immagine = immagine;
+	}
     
     //metodi setter e getter
     public int getCodiceProdotto() {
