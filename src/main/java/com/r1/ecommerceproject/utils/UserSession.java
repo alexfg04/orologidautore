@@ -1,7 +1,6 @@
 package com.r1.ecommerceproject.utils;
 
 import javax.servlet.http.HttpSession;
-import java.util.ArrayList;
 import java.util.HashMap;
 
 public class UserSession {
@@ -18,6 +17,7 @@ public class UserSession {
     public HashMap<Long, Integer> getCart() {
         if (session.getAttribute(SESSION_CART_ATTRIBUTE) == null) {
             session.setAttribute(SESSION_CART_ATTRIBUTE, new HashMap<Long, Integer>());
+            //
         }
         return (HashMap<Long, Integer>) session.getAttribute(SESSION_CART_ATTRIBUTE);
     }
@@ -36,5 +36,13 @@ public class UserSession {
             cart.computeIfPresent(productId, (k, v) -> v - 1 <= 0 ? null : v - 1);
             session.setAttribute(SESSION_CART_ATTRIBUTE, cart);
         }
+    }
+
+    public void logout() {
+        session.invalidate();
+    }
+
+    public long getUserId() {
+        return session.getAttribute(SESSION_USER_ID_ATTRIBUTE) != null ? (long) session.getAttribute(SESSION_USER_ID_ATTRIBUTE) : -1;
     }
 }

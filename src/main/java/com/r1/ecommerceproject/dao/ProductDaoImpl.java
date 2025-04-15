@@ -3,12 +3,14 @@ package com.r1.ecommerceproject.dao;
 import com.r1.ecommerceproject.utils.DataSourceConnectionPool;
 import com.r1.ecommerceproject.model.ProductBean;
 import com.r1.ecommerceproject.model.ProductBean.Stato;
+import com.r1.ecommerceproject.utils.UserSession;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.Collection;
+import java.util.HashMap;
 import java.util.LinkedList;
 
 public class ProductDaoImpl implements ProductDao {
@@ -34,9 +36,7 @@ public class ProductDaoImpl implements ProductDao {
             preparedStatement.setString(8, product.getMateriale());
             preparedStatement.setString(9, product.getImmagine());
 
-
             preparedStatement.executeUpdate();
-            connection.commit();
         }
     }
 
@@ -115,4 +115,17 @@ public class ProductDaoImpl implements ProductDao {
 
     @Override
     public synchronized void doUpdate(ProductBean product) { }
+
+    @Override
+    public HashMap<ProductBean, Integer> doGetCartAsProducts(HashMap<Long, Integer> cart) throws SQLException {
+        HashMap<ProductBean, Integer> products = new HashMap<>();
+
+        for(Long id : cart.keySet()) {
+            ProductBean product = doRetrieveById(id);
+            if (product != null) {
+                products.put(product, cart.get(id));
+            }
+        }
+        return products;
+    }
 }

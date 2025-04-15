@@ -18,7 +18,7 @@ import java.util.List;
 @WebServlet("/catalog")
 public class CatalogServlet extends HttpServlet {
     private static final long serialVersionUID = 1L;
-    private final static ProductDao model = new ProductDaoImpl();
+    private final ProductDao model = new ProductDaoImpl();
 
     public CatalogServlet() {
         super();
