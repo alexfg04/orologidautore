@@ -1,6 +1,7 @@
 package com.r1.ecommerceproject.model;
 
 import java.io.Serializable;
+import java.util.Objects;
 
 public class ProductBean implements Serializable {
 
@@ -146,4 +147,15 @@ public class ProductBean implements Serializable {
                 '}';
     }
 
+	@Override
+	public boolean equals(Object o) {
+		if (o == null || getClass() != o.getClass()) return false;
+		ProductBean that = (ProductBean) o;
+		return getCodiceProdotto() == that.getCodiceProdotto() && Double.compare(getPrezzo(), that.getPrezzo()) == 0 && Objects.equals(getMateriale(), that.getMateriale()) && Objects.equals(getCategoria(), that.getCategoria()) && Objects.equals(getTaglia(), that.getTaglia()) && Objects.equals(getMarca(), that.getMarca()) && getStato() == that.getStato() && Objects.equals(getModello(), that.getModello()) && Objects.equals(getDescrizione(), that.getDescrizione()) && Objects.equals(getNome(), that.getNome()) && Objects.equals(getImmagine(), that.getImmagine());
+	}
+
+	@Override
+	public int hashCode() {
+		return Objects.hash(getCodiceProdotto(), getMateriale(), getCategoria(), getTaglia(), getMarca(), getPrezzo(), getStato(), getModello(), getDescrizione(), getNome(), getImmagine());
+	}
 }

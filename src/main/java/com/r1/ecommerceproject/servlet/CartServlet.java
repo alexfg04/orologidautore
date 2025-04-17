@@ -10,6 +10,7 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 import java.io.IOException;
 import java.sql.SQLException;
 import java.util.HashMap;
@@ -26,7 +27,6 @@ public class CartServlet extends HttpServlet {
     // For example:
     // - doGet: to view the cart
     // - doPost: to add items to the cart
-    // - doDelete: to remove items from the cart
 
     public void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         UserSession userSession = new UserSession(request.getSession());
@@ -43,12 +43,37 @@ public class CartServlet extends HttpServlet {
     }
 
     public void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        UserSession userSession = new UserSession(request.getSession());
+        HttpSession httpSession = request.getSession();
+        try {
+            // 1. Parse & validate parameters
+            String pid = request.getParameter("product_id");
+            String qty = request.getParameter("quantity");
+            if (pid == null || qty == null) {
+                throw new IllegalArgumentException("Missing product_id or quantity");
+            }
+            Long productId = Long.parseLong(pid);
+            int quantity = Integer.parseInt(qty);
+            if (quantity <= 0) {
+                throw new IllegalArgumentException("Quantity must be positive");
+            }
 
-        Long productId = Long.parseLong(request.getParameter("product_id"));
-        int quantity = Integer.parseInt(request.getParameter("quantity"));
-        userSession.addProductToCart(productId, quantity);
-        request.setAttribute("message", "Product added to cart successfully.");
-        response.sendRedirect(request.getContextPath() + "/product?id=" + productId);
+            // 2. Perform business logic
+            UserSession userSession = new UserSession(httpSession);
+            userSession.addProductToCart(productId, quantity);
+
+            // 3. Store flash message in session
+            httpSession.setAttribute("flashMessage", "Product added to cart successfully.");
+
+            // 4. Redirect to the product page (PRG)
+            String context = request.getContextPath();
+            response.sendRedirect(context + "/product?id=" + productId);
+
+        } catch (IllegalArgumentException e) {
+            // If parsing/validation fails, set an error message and forward back
+            request.setAttribute("errorMessage", "Could not add product: " + e.getMessage());
+            // Forward back to the same form or product page
+            request.getRequestDispatcher("/product.jsp?id=" + request.getParameter("product_id"))
+                    .forward(request, response);
+        }
     }
 }
