@@ -30,6 +30,7 @@ public class CatalogServlet extends HttpServlet {
             products = (List<ProductBean>) model.doRetrieveAll(null);
         } catch (SQLException e) {
             response.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR, "Error retrieving products");
+            return;
         }
 
         request.setAttribute("products", products);
