@@ -42,8 +42,8 @@ public class LoginServlet extends HttpServlet {
             response.sendRedirect("index.jsp");
         } else {
             // Se le credenziali sono errate, mostra un messaggio di errore
-            request.setAttribute("errorMessage", "Credenziali errate! Controlla email e password.");
-            request.getRequestDispatcher("login.jsp").forward(request, response);
+                request.setAttribute("errorMessage", "Credenziali errate! Controlla email e password.");
+                request.getRequestDispatcher("login.jsp").forward(request, response);
         }
     }
 }
