@@ -73,11 +73,13 @@
 
 <div class="container" id="container">
     <div class="form-container sign-up-container">
-        <form action="${pageContext.request.contextPath}/signin" method="post">
+        <form action="${pageContext.request.contextPath}/signup" method="post">
             <h1>Crea il tuo Account</h1>
             <br>
             <span>o accedi ad un profilo esistente</span>
             <input type="text" name="name" placeholder="Nome" required />
+            <input type="text" name="surname" placeholder="Cognome" required />
+            <input type="date" name="birthDate" placeholder="Data di nascita" required />
             <input type="email" name="email" placeholder="Email" required />
             <input type="password" name="password" placeholder="Password" required />
             <button type="submit">Crea!</button>
@@ -85,7 +87,7 @@
     </div>
 
     <div class="form-container sign-in-container">
-        <form action="${pageContext.request.contextPath}/signup" method="post">
+        <form action="${pageContext.request.contextPath}/signin" method="post">
             <h1>Accedi</h1>
             <br>
             <span>o crea un nuovo account</span>
