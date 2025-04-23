@@ -3,7 +3,6 @@ package com.r1.ecommerceproject.dao;
 import com.r1.ecommerceproject.utils.DataSourceConnectionPool;
 import com.r1.ecommerceproject.model.ProductBean;
 import com.r1.ecommerceproject.model.ProductBean.Stato;
-import com.r1.ecommerceproject.utils.UserSession;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;

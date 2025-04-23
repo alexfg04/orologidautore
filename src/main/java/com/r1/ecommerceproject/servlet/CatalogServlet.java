@@ -12,7 +12,6 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.sql.SQLException;
-import java.util.ArrayList;
 import java.util.List;
 
 @WebServlet("/catalog")
@@ -25,7 +24,7 @@ public class CatalogServlet extends HttpServlet {
     }
 
     public void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        List<ProductBean> products = new ArrayList<>();
+        List<ProductBean> products;
         try {
             products = (List<ProductBean>) model.doRetrieveAll(null);
         } catch (SQLException e) {

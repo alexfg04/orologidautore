@@ -40,11 +40,6 @@
     <% } %>
     </div>
 </div>
-
-<a href="login.jsp">
-    <button type="button">Vai al Login</button>
-</a>
-
 <%@ include file="footer.jsp" %>
 </body>
 </html>
