@@ -54,7 +54,7 @@ public class SignupServlet extends HttpServlet {
 
         UserBean user = new UserBean();               //creiamo un oggetto di tipo userBean
 
-        String nome= request.getParameter("nome");                                   //prendiamo il valore inserito nel campo "nome" del form
+        String nome = request.getParameter("nome");                                   //prendiamo il valore inserito nel campo "nome" del form
         String cognome = request.getParameter("cognome");                            //prendiamo il valore inserito nel campo "cognome" del form
         LocalDate data_nascita = LocalDate.parse(request.getParameter("data_di_nascita"));   //prendiamo il valore inserito nel campo "data di nascita nel form"
 
@@ -66,7 +66,7 @@ public class SignupServlet extends HttpServlet {
         user.setTipologia(UserBean.Role.UTENTE);
         try{
             if(userDao.doSave(user)){
-                request.getRequestDispatcher("/login").forward(request, response);;
+                request.getRequestDispatcher("/login").forward(request, response);
             }
 
         }catch(SQLException e){

@@ -16,7 +16,7 @@
 <%@ page import="java.util.*, com.r1.ecommerceproject.model.ProductBean" %>
 <head>
   <title>Carrello</title>
-  <link rel="stylesheet" href="${pageContext.request.contextPath}/assets/css/cartStyle.css">
+  <link rel="stylesheet" href="${pageContext.request.contextPath}/assets/css/cart.css">
 </head>
 <body>
 <div class="container">

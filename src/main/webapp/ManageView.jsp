@@ -17,7 +17,7 @@
 
 <head>
 	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-	<link href="${pageContext.request.contextPath}/assets/css/ProductStyle.css" rel="stylesheet" type="text/css">
+	<link href="${pageContext.request.contextPath}/assets/css/admin-page.css" rel="stylesheet" type="text/css">
 	<title>Gestione Prodotti</title>
 </head>
 

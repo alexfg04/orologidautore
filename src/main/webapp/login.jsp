@@ -1,11 +1,11 @@
-<%@ page contentType="text/html;charset=UTF-8" language="java" %>
+<%@ page contentType="text/html;charset=UTF-8" %>
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <title>Login / Registrazione</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.14.0/css/all.min.css">
-    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="assets/css/login-page.css">
     <style>
         /* Quadrato semplice con notifiche */
         .error-notification {
@@ -59,8 +59,6 @@
     </style>
 </head>
 <body>
-
-<!-- ✅ NOTIFICA ERRORE (senza JSTL) -->
 <%
     String errorMessage = (String) request.getAttribute("errorMessage");
     if (errorMessage != null && !errorMessage.isEmpty()) {
@@ -75,7 +73,7 @@
 
 <div class="container" id="container">
     <div class="form-container sign-up-container">
-        <form action="RegisterServlet" method="post">
+        <form action="${pageContext.request.contextPath}/signin" method="post">
             <h1>Crea il tuo Account</h1>
             <br>
             <span>o accedi ad un profilo esistente</span>
@@ -87,7 +85,7 @@
     </div>
 
     <div class="form-container sign-in-container">
-        <form action="LoginServlet" method="post">
+        <form action="${pageContext.request.contextPath}/signup" method="post">
             <h1>Accedi</h1>
             <br>
             <span>o crea un nuovo account</span>
@@ -114,32 +112,7 @@
     </div>
 </div>
 
-<script>
-    window.onload = function () {
-        var errorNotification = document.getElementById("errorNotification");
-
-        // Mostra la notifica se c'è un messaggio
-        if (errorNotification) {
-            setTimeout(function () {
-                // Nascondi la notifica dopo 4 secondi
-                errorNotification.style.opacity = 0;
-                setTimeout(function() {
-                    errorNotification.style.display = "none"; // Nasconde completamente il div dopo che è sparita
-                }, 500); // Attendi 500ms prima di nasconderlo
-            }, 4000); // 4000ms = 4 secondi
-
-            // Funzione per chiudere la notifica quando si clicca sulla X
-            document.querySelector(".close").addEventListener("click", function () {
-                errorNotification.style.opacity = 0;
-                setTimeout(function() {
-                    errorNotification.style.display = "none";
-                }, 500); // Nasconde completamente il div dopo che è sparita
-            });
-        }
-    };
-</script>
-
-<script src="js/script.js"></script>
+<script src="assets/js/login_page.js"></script>
 
 </body>
 </html>
