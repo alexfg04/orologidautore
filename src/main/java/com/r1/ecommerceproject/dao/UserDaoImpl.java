@@ -56,7 +56,7 @@ public class UserDaoImpl implements UserDao {
             preparedStatement.setString(3,Indirizzo.getCAP());
 
 
-            if(preparedStatement.executeUpdate() == 0){
+            if(preparedStatement.executeUpdate() == 0) {
                 throw new SQLException("Errore nella creazione dell'indirizzo");
             }
             // Recuperare l'ID appena generato per aggiungerlo nella tabella dell'utente
@@ -131,5 +131,28 @@ public class UserDaoImpl implements UserDao {
                 return rs.next();						//ritorna true se esiste l'utente nel database
             }
         }
+    }
+
+    @Override
+    public UserBean doRetrieveByEmail(String email) throws SQLException {
+        String query = "SELECT * FROM " + TABLE_NAME + " WHERE email = ?";
+        UserBean user;
+        try (Connection connection = DataSourceConnectionPool.getConnection();
+             PreparedStatement preparedStatement = connection.prepareStatement(query)) {
+            preparedStatement.setString(1, email);
+            try (ResultSet rs = preparedStatement.executeQuery()) {
+                if (rs.next()) {
+                    user = new UserBean();
+                    user.setNome(rs.getString("nome"));
+                    user.setCognome(rs.getString("cognome"));
+                    user.setEmail(rs.getString("email"));
+                    user.setPassword(rs.getString("password"));
+                    user.setTipologia(UserBean.Role.valueOf(rs.getString("tipologia")));
+                } else {
+                    throw new SQLException("Utente non trovato");
+                }
+            }
+        }
+        return user;
     }
 }

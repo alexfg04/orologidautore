@@ -25,8 +25,7 @@ public class SignupServlet extends HttpServlet {
         super();
     }
 
-    public void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException{
-
+    protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException{
         String email = request.getParameter("email");
         String password = request.getParameter("password");
 
@@ -43,20 +42,20 @@ public class SignupServlet extends HttpServlet {
 
         try{
             if(userDao.userExist(email)){             //controlliamo se l'utente è già registrato
-                response.sendRedirect(request.getContextPath() + "/login");
+                response.sendRedirect(request.getContextPath() + "/login.jsp");
                 return;
             }else{
                 request.setAttribute("errorMessage", "Questa combinazione di email e password è già utilizzata");
             }
         }catch(SQLException e){                                                          //generiamo l'eccezione nel caso si verifichi un èeccezione del tipo SQLExcetion
-            throw new ServletException("Errore interno riprova più tardi", e);        //se si verifica l'eccezione la convertiamo in un eccezione del tipo ServletException
+            throw new ServletException("Errore interno riprova più tardi", e);       //se si verifica l'eccezione la convertiamo in un eccezione del tipo ServletException
         }
 
         UserBean user = new UserBean();               //creiamo un oggetto di tipo userBean
 
-        String nome = request.getParameter("nome");                                   //prendiamo il valore inserito nel campo "nome" del form
-        String cognome = request.getParameter("cognome");                            //prendiamo il valore inserito nel campo "cognome" del form
-        LocalDate data_nascita = LocalDate.parse(request.getParameter("data_di_nascita"));   //prendiamo il valore inserito nel campo "data di nascita nel form"
+        String nome = request.getParameter("name");                                   //prendiamo il valore inserito nel campo "nome" del form
+        String cognome = request.getParameter("surname");                            //prendiamo il valore inserito nel campo "cognome" del form
+        LocalDate data_nascita = LocalDate.parse(request.getParameter("birthDate"));   //prendiamo il valore inserito nel campo "data di nascita nel form"
 
         user.setEmail(email);                                                                      //settiamo gli attributi relativi all'utente nell'oggetto "user"
         user.setPassword(hashedPassword.get());
@@ -66,7 +65,7 @@ public class SignupServlet extends HttpServlet {
         user.setTipologia(UserBean.Role.UTENTE);
         try{
             if(userDao.doSave(user)){
-                request.getRequestDispatcher("/login").forward(request, response);
+                request.getRequestDispatcher("/login.jsp").forward(request, response);
             }
 
         }catch(SQLException e){
