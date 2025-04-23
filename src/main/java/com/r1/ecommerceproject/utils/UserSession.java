@@ -45,4 +45,8 @@ public class UserSession {
     public long getUserId() {
         return session.getAttribute(SESSION_USER_ID_ATTRIBUTE) != null ? (long) session.getAttribute(SESSION_USER_ID_ATTRIBUTE) : -1;
     }
+
+    public void setUser(long id) {
+        session.setAttribute(SESSION_USER_ID_ATTRIBUTE, id);
+    }
 }

@@ -11,4 +11,5 @@ public interface UserDao {
     public boolean addAddress(AddressBean indirizzo, long idUtente)throws SQLException;
     public boolean addPhoneNumber(long idUtente, PhoneNumberBean telefono)throws SQLException;
     public boolean userExist(String email)throws SQLException;
+    public UserBean doRetrieveByEmail(String email) throws SQLException;
 }
