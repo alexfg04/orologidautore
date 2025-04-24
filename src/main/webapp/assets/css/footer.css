@@ -2,7 +2,7 @@
   display: flex;
   justify-content: space-between;
   padding: 20px;
-  background-color: #009688;
+  background-color: #00695C;
 }
 
 .footer-section {
@@ -29,7 +29,7 @@
   justify-content: center;  /* Centra orizzontalmente le immagini */
   align-items: center;      /* Centra verticalmente le immagini */
   padding: 10px;
-  background-color: #009688;
+  background-color: #00695C;
 }
 
 .footer-social img {

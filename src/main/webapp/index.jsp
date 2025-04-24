@@ -53,6 +53,8 @@
 <script>
     lucide.createIcons();
 </script>
+<jsp:include page="marche.jsp"/>
+<%@ include file="previewFooter.jsp" %>
 <%@ include file="footer.jsp" %>
 </body>
 </html>
