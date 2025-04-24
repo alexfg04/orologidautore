@@ -19,7 +19,7 @@
     <link rel="stylesheet" href="${pageContext.request.contextPath}/assets/css/home.css">
 </head>
 <body>
-<jsp:include page="navbar.jsp" />
+<%@ include file="navbar.jsp" %>
 <div class="container">
     <h2 style="display: flex; justify-content: space-between; align-items: center;">
         Catalogo Prodotti
@@ -41,7 +41,7 @@
         <% } %>
     <% } %>
     </div>
-</div
+</div>
 <script src="https://unpkg.com/lucide@latest"></script>
 <script>
     lucide.createIcons();

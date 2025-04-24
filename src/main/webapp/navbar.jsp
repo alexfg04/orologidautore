@@ -1,16 +1,16 @@
-<%@ page contentType="text/html;charset=UTF-8" language="java" %>
+<%@ page contentType="text/html; charset=UTF-8" %>
 <link rel="stylesheet" href="assets/css/navbar.css">
-<script src="https://unpkg.com/lucide@latest"></script>
 
 <header>
     <nav class="navbar">
         <!-- Sinistra: Logo -->
         <div class="navbar-left">
-            <img src="assets/img/Logo.png" width="110px" height="30px">
+            <img src="assets/img/Logo.png" alt="Logo">
         </div>
 
         <!-- Centro: Sezioni cliccabili -->
         <div class="navbar-center">
+            <a href="index.jsp">Home</a>
             <a href="catalog.jsp">Novità</a>
             <a href="about.jsp">Uomo</a>
             <a href="contact.jsp">Donna</a>
@@ -40,11 +40,6 @@
                 <i data-lucide="shopping-cart" class="icon"></i>
             </a>
         </div>
-
-
-        </div>
-
-
     </nav>
 
 </header>

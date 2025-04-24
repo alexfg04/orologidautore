@@ -17,8 +17,10 @@
 <head>
   <title>Carrello</title>
   <link rel="stylesheet" href="${pageContext.request.contextPath}/assets/css/cart.css">
+  <script src="https://unpkg.com/lucide@latest"></script>
 </head>
 <body>
+<%@ include file="navbar.jsp" %>
 <div class="container">
   <h2 style="display: flex; justify-content: space-between; align-items: center;">
     Carrello
@@ -26,7 +28,7 @@
   </h2>
 
   <div class="cart">
-    <% if (cartItems.isEmpty()) { %>
+    <% if (cartItems == null || cartItems.isEmpty()) { %>
     <p>Il tuo carrello è vuoto.</p>
     <% } else { %>
     <% double totalPrice = 0; %>
@@ -58,7 +60,10 @@
     <% } %>
   </div>
 </div>
-
 <%@ include file="footer.jsp" %>
+<script src="https://unpkg.com/lucide@latest"></script>
+<script>
+  lucide.createIcons();
+</script>
 </body>
 </html>
