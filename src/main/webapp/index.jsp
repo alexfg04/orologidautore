@@ -17,9 +17,18 @@
 <head>
     <title>Catalogo Prodotti</title>
     <link rel="stylesheet" href="${pageContext.request.contextPath}/assets/css/home.css">
+    <link rel="stylesheet" href="${pageContext.request.contextPath}/assets/css/header.css">
 </head>
 <body>
 <%@ include file="navbar.jsp" %>
+
+<div class="container">
+    <img src="assets/img/omar-al-ghosson-N53-pozDwVE-unsplash%20(2).jpg" alt="Immagine" class="image">
+    <div class="text-overlay">Compra un orologio di qualità!</div>
+    <a href="FAQs.jsp"><button class="button">Aquista ora ➟</button></a>
+</div>
+
+
 <div class="container">
     <h2 style="display: flex; justify-content: space-between; align-items: center;">
         Catalogo Prodotti
