@@ -4,8 +4,7 @@ import javax.servlet.http.HttpSession;
 import java.util.HashMap;
 
 public class UserSession {
-    private final String SESSION_CART_ATTRIBUTE = "cart";
-    private final String SESSION_USER_ATTRIBUTE = "user";
+    private final String SESSION_CART_ATTRIBUTE = "cart";;
     private final String SESSION_ADMIN_ATTRIBUTE = "admin";
     private final String SESSION_USER_ID_ATTRIBUTE = "userId";
     private final HttpSession session;

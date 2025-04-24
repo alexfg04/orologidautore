@@ -1,4 +1,4 @@
-<%@ page import="com.r1.ecommerceproject.model.ProductBean, com.r1.ecommerceproject.dao.ProductDaoImpl" %>
+<%@ page import="com.r1.ecommerceproject.model.ProductBean" %>
 <%@ page contentType="text/html; charset=UTF-8" %>
 <%
     ProductBean product = (ProductBean) request.getAttribute("product");
@@ -14,6 +14,7 @@
     <link rel="stylesheet" href="${pageContext.request.contextPath}/assets/css/product-detail.css">
 </head>
 <body>
+<%@ include file="navbar.jsp"%>
 <div class="detail-container">
     <div class="detail-card">
         <div class="detail-img">
@@ -51,5 +52,9 @@
         </div>
     </div>
 </div>
+<script src="https://unpkg.com/lucide@latest"></script>
+<script>
+    lucide.createIcons();
+</script>
 </body>
 </html>

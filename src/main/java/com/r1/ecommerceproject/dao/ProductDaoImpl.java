@@ -19,7 +19,7 @@ public class ProductDaoImpl implements ProductDao {
     @Override
     public synchronized void doSave(ProductBean product) throws SQLException {
         String insertSQL = "INSERT INTO " + TABLE_NAME +
-                " (nome, descrizione, prezzo, modello, marca, categoria, taglia , materiale, immagine)" +
+                " (nome, descrizione, prezzo, modello, marca, categoria, taglia , materiale, image_url)" +
                 "VALUES ( ?, ?, ?,?, ?, ?, ?, ?, ?)";
 
         try (Connection connection = DataSourceConnectionPool.getConnection();
@@ -70,7 +70,7 @@ public class ProductDaoImpl implements ProductDao {
         bean.setModello(rs.getString("modello"));
         bean.setDescrizione(rs.getString("descrizione"));
         bean.setNome(rs.getString("nome"));
-        bean.setImmagine(rs.getString("immagine"));
+        bean.setImmagine(rs.getString("image_url"));
         return bean;
     }
 

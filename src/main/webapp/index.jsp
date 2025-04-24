@@ -1,4 +1,5 @@
 <%@ page contentType="text/html; charset=UTF-8" %>
+<%@ page import="java.util.*, com.r1.ecommerceproject.model.ProductBean" %>
 <%
 
     List<ProductBean> products = (List<ProductBean>) request.getAttribute("products");
@@ -11,9 +12,6 @@
 
 <!DOCTYPE html>
 <html>
-
-<%@ page contentType="text/html; charset=UTF-8"%>
-<%@ page import="java.util.*, com.r1.ecommerceproject.model.ProductBean" %>
 <head>
     <title>Catalogo Prodotti</title>
     <link rel="stylesheet" href="${pageContext.request.contextPath}/assets/css/home.css">

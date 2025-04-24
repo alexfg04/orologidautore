@@ -21,22 +21,7 @@ public class ProductBean implements Serializable {
 
 	String immagine;
 	
-	public enum Stato{ attivato, disattivato}
-
-
-    // Costruttore completo
-    public ProductBean(int codiceProdotto, String materiale, String categoria, String taglia, String marca, double prezzo, String modello, String descrizione, String nome) {
-        this.codiceProdotto = codiceProdotto;
-        this.materiale = materiale;
-        this.categoria = categoria;
-        this.taglia = taglia;
-        this.marca = marca;
-        this.prezzo = prezzo;
-        this.stato = Stato.attivato;
-        this.modello = modello;
-        this.descrizione = descrizione;
-        this.nome = nome;
-    }
+	public enum Stato{ ATTIVATO, DISATTIVATO}
 
     // Costruttore vuoto
     public ProductBean() {
