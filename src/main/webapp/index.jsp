@@ -32,7 +32,9 @@
         Catalogo Prodotti
         <a href="<%= request.getContextPath() %>/gestione">Gestione Prodotti →</a>
     </h2>
+    <h1 style="color: black">I nostri prodotti preferiti</h1>
     <div class="catalog">
+
         <% if (products.isEmpty()) { %>
         <p>Nessun prodotto da visualizzare.</p>
         <% } else { %>
@@ -54,6 +56,7 @@
     lucide.createIcons();
 </script>
 <jsp:include page="marche.jsp"/>
+<jsp:include page="body.jsp" />
 <%@ include file="previewFooter.jsp" %>
 <%@ include file="footer.jsp" %>
 </body>

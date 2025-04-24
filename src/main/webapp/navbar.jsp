@@ -26,7 +26,7 @@
             </form>
 
             <!-- Icona utente -->
-            <a href="profile.jsp">
+            <a href="login.jsp">
                 <i data-lucide="user" class="icon"></i>
             </a>
 

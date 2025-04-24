@@ -52,35 +52,33 @@
         <tr>
             <td class="column-content">
                 Pochi sono in grado di resistere al fascino degli orologi di lusso. Ma cosa si intende veramente per orologio di lusso?
-                <ul>
-                    <li>Orologi fabbricati con materiali pregiati come oro o platino.</li>
-                    <li>Orologi meccanici con calibri realizzati a mano.</li>
-                    <li>Marchi leggendari come Rolex, Patek Philippe, o Breitling.</li>
-                </ul>
+
+                    Orologi fabbricati con materiali pregiati come oro o platino
+                    Orologi meccanici con calibri realizzati a mano.
+                    Marchi leggendari come Rolex, Patek Philippe, o Breitling.
+
                 A prescindere dal tuo stile, su Chrono24 trovi orologi di lusso per ogni tipo di budget. Trova e acquista adesso l'orologio dei tuoi sogni.
             </td>
             <td class="column-content">
                 Non c'è spazio solo per i modelli nuovi di zecca. Molti apprezzano il fascino degli orologi vintage, come quelli degli anni '60 e '70.
-                <ul>
-                    <li>Orologi da collezione rari e pezzi storici.</li>
-                    <li>Predecessori di orologi leggendari, acquistabili a prezzi vantaggiosi.</li>
-                </ul>
+
+                    Orologi da collezione rari e pezzi storici.
+                   Predecessori di orologi leggendari, acquistabili a prezzi vantaggiosi.
+
                 Anche chi è alle prime armi può diventare esperto nel processo di acquisto di orologi vintage.
             </td>
             <td class="column-content">
                 Ogni mese, milioni di appassionati di orologi cercano il loro prossimo modello su Chrono24. Crea un annuncio gratuito e trova un acquirente per il tuo orologio.
-                <ul>
-                    <li>Pagamento sicuro tramite conto deposito a garanzia.</li>
-                    <li>Spedizione sicura dopo la conferma del pagamento.</li>
-                </ul>
+
+                    Pagamento sicuro tramite conto deposito a garanzia.
+                    Spedizione sicura dopo la conferma del pagamento.
+
                 Vendi ora il tuo orologio con facilità.
             </td>
             <td class="column-content">
                 Se hai trovato l'orologio perfetto su Chrono24, non aspettare oltre! Acquista con la Protezione Acquirenti gratuita.
-                <ul>
-                    <li>Pagamento sicuro tramite deposito a garanzia.</li>
-                    <li>Protezione per l'acquirente per 14 giorni.</li>
-                </ul>
+                    Pagamento sicuro tramite deposito a garanzia.
+                    Protezione per l'acquirente per 14 giorni.
                 Assicurati che l'orologio soddisfi le tue aspettative prima di completare la transazione.
             </td>
         </tr>
