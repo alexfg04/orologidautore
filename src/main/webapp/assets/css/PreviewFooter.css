@@ -1,18 +1,15 @@
 /* styles.css */
 
-
-
 /* Contenitore del processo */
 .process-container {
     display: flex;
     gap: 30px;
-
     background-color: #fff;
     border-radius: 8px;
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+
     width: 100%;
     justify-content: space-around;
-    margin-bottom: 40px; /* Aggiungi spazio tra il processo e la tabella */
+    margin-bottom: 30px; /* Aggiungi spazio tra il processo e la tabella */
 }
 
 .process-step {
@@ -45,46 +42,37 @@
 
 /* Tabella */
 table {
-    width: 80%;
+    width: 90%; /* Ridotta la larghezza della tabella */
+    margin: 0 auto; /* Centra la tabella */
     border-collapse: collapse;
     background-color: #fff;
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
-}
 
-th, td {
-    padding: 15px;
-    text-align: left;
-    border: 1px solid #ddd;
-}
-
-th {
-    background-color: transparent;
-    color: b;
+    border: none; /* Rimuove i bordi */
 }
 
 td {
-    background-color: #f4f4f4;
+    padding: 15px;
+    vertical-align: top;
+}
+
+th {
+    padding: 6px;
+    vertical-align: top;
+}
+th {
+    background-color: transparent;
+    color: #333;
+    font-size: 14pt;
+}
+
+td {
+    background-color: #ffffff;
 }
 
 caption {
     font-size: 24px;
     margin-bottom: 10px;
     color: #00695C;
-}
-
-table {
-    width: 100%;
-    margin-top: 20px;
-}
-
-th, td {
-    padding: 10px;
-    vertical-align: top;
-}
-
-th {
-
-    font-size: 14pt;
 }
 
 p {
@@ -110,6 +98,7 @@ p {
     margin-left: 20px;
 }
 
+/* Bottone CTA */
 .cta-button {
     background-color: #0066cc;
     color: white;

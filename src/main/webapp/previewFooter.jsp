@@ -82,7 +82,6 @@
                     <li>Protezione per l'acquirente per 14 giorni.</li>
                 </ul>
                 Assicurati che l'orologio soddisfi le tue aspettative prima di completare la transazione.
-
             </td>
         </tr>
     </table>

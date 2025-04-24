@@ -1,64 +1,55 @@
-body {
-    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-    background-color: #f4f6f8;
-    margin: 0;
-
-    color: #333;
-}
-
-.container {
-    max-width: 1200px;
-    margin: 0 auto;
-}
-
-h2 {
-    text-align: center;
-    margin-bottom: 2rem;
-    color: #2c3e50;
-}
-
 .catalog {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    display: flex;
+    flex-wrap: wrap;  /* Permette alle card di adattarsi al layout */
     gap: 1.5rem;
+    max-width: 1000px;  /* Limita la larghezza per la griglia */
+    margin: 0 auto;     /* Centra la griglia orizzontalmente */
 }
 
 .product-card {
-    background-color: #fff;
+    background-color: #dce6e6;
     border-radius: 12px;
     box-shadow: 0 0 12px rgba(0, 0, 0, 0.08);
-    padding: 1.5rem;
+    padding: 30px;
     display: flex;
     flex-direction: column;
     transition: transform 0.2s;
     overflow: hidden;
+    flex-grow: 1;  /* Permette alla card di crescere per riempire lo spazio disponibile */
+    max-width: 300px;  /* Impostato limite di larghezza per la card */
+    min-width: 250px;  /* Aggiunto un minimo per impedire che le card diventino troppo piccole */
+    box-sizing: border-box;  /* Assicura che padding e bordi non influiscano sulla larghezza */
 }
 
 .product-card img {
     width: 100%;
-    max-height: 200px;
-    object-fit: cover;
+    max-height: 250px;  /* Aumentato la massima altezza per l'immagine */
+    object-fit: cover;  /* Ingrandisce l'immagine mantenendo le proporzioni */
     border-radius: 8px;
     margin-bottom: 1rem;
 }
 
-.product-card:hover {
-    transform: translateY(-5px);
-}
-
 .product-card h3 {
     margin-top: 0;
-    color: #00796B;
+    color: #ffff;
+    font-size: 16px;  /* Ridotto il font per il titolo */
 }
 
 .product-card p {
     margin-bottom: 0.5rem;
+    font-size: 12px;  /* Ridotto il font per la descrizione */
+    color: white;  /* Modificato il colore del testo per il contrasto */
 }
 
 .product-card .price {
     font-weight: bold;
-    color: #009688;
+    color: white;  /* Cambiato colore per il contrasto */
     margin-top: auto;
+    font-size: 14px;  /* Ridotto il font per il prezzo */
+}
+
+.product-card:hover {
+    transform: translateY(-5px);
 }
 
 .product-card-link {
