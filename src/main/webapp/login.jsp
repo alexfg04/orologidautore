@@ -10,7 +10,7 @@
         /* Quadrato semplice con notifiche */
         .error-notification {
             width: 350px;
-            height: 150px;
+            height: 100px;
             background-color: #009688; /* Colore per errore */
             color: white;
             font-size: 16px;
@@ -61,27 +61,30 @@
 <body>
 <%
     String errorMessage = (String) request.getAttribute("errorMessage");
-    if (errorMessage != null && !errorMessage.isEmpty()) {
+    String flashMessage = (String) session.getAttribute("flashMessage");
+    if ((errorMessage != null && !errorMessage.isEmpty()) || (flashMessage != null && !flashMessage.isEmpty())) {
 %>
 <div id="errorNotification" class="error-notification danger">
-    <%= errorMessage %>
+    <%= errorMessage != null ? errorMessage : flashMessage %>
     <span class="close">×</span>
 </div>
 <%
+        session.removeAttribute("flashMessage");
     }
 %>
 
-<div class="container" id="container">
-    <div class="form-container sign-up-container">
+<div class="container <%=request.getAttribute("rp") != null ? "right-panel-active no-animation" : ""%>"
+     id="container">
+<div class="form-container sign-up-container">
         <form action="${pageContext.request.contextPath}/signup" method="post">
             <h1>Crea il tuo Account</h1>
             <br>
             <span>o accedi ad un profilo esistente</span>
-            <input type="text" name="name" placeholder="Nome" required />
-            <input type="text" name="surname" placeholder="Cognome" required />
-            <input type="date" name="birthDate" placeholder="Data di nascita" required />
-            <input type="email" name="email" placeholder="Email" required />
-            <input type="password" name="password" placeholder="Password" required />
+            <input type="text" name="name" placeholder="Nome" />
+            <input type="text" name="surname" placeholder="Cognome" />
+            <input type="date" name="birthDate" placeholder="Data di nascita" />
+            <input type="email" name="email" placeholder="Email" />
+            <input type="password" name="password" placeholder="Password" />
             <button type="submit">Crea!</button>
         </form>
     </div>

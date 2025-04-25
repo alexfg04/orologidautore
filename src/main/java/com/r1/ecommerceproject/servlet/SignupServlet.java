@@ -25,50 +25,57 @@ public class SignupServlet extends HttpServlet {
         super();
     }
 
-    protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException{
+    protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         String email = request.getParameter("email");
         String password = request.getParameter("password");
+        String name = request.getParameter("name");
+        String surname = request.getParameter("surname");
+        String birthdateStr = request.getParameter("birthDate");
 
         Optional<String> hashedPassword = Security.hashPassword(password);
 
-        //controlliamo se l'email e la password non sono stringhe vuote o null
-        if(email == null || email.trim().isEmpty()
-                || hashedPassword.isEmpty()){
+        boolean hasEmptyFields = email == null || email.trim().isEmpty() ||
+                hashedPassword.isEmpty() ||
+                name == null || name.trim().isEmpty() ||
+                surname == null || surname.trim().isEmpty() ||
+                birthdateStr == null || birthdateStr.trim().isEmpty();
 
-            request.setAttribute("errorMessage","I campi non possono essere vuoti");
-            request.getRequestDispatcher("/registrazione.jsp").forward(request, response);
+        if (hasEmptyFields && !Security.validateEmail(email)) {
+            request.setAttribute("errorMessage", "I campi vuoti o non validi");
+            request.setAttribute("rp", true);
+            request.getRequestDispatcher("/login.jsp").forward(request, response);
             return;
         }
 
-        try{
-            if(userDao.userExist(email)){             //controlliamo se l'utente è già registrato
+        LocalDate birthdate = LocalDate.parse(birthdateStr);
+
+        try {
+            if (userDao.userExist(email)) {
+                request.getSession().setAttribute("flashMessage", "Sei già registrato, effettua il login."); //controlliamo se l'utente è già registrato
                 response.sendRedirect(request.getContextPath() + "/login.jsp");
                 return;
-            }else{
-                request.setAttribute("errorMessage", "Questa combinazione di email e password è già utilizzata");
             }
-        }catch(SQLException e){                                                          //generiamo l'eccezione nel caso si verifichi un èeccezione del tipo SQLExcetion
+        } catch (SQLException e) {                                                          //generiamo l'eccezione nel caso si verifichi un eccezione del tipo SQLExcetion
             throw new ServletException("Errore interno riprova più tardi", e);       //se si verifica l'eccezione la convertiamo in un eccezione del tipo ServletException
         }
 
-        UserBean user = new UserBean();               //creiamo un oggetto di tipo userBean
+        //creiamo un oggetto di tipo userBean
+        UserBean user = new UserBean();
 
-        String nome = request.getParameter("name");                                   //prendiamo il valore inserito nel campo "nome" del form
-        String cognome = request.getParameter("surname");                            //prendiamo il valore inserito nel campo "cognome" del form
-        LocalDate data_nascita = LocalDate.parse(request.getParameter("birthDate"));   //prendiamo il valore inserito nel campo "data di nascita nel form"
-
-        user.setEmail(email);                                                                      //settiamo gli attributi relativi all'utente nell'oggetto "user"
+        //settiamo gli attributi relativi all'utente nell'oggetto "user"
+        user.setEmail(email);
         user.setPassword(hashedPassword.get());
-        user.setNome(nome);
-        user.setCognome(cognome);
-        user.setDataDiNascita(data_nascita);
+        user.setNome(name);
+        user.setCognome(surname);
+        user.setDataDiNascita(birthdate);
         user.setTipologia(UserBean.Role.UTENTE);
-        try{
-            if(userDao.doSave(user)){
-                request.getRequestDispatcher("/login.jsp").forward(request, response);
+        try {
+            if (userDao.doSave(user)) {
+                request.getSession().setAttribute("flashMessage", "Registrazione avvenuta con successo.");
+                response.sendRedirect(request.getContextPath() + "/login.jsp");
             }
 
-        }catch(SQLException e){
+        } catch (SQLException e) {
             throw new ServletException("Errore interno riprova più tardi", e);
         }
     }

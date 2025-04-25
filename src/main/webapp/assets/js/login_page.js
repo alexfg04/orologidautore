@@ -30,5 +30,6 @@ signUpButton.addEventListener('click', () => {
 });
 
 signInButton.addEventListener('click', () => {
+    container.classList.remove("no-animation");
     container.classList.remove("right-panel-active");
 });
