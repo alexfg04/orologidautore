@@ -6,14 +6,18 @@
   To change this template use File | Settings | File Templates.
 --%>
 <%@ page contentType="text/html; charset=UTF-8" %>
+<%@ page import="java.util.*, com.r1.ecommerceproject.model.ProductBean" %>
 <%
   HashMap<ProductBean, Integer> cartItems = (HashMap<ProductBean, Integer>) request.getAttribute("cart");
+
+  if(cartItems == null) {
+    response.sendRedirect("./cart");
+    return;
+  }
 %>
 
 <!DOCTYPE html>
 <html>
-<%@ page contentType="text/html; charset=UTF-8"%>
-<%@ page import="java.util.*, com.r1.ecommerceproject.model.ProductBean" %>
 <head>
   <title>Carrello</title>
   <link rel="stylesheet" href="${pageContext.request.contextPath}/assets/css/cart.css">
@@ -28,7 +32,7 @@
   </h2>
 
   <div class="cart">
-    <% if (cartItems == null || cartItems.isEmpty()) { %>
+    <% if (cartItems.isEmpty()) { %>
     <p>Il tuo carrello è vuoto.</p>
     <% } else { %>
     <% double totalPrice = 0; %>
