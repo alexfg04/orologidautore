@@ -90,6 +90,7 @@ p {
 .column-content {
     font-family: 'Calibri', sans-serif;
     font-size: 13pt;
+    text-align: left;
     color: #333;
 }
 
@@ -107,4 +108,8 @@ p {
     text-decoration: none;
     display: inline-block;
     margin-top: 10px;
+}
+
+.second-container {
+    margin: 2rem;
 }

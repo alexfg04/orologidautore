@@ -41,7 +41,7 @@
         <div class="step-text">Il venditore riceve il pagamento solo in questo momento</div>
     </div>
 </div>
-<div class="container">
+<div class="container second-container">
     <table>
         <tr>
             <th class="column-header">Orologi di lusso</th>

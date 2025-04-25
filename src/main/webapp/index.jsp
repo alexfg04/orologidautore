@@ -28,10 +28,6 @@
 
 
 <div class="container">
-    <h2 style="display: flex; justify-content: space-between; align-items: center;">
-        Catalogo Prodotti
-        <a href="<%= request.getContextPath() %>/gestione">Gestione Prodotti →</a>
-    </h2>
     <h1 style="color: black">I nostri prodotti preferiti</h1>
     <div class="catalog">
 

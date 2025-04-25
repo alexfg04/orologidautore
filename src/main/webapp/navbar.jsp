@@ -21,7 +21,7 @@
             <form action="search" method="get" class="search-form">
                 <input type="text" name="query" placeholder="Cerca...">
                 <button type="submit">
-                    <i data-lucide="search" class="icon"></i>
+                    <i data-lucide="search"></i>
                 </button>
             </form>
 
