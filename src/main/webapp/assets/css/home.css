@@ -1,9 +1,11 @@
 .catalog {
     display: flex;
-    flex-wrap: wrap;  /* Permette alle card di adattarsi al layout */
+    flex-wrap: wrap; /* Permette alle card di adattarsi al layout */
+    justify-content: center;
+    align-items: center;
     gap: 1.5rem;
     max-width: 1000px;  /* Limita la larghezza per la griglia */
-    margin: 0 auto;     /* Centra la griglia orizzontalmente */
+    margin: 2rem auto;   /* Centra la griglia orizzontalmente */
 }
 
 .product-card {
@@ -23,7 +25,7 @@
 
 .product-card img {
     width: 100%;
-    max-height: 250px;  /* Aumentato la massima altezza per l'immagine */
+    height: 250px;  /* Aumentato la massima altezza per l'immagine */
     object-fit: cover;  /* Ingrandisce l'immagine mantenendo le proporzioni */
     border-radius: 8px;
     margin-bottom: 1rem;

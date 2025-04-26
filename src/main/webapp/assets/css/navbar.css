@@ -1,4 +1,3 @@
-
 /* Header */
 header {
     width: 100%;
@@ -87,4 +86,41 @@ header {
 
 .icon:hover {
     transform: scale(1.1);
+}
+
+/* Badge styling */
+.icon-with-badge {
+    position: relative;
+}
+
+.badge {
+    position: absolute;
+    top: -8px;
+    right: -8px;
+    background-color: #ff0000; /* Red background */
+    color: white;
+    font-size: 12px;
+    font-weight: bold;
+    width: 18px;
+    height: 18px;
+    border-radius: 50%; /* Makes it circular */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 2px;
+}
+
+/* Hide badge when count is zero */
+.badge:empty,
+.badge[data-count="0"] {
+    display: none;
+}
+
+/* Specific styles for different badge types if needed */
+.cart-badge {
+    background-color: #ff0000; /* Red for cart */
+}
+
+.favorites-badge {
+    background-color: #ff3366; /* Pink for favorites */
 }

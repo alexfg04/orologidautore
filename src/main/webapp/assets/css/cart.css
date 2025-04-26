@@ -5,9 +5,16 @@ body {
     padding: 0;
 }
 
+.cart-area {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    gap: 8px;
+}
+
 .container {
     max-width: 900px;
-    margin: 40px auto;
+    margin: 40px 8px;
     padding: 20px;
     background-color: #ffffff;
     border-radius: 12px;
@@ -109,9 +116,23 @@ input[type="number"] {
 }
 
 .total {
-    text-align: right;
     font-size: 18px;
-    margin-top: 30px;
-    border-top: 1px solid #ccc;
-    padding-top: 20px;
+}
+
+.button {
+    padding: 10px 20px;
+    background-color: #00695C;
+    color: white;
+    border: none;
+    border-radius: 8px;
+    font-size: 1em;
+    cursor: pointer;
+    transition: background-color 0.3s;
+    width: 100%;
+}
+
+.checkout {
+    width: 300px;
+    height: 200px;
+    text-align: center;
 }

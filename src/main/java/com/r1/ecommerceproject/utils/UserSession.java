@@ -4,7 +4,7 @@ import javax.servlet.http.HttpSession;
 import java.util.HashMap;
 
 public class UserSession {
-    private final String SESSION_CART_ATTRIBUTE = "cart";;
+    private final String SESSION_CART_ATTRIBUTE = "cart";
     private final String SESSION_ADMIN_ATTRIBUTE = "admin";
     private final String SESSION_USER_ID_ATTRIBUTE = "userId";
     private final HttpSession session;
@@ -38,7 +38,7 @@ public class UserSession {
     }
 
     public void logout() {
-        session.invalidate();
+        session.removeAttribute(SESSION_USER_ID_ATTRIBUTE);
     }
 
     public long getUserId() {
@@ -48,4 +48,22 @@ public class UserSession {
     public void setUser(long id) {
         session.setAttribute(SESSION_USER_ID_ATTRIBUTE, id);
     }
+
+    public boolean isAdmin() {
+        return session.getAttribute(SESSION_ADMIN_ATTRIBUTE) != null;
+    }
+
+    public void setAdmin(boolean admin) {
+        session.setAttribute(SESSION_ADMIN_ATTRIBUTE, admin);
+    }
+
+    public void clearCart() {
+        session.removeAttribute(SESSION_CART_ATTRIBUTE);
+    }
+
+    public long getCartSize() {
+        return session.getAttribute(SESSION_CART_ATTRIBUTE) != null ? ((HashMap<Long, Integer>) session.getAttribute(SESSION_CART_ATTRIBUTE)).size() : 0;
+    }
 }
+
+

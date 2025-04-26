@@ -118,6 +118,6 @@
 </div>
 
 <script src="assets/js/login_page.js"></script>
-
+<script src="assets/js/toast.js"></script>
 </body>
 </html>

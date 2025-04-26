@@ -1,5 +1,10 @@
+<%@ page import="com.r1.ecommerceproject.utils.UserSession" %>
 <%@ page contentType="text/html; charset=UTF-8" %>
 <link rel="stylesheet" href="assets/css/navbar.css">
+
+<%
+    UserSession userSession = new UserSession(request.getSession());
+%>
 
 <header>
     <nav class="navbar">
@@ -33,11 +38,15 @@
             <!-- Icona cuore -->
             <a href="favorites.jsp">
                 <i data-lucide="heart" class="icon"></i>
+                <span class="badge favorites-badge" data-count="0"></span>
             </a>
 
             <!-- Icona carrello -->
-            <a href="cart.jsp">
+            <a href="cart.jsp" class="icon-with-badge">
                 <i data-lucide="shopping-cart" class="icon"></i>
+                <span class="badge cart-badge" data-count="<%= userSession.getCartSize()%>">
+                    <%=userSession.getCartSize()%>
+                </span>
             </a>
         </div>
     </nav>
