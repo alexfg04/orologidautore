@@ -25,6 +25,13 @@
 </head>
 <body>
 <%@ include file="navbar.jsp" %>
+<% if (cartItems.isEmpty()) { %>
+<div class="empty-cart">
+    <h2>Il carrello è vuoto</h2>
+    <p>Non hai ancora aggiunto nessun prodotto al carrello.</p>
+</div>
+<% } else { %>
+<% double totalPrice = 0; %>
 <div class="cart-area">
     <div class="container">
         <h2 style="display: flex; justify-content: space-between; align-items: center;">
@@ -32,10 +39,6 @@
         </h2>
 
         <div class="cart">
-            <% if (cartItems.isEmpty()) { %>
-            <p>Il tuo carrello è vuoto.</p>
-            <% } else { %>
-            <% double totalPrice = 0; %>
             <% for (ProductBean p : cartItems.keySet()) { %>
             <div class="cart-item">
                 <img src="<%= request.getContextPath() + "/" + p.getImmagine() %>" alt="Immagine di <%= p.getNome() %>">
@@ -73,10 +76,9 @@
     </div>
     <% } %>
 </div>
-<%@ include file="footer.jsp" %>
-<script src="https://unpkg.com/lucide@latest"></script>
 <script>
     lucide.createIcons();
 </script>
+<%@ include file="footer.jsp" %>
 </body>
 </html>

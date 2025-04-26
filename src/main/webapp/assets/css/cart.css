@@ -6,6 +6,7 @@ body {
 }
 
 .cart-area {
+    height: 500px;
     display: flex;
     flex-direction: row;
     justify-content: center;
@@ -135,4 +136,12 @@ input[type="number"] {
     width: 300px;
     height: 200px;
     text-align: center;
+}
+
+.empty-cart {
+    height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
 }
