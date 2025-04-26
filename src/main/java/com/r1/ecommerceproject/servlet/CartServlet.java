@@ -54,7 +54,7 @@ public class CartServlet extends HttpServlet {
             Long productId = Long.parseLong(pid);
             int quantity = Integer.parseInt(qty);
             if (quantity <= 0) {
-                throw new IllegalArgumentException("Quantity must be positive");
+                throw new IllegalArgumentException("La quantità deve essere maggiore di 0. . .");
             }
 
             // 2. Perform business logic
@@ -62,7 +62,7 @@ public class CartServlet extends HttpServlet {
             userSession.addProductToCart(productId, quantity);
 
             // 3. Store flash message in session
-            httpSession.setAttribute("flashMessage", "Product added to cart successfully.");
+            httpSession.setAttribute("flashMessage", "Prodotto aggiunto al carrello con successo. .");
 
             // 4. Redirect to the product page (PRG)
             String context = request.getContextPath();
@@ -70,7 +70,7 @@ public class CartServlet extends HttpServlet {
 
         } catch (IllegalArgumentException e) {
             // If parsing/validation fails, set an error message and forward back
-            request.setAttribute("errorMessage", "Could not add product: " + e.getMessage());
+            request.setAttribute("errorMessage", e.getMessage());
             // Forward back to the same form or product page
             request.getRequestDispatcher("/product.jsp?id=" + request.getParameter("product_id"))
                     .forward(request, response);

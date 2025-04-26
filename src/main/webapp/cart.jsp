@@ -23,8 +23,70 @@
     <link rel="stylesheet" href="${pageContext.request.contextPath}/assets/css/cart.css">
     <script src="https://unpkg.com/lucide@latest"></script>
 </head>
+<style>
+    /* Quadrato semplice con notifiche */
+    .error-notification {
+        width: 350px;
+        height: 75px;
+        background-color: #009688; /* Colore per errore */
+        color: white;
+        font-size: 16px;
+        font-weight: bold;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        text-align: center;
+        position: absolute; /* Cambiato da fixed a absolute per tenerlo sopra il form */
+        bottom: 24px;
+        right: 12px;
+        box-shadow: 0 3px 8px rgba(0, 0, 0, 0.3);
+        opacity: 0; /* Inizia invisibile */
+        animation: showNotification 0.5s forwards;
+        transition: opacity 0.5s ease;
+        padding: 10px;
+        border-radius: 10px; /* Rende i bordi leggermente arrotondati */
+        z-index: 1000; /* Assicurati che la notifica sia sopra gli altri elementi */
+    }
+
+    /* Animazione di apparizione */
+    @keyframes showNotification {
+        0% {
+            opacity: 0;
+            transform: scale(0.5);
+        }
+        100% {
+            opacity: 1;
+            transform: scale(1);
+        }
+    }
+
+    /* X di chiusura */
+    .error-notification .close {
+        position: absolute;
+        top: 10px;
+        right: 10px;
+        color: #000000;
+        font-size: 20px;
+        cursor: pointer;
+    }
+
+    /* Colori per il tipo di messaggio */
+    .error-notification.danger { background-color: #009688;}
+</style>
 <body>
 <%@ include file="navbar.jsp" %>
+<%
+    String errorMessage = (String) request.getAttribute("errorMessage");
+    if ((errorMessage != null && !errorMessage.isEmpty())) {
+%>
+<div id="errorNotification" class="error-notification danger">
+    <%= errorMessage %>
+    <span class="close">×</span>
+</div>
+<%
+        session.removeAttribute("flashMessage");
+    }
+%>
 <% if (cartItems.isEmpty()) { %>
 <div class="empty-cart">
     <h2>Il carrello è vuoto</h2>

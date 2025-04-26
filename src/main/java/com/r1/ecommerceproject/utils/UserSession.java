@@ -28,11 +28,19 @@ public class UserSession {
         session.setAttribute(SESSION_CART_ATTRIBUTE, cart);
     }
 
+    public void updateProductInCart(Long productId, int quantity) {
+        HashMap<Long, Integer> cart = getCart();
+        if(quantity > 0) {
+            cart.put(productId, quantity);
+        } else {
+            cart.remove(productId);
+        }
+    }
+
     public void removeProductFromCart(Long productId) {
         if (session.getAttribute(SESSION_CART_ATTRIBUTE) != null) {
             HashMap<Long, Integer> cart = getCart();
-            // If the product is in the cart, remove it, otherwise decrease the quantity
-            cart.computeIfPresent(productId, (k, v) -> v - 1 <= 0 ? null : v - 1);
+            cart.remove(productId);
             session.setAttribute(SESSION_CART_ATTRIBUTE, cart);
         }
     }

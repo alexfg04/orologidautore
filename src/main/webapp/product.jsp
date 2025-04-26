@@ -17,7 +17,7 @@
     /* Quadrato semplice con notifiche */
     .error-notification {
         width: 350px;
-        height: 100px;
+        height: 75px;
         background-color: #009688; /* Colore per errore */
         color: white;
         font-size: 16px;
@@ -27,9 +27,8 @@
         align-items: center;
         text-align: center;
         position: absolute; /* Cambiato da fixed a absolute per tenerlo sopra il form */
-        top: 10px; /* Distanza dal top per renderlo visibile sopra il form */
-        left: 50%;
-        transform: translateX(-50%);
+        bottom: 24px;
+        right: 12px;
         box-shadow: 0 3px 8px rgba(0, 0, 0, 0.3);
         opacity: 0; /* Inizia invisibile */
         animation: showNotification 0.5s forwards;
@@ -43,11 +42,11 @@
     @keyframes showNotification {
         0% {
             opacity: 0;
-            transform: translateX(-50%) scale(0.5);
+            transform: scale(0.5);
         }
         100% {
             opacity: 1;
-            transform: translateX(-50%) scale(1);
+            transform: scale(1);
         }
     }
 
