@@ -1,0 +1,126 @@
+/* Header */
+header {
+    width: 100%;
+    background-color: #00695C;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    position: relative;
+    top: 0;
+    z-index: 1000;
+}
+
+/* Navbar */
+.navbar {
+    max-width: 1200px;
+    margin: 0 auto; /* Centra la navbar */
+    padding: 10px 20px;
+    box-sizing: border-box;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 100%;
+}
+
+/* Sinistra: logo */
+.navbar-left {
+    display: flex;           /* abilita flexbox */
+    align-items: center;
+    height: 60px;/* centra verticalmente */
+}
+
+/* Regole per l’immagine del logo */
+.navbar-left img {
+    max-height: 100%;        /* l’immagine non supera l’altezza del contenitore */
+    width: auto;             /* mantiene le proporzioni */
+    display: block;          /* evita spazi bianchi indesiderati */
+}
+
+/* Centro: link */
+.navbar-center a {
+    margin: 0 15px;
+    text-decoration: none;
+    color: #ffffff;
+    font-weight: 500;
+}
+
+.navbar-center a:hover {
+    color: #c8f3ef;
+}
+
+/* Destra: ricerca e icone */
+.navbar-right {
+    display: flex;
+    align-items: center;
+}
+
+.search-form {
+    display: flex;
+    margin-right: 15px;
+}
+
+.search-form input {
+    padding: 6px 10px;
+    border: 1px solid #ccc;
+    border-radius: 4px 0 0 4px;
+}
+
+.search-form button {
+    padding: 3px 8px;
+    border: 1px solid #ccc;
+    border-left: none;
+    background-color: #eee;
+    cursor: pointer;
+    border-radius: 0 4px 4px 0;
+}
+
+/* Icone SVG outline */
+.icon {
+    width: 24px;
+    height: 24px;
+    stroke: #ffffff;
+    stroke-width: 2;
+    fill: none; /* per farla outline */
+    margin-left: 12px;
+    cursor: pointer;
+    transition: transform 0.2s;
+}
+
+.icon:hover {
+    transform: scale(1.1);
+}
+
+/* Badge styling */
+.icon-with-badge {
+    position: relative;
+}
+
+.badge {
+    position: absolute;
+    top: -8px;
+    right: -8px;
+    background-color: #ff0000; /* Red background */
+    color: white;
+    font-size: 12px;
+    font-weight: bold;
+    width: 18px;
+    height: 18px;
+    border-radius: 50%; /* Makes it circular */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 2px;
+}
+
+/* Hide badge when count is zero */
+.badge:empty,
+.badge[data-count="0"] {
+    display: none;
+}
+
+/* Specific styles for different badge types if needed */
+.cart-badge {
+    background-color: #ff0000; /* Red for cart */
+}
+
+.favorites-badge {
+    background-color: #ff3366; /* Pink for favorites */
+}

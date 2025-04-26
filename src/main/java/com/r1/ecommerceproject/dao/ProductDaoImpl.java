@@ -9,6 +9,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.Collection;
+import java.util.HashMap;
 import java.util.LinkedList;
 
 public class ProductDaoImpl implements ProductDao {
@@ -18,36 +19,35 @@ public class ProductDaoImpl implements ProductDao {
     @Override
     public synchronized void doSave(ProductBean product) throws SQLException {
         String insertSQL = "INSERT INTO " + TABLE_NAME +
-                " (materiale, categoria, taglia, marca, prezzo, stato, modello, descrizione , nome)" +
+                " (nome, descrizione, prezzo, modello, marca, categoria, taglia , materiale, image_url)" +
                 "VALUES ( ?, ?, ?,?, ?, ?, ?, ?, ?)";
 
         try (Connection connection = DataSourceConnectionPool.getConnection();
              PreparedStatement preparedStatement = connection.prepareStatement(insertSQL)) {
 
-            preparedStatement.setString(1, product.getMateriale());
-            preparedStatement.setString(2, product.getCategoria());
-            preparedStatement.setString(3, product.getTaglia());
-            preparedStatement.setString(4, product.getMarca());
-            preparedStatement.setDouble(5, product.getPrezzo());
-            preparedStatement.setString(7, product.getModello());
-            preparedStatement.setString(8, product.getDescrizione());
-            preparedStatement.setString(9, product.getNome());
-
+            preparedStatement.setString(1, product.getNome());
+            preparedStatement.setString(2, product.getDescrizione());
+            preparedStatement.setDouble(3, product.getPrezzo());
+            preparedStatement.setString(4, product.getModello());
+            preparedStatement.setString(5, product.getMarca());
+            preparedStatement.setString(6, product.getCategoria());
+            preparedStatement.setString(7, product.getTaglia());
+            preparedStatement.setString(8, product.getMateriale());
+            preparedStatement.setString(9, product.getImmagine());
 
             preparedStatement.executeUpdate();
-            connection.commit();
         }
     }
 
     @Override
-    public synchronized ProductBean doRetrieveByKey(int code) throws SQLException {
-        String selectSQL = "SELECT * FROM " + TABLE_NAME + " WHERE CODE = ?";
+    public synchronized ProductBean doRetrieveById(Long id) throws SQLException {
+        String selectSQL = "SELECT * FROM " + TABLE_NAME + " WHERE codice_prodotto = ?";
         ProductBean bean = null;
 
         try (Connection connection = DataSourceConnectionPool.getConnection();
              PreparedStatement preparedStatement = connection.prepareStatement(selectSQL)) {
 
-            preparedStatement.setInt(1, code);
+            preparedStatement.setLong(1, id);
             try (ResultSet rs = preparedStatement.executeQuery()) {
                 if (rs.next()) {
                     bean = getProductBean(rs);
@@ -70,28 +70,31 @@ public class ProductDaoImpl implements ProductDao {
         bean.setModello(rs.getString("modello"));
         bean.setDescrizione(rs.getString("descrizione"));
         bean.setNome(rs.getString("nome"));
+        bean.setImmagine(rs.getString("image_url"));
         return bean;
     }
 
     @Override
-    public synchronized boolean doDelete(int code) throws SQLException {
+    public synchronized void doDelete(Long id) throws SQLException {
         String deleteSQL = "DELETE FROM " + TABLE_NAME + " WHERE codice_prodotto = ?";
-        int result;
 
         try (Connection connection = DataSourceConnectionPool.getConnection();
              PreparedStatement preparedStatement = connection.prepareStatement(deleteSQL)) {
 
-            preparedStatement.setInt(1, code);
-            result = preparedStatement.executeUpdate();
+            preparedStatement.setLong(1, id);
+            preparedStatement.executeUpdate();
         }
-        return result != 0;
     }
 
     @Override
-    public synchronized Collection<ProductBean> doRetrieveAll(String order) throws SQLException {
+    public synchronized Collection<ProductBean> doRetrieveAll(String orderBy) throws SQLException {
         String selectSQL = "SELECT * FROM " + TABLE_NAME;
-        if (order != null && !order.isBlank()) {
-            selectSQL += " ORDER BY " + order;
+        if (orderBy != null && !orderBy.isBlank()) {
+            if (orderBy.matches("^[a-zA-Z_]+$")) { // Allow only letters and underscores
+                selectSQL += " ORDER BY " + orderBy;
+            } else {
+                throw new IllegalArgumentException("Invalid orderBy parameter");
+            }
         }
 
         Collection<ProductBean> products = new LinkedList<>();
@@ -104,6 +107,22 @@ public class ProductDaoImpl implements ProductDao {
                 //ProductBean bean = new ProductBean();
                 ProductBean bean = getProductBean(rs);
                 products.add(bean);
+            }
+        }
+        return products;
+    }
+
+    @Override
+    public synchronized void doUpdate(ProductBean product) { }
+
+    @Override
+    public HashMap<ProductBean, Integer> doGetCartAsProducts(HashMap<Long, Integer> cart) throws SQLException {
+        HashMap<ProductBean, Integer> products = new HashMap<>();
+
+        for(Long id : cart.keySet()) {
+            ProductBean product = doRetrieveById(id);
+            if (product != null) {
+                products.put(product, cart.get(id));
             }
         }
         return products;

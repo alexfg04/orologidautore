@@ -1,0 +1,115 @@
+/* styles.css */
+
+/* Contenitore del processo */
+.process-container {
+    display: flex;
+    gap: 30px;
+    background-color: #fff;
+    border-radius: 8px;
+
+    width: 100%;
+    justify-content: space-around;
+    margin-bottom: 30px; /* Aggiungi spazio tra il processo e la tabella */
+}
+
+.process-step {
+    display: flex;
+    align-items: center;
+    color: #333;
+    gap: 20px;
+    max-width: 250px;
+}
+
+.step-number {
+    font-size: 1.2em;
+    font-weight: bold;
+    color: #8fbc8f;
+    min-width: 20px;
+    text-align: right;
+}
+
+/* Icone con immagini */
+.step-icon {
+    width: 60px;
+    height: 60px;
+    flex-shrink: 0;
+}
+
+.step-text {
+    font-size: 0.9em;
+    line-height: 1.4;
+}
+
+/* Tabella */
+table {
+    width: 90%; /* Ridotta la larghezza della tabella */
+    margin: 0 auto; /* Centra la tabella */
+    border-collapse: collapse;
+    background-color: #fff;
+
+    border: none; /* Rimuove i bordi */
+}
+
+td {
+    padding: 15px;
+    vertical-align: top;
+}
+
+th {
+    padding: 6px;
+    vertical-align: top;
+}
+th {
+    background-color: transparent;
+    color: #333;
+    font-size: 14pt;
+}
+
+td {
+    background-color: #ffffff;
+}
+
+caption {
+    font-size: 24px;
+    margin-bottom: 10px;
+    color: #00695C;
+}
+
+p {
+    font-size: 13pt;
+    line-height: 1.6;
+}
+
+.column-header {
+    font-family: 'Calibri', sans-serif;
+    font-size: 14pt;
+    font-weight: bold;
+    text-align: center;
+}
+
+.column-content {
+    font-family: 'Calibri', sans-serif;
+    font-size: 13pt;
+    text-align: left;
+    color: #333;
+}
+
+.column-content ul {
+    list-style-type: disc;
+    margin-left: 20px;
+}
+
+/* Bottone CTA */
+.cta-button {
+    background-color: #0066cc;
+    color: white;
+    padding: 10px 20px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    margin-top: 10px;
+}
+
+.second-container {
+    margin: 2rem;
+}

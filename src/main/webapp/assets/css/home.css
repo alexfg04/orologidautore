@@ -1,0 +1,71 @@
+.catalog {
+    display: flex;
+    flex-wrap: wrap; /* Permette alle card di adattarsi al layout */
+    justify-content: center;
+    align-items: center;
+    gap: 1.5rem;
+    max-width: 1000px;  /* Limita la larghezza per la griglia */
+    margin: 2rem auto;   /* Centra la griglia orizzontalmente */
+}
+
+.product-card {
+    background-color: #dce6e6;
+    border-radius: 12px;
+    box-shadow: 0 0 12px rgba(0, 0, 0, 0.08);
+    padding: 30px;
+    display: flex;
+    flex-direction: column;
+    transition: transform 0.2s;
+    overflow: hidden;
+    flex-grow: 1;  /* Permette alla card di crescere per riempire lo spazio disponibile */
+    max-width: 300px;  /* Impostato limite di larghezza per la card */
+    min-width: 250px;  /* Aggiunto un minimo per impedire che le card diventino troppo piccole */
+    box-sizing: border-box;  /* Assicura che padding e bordi non influiscano sulla larghezza */
+}
+
+.product-card img {
+    width: 100%;
+    height: 250px;  /* Aumentato la massima altezza per l'immagine */
+    object-fit: cover;  /* Ingrandisce l'immagine mantenendo le proporzioni */
+    border-radius: 8px;
+    margin-bottom: 1rem;
+}
+
+.product-card h3 {
+    margin-top: 0;
+    color: #ffff;
+    font-size: 16px;  /* Ridotto il font per il titolo */
+}
+
+.product-card p {
+    margin-bottom: 0.5rem;
+    font-size: 12px;  /* Ridotto il font per la descrizione */
+    color: white;  /* Modificato il colore del testo per il contrasto */
+}
+
+.product-card .price {
+    font-weight: bold;
+    color: white;  /* Cambiato colore per il contrasto */
+    margin-top: auto;
+    font-size: 14px;  /* Ridotto il font per il prezzo */
+}
+
+.product-card:hover {
+    transform: translateY(-5px);
+}
+
+.product-card-link {
+    text-decoration: none;
+    color: inherit;
+}
+
+.product-card-link:hover .product-card {
+    box-shadow: 0 0 14px rgba(0, 0, 0, 0.12);
+    transform: translateY(-3px);
+    transition: all 0.2s ease;
+}
+
+a {
+    color: #03ad99;
+    text-decoration: none;
+}

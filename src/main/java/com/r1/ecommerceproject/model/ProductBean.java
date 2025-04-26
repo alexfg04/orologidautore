@@ -1,6 +1,7 @@
 package com.r1.ecommerceproject.model;
 
 import java.io.Serializable;
+import java.util.Objects;
 
 public class ProductBean implements Serializable {
 
@@ -17,29 +18,22 @@ public class ProductBean implements Serializable {
 	String modello;
 	String descrizione;
 	String nome;
+
+	String immagine;
 	
 	public enum Stato{ ATTIVATO, DISATTIVATO}
-
-
-    // Costruttore completo
-    public ProductBean(int codiceProdotto, String materiale, String categoria, String taglia, String marca, double prezzo, String modello, String descrizione, String nome) {
-        this.codiceProdotto = codiceProdotto;
-        this.materiale = materiale;
-        this.categoria = categoria;
-        this.taglia = taglia;
-        this.marca = marca;
-        this.prezzo = prezzo;
-        this.stato = Stato.ATTIVATO;
-        this.modello = modello;
-        this.descrizione = descrizione;
-        this.nome = nome;
-    }
 
     // Costruttore vuoto
     public ProductBean() {
     }
-    
-    
+
+	public String getImmagine() {
+		return immagine;
+	}
+
+	public void setImmagine(String immagine) {
+		this.immagine = immagine;
+	}
     
     //metodi setter e getter
     public int getCodiceProdotto() {
@@ -138,4 +132,15 @@ public class ProductBean implements Serializable {
                 '}';
     }
 
+	@Override
+	public boolean equals(Object o) {
+		if (o == null || getClass() != o.getClass()) return false;
+		ProductBean that = (ProductBean) o;
+		return getCodiceProdotto() == that.getCodiceProdotto() && Double.compare(getPrezzo(), that.getPrezzo()) == 0 && Objects.equals(getMateriale(), that.getMateriale()) && Objects.equals(getCategoria(), that.getCategoria()) && Objects.equals(getTaglia(), that.getTaglia()) && Objects.equals(getMarca(), that.getMarca()) && getStato() == that.getStato() && Objects.equals(getModello(), that.getModello()) && Objects.equals(getDescrizione(), that.getDescrizione()) && Objects.equals(getNome(), that.getNome()) && Objects.equals(getImmagine(), that.getImmagine());
+	}
+
+	@Override
+	public int hashCode() {
+		return Objects.hash(getCodiceProdotto(), getMateriale(), getCategoria(), getTaglia(), getMarca(), getPrezzo(), getStato(), getModello(), getDescrizione(), getNome(), getImmagine());
+	}
 }
