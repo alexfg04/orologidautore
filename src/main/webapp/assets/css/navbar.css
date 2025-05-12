@@ -97,12 +97,12 @@ header {
     position: absolute;
     top: -8px;
     right: -8px;
-    background-color: #ff0000; /* Red background */
-    color: white;
+    background-color: #ffffff; /* Red background */
+    color: black;
     font-size: 12px;
     font-weight: bold;
-    width: 18px;
-    height: 18px;
+    width: 16px;
+    height: 16px;
     border-radius: 50%; /* Makes it circular */
     display: flex;
     justify-content: center;
@@ -118,7 +118,7 @@ header {
 
 /* Specific styles for different badge types if needed */
 .cart-badge {
-    background-color: #ff0000; /* Red for cart */
+    background-color: #ffffff; /* Red for cart */
 }
 
 .favorites-badge {

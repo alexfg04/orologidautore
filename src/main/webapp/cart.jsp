@@ -94,8 +94,8 @@
 </div>
 <% } else { %>
 <% double totalPrice = 0; %>
-<div class="cart-area">
-    <div class="container">
+<div class="cart-container">
+    <div class="container product-container">
         <h2 style="display: flex; justify-content: space-between; align-items: center;">
             Carrello
         </h2>
