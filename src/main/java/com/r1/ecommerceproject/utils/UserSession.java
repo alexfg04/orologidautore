@@ -85,7 +85,7 @@ public class UserSession {
         double total = 0.0;
 
         if (session.getAttribute(SESSION_CART_ATTRIBUTE) != null) {
-            HashMap<Long, Integer> cart = (HashMap<Long, Integer>) session.getAttribute(SESSION_CART_ATTRIBUTE);
+            HashMap<Long, Integer> cart = getCart();
             for (Long productId : cart.keySet()) {
                 try {
                     total += model.doRetrieveById(productId).getPrezzo() * cart.get(productId);
