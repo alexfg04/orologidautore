@@ -18,6 +18,7 @@ header {
     justify-content: space-between;
     align-items: center;
     width: 100%;
+    overflow: visible;
 }
 
 /* Sinistra: logo */
@@ -50,6 +51,7 @@ header {
 .navbar-right {
     display: flex;
     align-items: center;
+    overflow: visible;
 }
 
 .search-form {
@@ -123,4 +125,54 @@ header {
 
 .favorites-badge {
     background-color: #ff3366; /* Pink for favorites */
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+.user-dropdown {
+    position: absolute;
+    display: inline-block;
+}
+
+.user-dropdown .dropdown-menu {
+    display: block;                 /* nascosto di default */
+    position: relative;            /* rispetto a .user-dropdown */
+    top: 100%;                     /* subito sotto l’icona */
+    right: 0;                      /* allineato al bordo destro */
+    background: #ffffff;           /* bianco neutro */
+    border: 1px solid #ccc;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+    border-radius: 4px;
+    margin-top: 5px;
+    list-style: none;
+    padding: 5px 0;
+    min-width: 140px;
+    z-index: 2000;                 /* sempre in primo piano */
+}
+
+.user-dropdown .dropdown-menu li a {
+    display: block;
+    padding: 6px 12px;
+    text-decoration: none;
+    color: #333;
+    white-space: nowrap;           /* evita che il testo vada a capo */
+}
+
+.user-dropdown .dropdown-menu li a:hover {
+    background: #f5f5f5;
+}
+
+.user-dropdown:hover .dropdown-menu {
+    display: block;                /* mostralo al passaggio del mouse */
 }

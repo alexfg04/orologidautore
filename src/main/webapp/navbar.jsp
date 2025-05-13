@@ -30,10 +30,16 @@
                 </button>
             </form>
 
-            <!-- Icona utente -->
-            <a href="login.jsp">
-                <i data-lucide="user" class="icon"></i>
-            </a>
+            <!-- Icona registrazione/utente con dropdown -->
+            <div class="user-dropdown">
+                <a href="login.jsp" class="user-icon">
+                    <i data-lucide="user"></i>
+                </a>
+                <ul class="dropdown-menu">
+                    <li><a href="orders.jsp">I miei ordini</a></li>
+                    <li><a href="account.jsp">Account</a></li>
+                </ul>
+            </div>
 
             <!-- Icona cuore -->
             <a href="favorites.jsp">
