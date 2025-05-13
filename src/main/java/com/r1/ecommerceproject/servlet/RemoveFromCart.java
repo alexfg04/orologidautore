@@ -16,6 +16,10 @@ public class RemoveFromCart extends HttpServlet {
         Long id = Long.parseLong(request.getParameter("productId"));
         UserSession userSession = new UserSession(request.getSession());
         userSession.removeProductFromCart(id);
-        response.sendRedirect(request.getContextPath() + "/cart");
+        // return json response with cart size
+        int cartSize = userSession.getCart().size();
+        response.setContentType("application/json");
+        response.getWriter().write("{\"success\": true, \"itemCount\": " + cartSize + ", \"total\": " + userSession.getCartTotal() + "}\n");
+        response.getWriter().flush();
     }
 }
