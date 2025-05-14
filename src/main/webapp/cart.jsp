@@ -21,6 +21,7 @@
 <head>
     <title>Carrello</title>
     <link rel="stylesheet" href="${pageContext.request.contextPath}/assets/css/cart.css">
+    <link rel="stylesheet" href="${pageContext.request.contextPath}/assets/css/footer.css">
     <script src="https://unpkg.com/lucide@latest"></script>
 </head>
 <body>

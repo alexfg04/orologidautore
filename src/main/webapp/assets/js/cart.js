@@ -33,7 +33,7 @@ document.addEventListener('DOMContentLoaded', () => {
             if (xhr.status === 200) {
                 try {
                     resolve(JSON.parse(xhr.responseText));
-                } catch (e) {s
+                } catch (e) {
                     reject(new Error('Parsing error'));
                 }
             } else {
@@ -93,9 +93,9 @@ document.addEventListener('DOMContentLoaded', () => {
                     const emptyCart = document.createElement('div');
                     emptyCart.className = 'empty-cart';
                     emptyCart.innerHTML = `
-            <h2>Il carrello è vuoto</h2>
-            <p>Non hai ancora aggiunto nessun prodotto al carrello.</p>
-          `;
+                        <h2>Il carrello è vuoto</h2>
+                        <p>Non hai ancora aggiunto nessun prodotto al carrello.</p>
+                    `;
                     cartContainer.replaceWith(emptyCart);
                 }
                 showNotification('Prodotto rimosso dal carrello');

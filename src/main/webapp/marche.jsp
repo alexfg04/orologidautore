@@ -1,13 +1,4 @@
-<%@ page contentType="text/html;charset=UTF-8" language="java" %>
-<!DOCTYPE html>
-<html lang="it">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Marche Più Cercate e Autenticità Garantita</title>
-  <link rel="stylesheet" href="<%= request.getContextPath() %>/assets/css/marche.css">
-</head>
-<body>
+<%@ page contentType="text/html; charset=UTF-8" language="java" %>
 
 <div class="most-searched-brands">
   <h2>Marche più cercate</h2>
@@ -50,7 +41,3 @@
     </div>
   </div>
 </section>
-
-
-</body>
-</html>
