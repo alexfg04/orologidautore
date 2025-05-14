@@ -81,6 +81,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
         const { productId } = btn.dataset;
         const cartItem = document.getElementById(`item_${productId}`);
+        const badge = document.querySelector('.cart-badge');
         if (!confirm('Sei sicuro di voler rimuovere questo prodotto dal carrello?')) return;
 
         try {
@@ -88,6 +89,7 @@ document.addEventListener('DOMContentLoaded', () => {
             if (data.success) {
                 fadeOutAndRemove(cartItem, 300);
                 document.querySelector('.total p strong').textContent = `€ ${parseFloat(data.total).toFixed(2)}`;
+                console.log(data.itemCount);
                 if (data.itemCount === 0) {
                     const cartContainer = document.querySelector('.cart-container');
                     const emptyCart = document.createElement('div');
@@ -97,6 +99,9 @@ document.addEventListener('DOMContentLoaded', () => {
                         <p>Non hai ancora aggiunto nessun prodotto al carrello.</p>
                     `;
                     cartContainer.replaceWith(emptyCart);
+                    badge.remove();
+                } else {
+                    badge.textContent = data.itemCount;
                 }
                 showNotification('Prodotto rimosso dal carrello');
             } else {

@@ -8,7 +8,6 @@
     <div class="grid-item">
         <img src="assets/img/38-c67mnrnbyxjzw8ctbeg3zyey-Original.jpg" alt="Immagine 2">
         <p>Orologi automatici</p>
-        <p>Orologi automatici</p>
     </div>
     <div class="grid-item">
         <img src="assets/img/44-cx58ijnzqnx6bmoutxvgzpvc-Original.jpg" alt="Immagine 3">
