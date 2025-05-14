@@ -1,5 +1,8 @@
 package com.r1.ecommerceproject.utils;
 
+import com.r1.ecommerceproject.dao.ProductDao;
+import com.r1.ecommerceproject.dao.ProductDaoImpl;
+
 import javax.servlet.http.HttpSession;
 import java.util.HashMap;
 
@@ -7,6 +10,7 @@ public class UserSession {
     private final String SESSION_CART_ATTRIBUTE = "cart";
     private final String SESSION_ADMIN_ATTRIBUTE = "admin";
     private final String SESSION_USER_ID_ATTRIBUTE = "userId";
+    private final String SESSION_CART_TOTAL_ATTRIBUTE = "cartTotal";
     private final HttpSession session;
 
     public UserSession(HttpSession session) {
@@ -26,15 +30,17 @@ public class UserSession {
         // If the product is already in the cart, update the quantity
         cart.merge(productId, quantity, Integer::sum);
         session.setAttribute(SESSION_CART_ATTRIBUTE, cart);
+        computeTotal();
     }
 
     public void updateProductInCart(Long productId, int quantity) {
         HashMap<Long, Integer> cart = getCart();
-        if(quantity > 0) {
+        if (quantity > 0) {
             cart.put(productId, quantity);
         } else {
             cart.remove(productId);
         }
+        computeTotal();
     }
 
     public void removeProductFromCart(Long productId) {
@@ -43,6 +49,7 @@ public class UserSession {
             cart.remove(productId);
             session.setAttribute(SESSION_CART_ATTRIBUTE, cart);
         }
+        computeTotal();
     }
 
     public void logout() {
@@ -71,6 +78,31 @@ public class UserSession {
 
     public long getCartSize() {
         return session.getAttribute(SESSION_CART_ATTRIBUTE) != null ? ((HashMap<Long, Integer>) session.getAttribute(SESSION_CART_ATTRIBUTE)).size() : 0;
+    }
+
+    public void computeTotal() {
+        ProductDao model = new ProductDaoImpl();
+        double total = 0.0;
+
+        if (session.getAttribute(SESSION_CART_ATTRIBUTE) != null) {
+            HashMap<Long, Integer> cart = getCart();
+            for (Long productId : cart.keySet()) {
+                try {
+                    total += model.doRetrieveById(productId).getPrezzo() * cart.get(productId);
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+        }
+        this.setCartTotal(total);
+    }
+
+    public void setCartTotal(double total) {
+        session.setAttribute(SESSION_CART_TOTAL_ATTRIBUTE, total);
+    }
+
+    public double getCartTotal() {
+        return session.getAttribute(SESSION_CART_TOTAL_ATTRIBUTE) != null ? (double) session.getAttribute(SESSION_CART_TOTAL_ATTRIBUTE) : 0;
     }
 }
 

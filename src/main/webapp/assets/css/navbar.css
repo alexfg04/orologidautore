@@ -67,9 +67,8 @@ header {
 
 .search-form button {
     padding: 3px 8px;
-    border: 1px solid #ccc;
-    border-left: none;
-    background-color: #eee;
+    border: none;
+    background-color: #ffffff;
     cursor: pointer;
     border-radius: 0 4px 4px 0;
 }

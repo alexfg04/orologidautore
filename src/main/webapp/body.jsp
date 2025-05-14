@@ -1,11 +1,5 @@
-<%@ page contentType="text/html;charset=UTF-8" language="java" %>
-<!DOCTYPE html>
-<html>
-<head>
-    <link rel="stylesheet" href="assets/css/body.css">
-    <title>Galleria Immagini</title>
-</head>
-<body>
+<%@ page contentType="text/html; charset=UTF-8" language="java" %>
+
 <section class="grid-container">
     <div class="grid-item">
         <img src="assets/img/16-cthhlttt0m2wm1wwapd6xuc4-Original.jpg" alt="Immagine 1">
@@ -40,5 +34,3 @@
         <p>Orologi da donna</p>
     </div>
 </section>
-</body>
-</html>

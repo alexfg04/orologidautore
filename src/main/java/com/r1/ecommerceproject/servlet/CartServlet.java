@@ -19,10 +19,6 @@ import java.util.HashMap;
 public class CartServlet extends HttpServlet {
     private final ProductDao model = new ProductDaoImpl();
 
-    public CartServlet() {
-        super();
-    }
-
     // Implement methods to handle cart operations (add, remove, view, etc.)
     // For example:
     // - doGet: to view the cart
@@ -48,6 +44,7 @@ public class CartServlet extends HttpServlet {
             // 1. Parse & validate parameters
             String pid = request.getParameter("product_id");
             String qty = request.getParameter("quantity");
+
             if (pid == null || qty == null) {
                 throw new IllegalArgumentException("Missing product_id or quantity");
             }

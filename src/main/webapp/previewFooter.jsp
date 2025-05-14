@@ -1,14 +1,4 @@
 <%@ page contentType="text/html; charset=UTF-8" language="java" %>
-<!DOCTYPE html>
-<html lang="it">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Come Acquistare in Sicurezza</title>
-    <!-- Inclusione del file CSS -->
-    <link rel="stylesheet" href="assets/css/PreviewFooter.css">
-</head>
-<body>
 
 <!-- Sezione processo -->
 <div class="process-container">
@@ -84,5 +74,3 @@
         </tr>
     </table>
 </div>
-</body>
-</html>

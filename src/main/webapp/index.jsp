@@ -16,12 +16,16 @@
     <title>Catalogo Prodotti</title>
     <link rel="stylesheet" href="${pageContext.request.contextPath}/assets/css/home.css">
     <link rel="stylesheet" href="${pageContext.request.contextPath}/assets/css/header.css">
+    <link rel="stylesheet" href="${pageContext.request.contextPath}/assets/css/body.css">
+    <link rel="stylesheet" href="${pageContext.request.contextPath}/assets/css/marche.css">
+    <link rel="stylesheet" href="${pageContext.request.contextPath}/assets/css/PreviewFooter.css">
+    <link rel="stylesheet" href="${pageContext.request.contextPath}/assets/css/footer.css">
 </head>
 <body>
 <%@ include file="navbar.jsp" %>
 
 <div class="container">
-    <img src="assets/img/omar-al-ghosson-N53-pozDwVE-unsplash%20(2).jpg" alt="Immagine" class="image">
+    <img src="assets/img/header_image.jpg" alt="Immagine" class="image">
     <div class="text-overlay">Compra un orologio di qualità!</div>
     <a href="FAQs.jsp"><button class="button">Aquista ora ➟</button></a>
 </div>
@@ -51,8 +55,8 @@
 <script>
     lucide.createIcons();
 </script>
-<jsp:include page="marche.jsp"/>
-<jsp:include page="body.jsp" />
+<%@ include file="marche.jsp" %>
+<%@ include file="body.jsp" %>
 <%@ include file="previewFooter.jsp" %>
 <%@ include file="footer.jsp" %>
 </body>

@@ -31,17 +31,17 @@ public class UpdateQuantityServlet extends HttpServlet  {
             // 2. Perform business logic
             UserSession userSession = new UserSession(httpSession);
             userSession.updateProductInCart(productId, quantity);
+            double total = userSession.getCartTotal();
 
-            // 4. Redirect to the product page (PRG)
-            String context = request.getContextPath();
-            response.sendRedirect(context + "/cart");
+            // return json
+            response.setContentType("application/json");
+            response.getWriter().write("{\"success\": \"true\", \"total\": " + total + "}");
+            response.getWriter().flush();
 
         } catch (IllegalArgumentException e) {
-            // If parsing/validation fails, set an error message and forward back
-            request.setAttribute("errorMessage", e.getMessage());
-            // Forward back to the same form or product page
-            request.getRequestDispatcher("/cart")
-                    .forward(request, response);
+            response.setContentType("application/json");
+            response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
+            response.getWriter().write("{\"status\": \"error\", \"message\": \"" + e.getMessage() + "\"}");
         }
     }
 }
