@@ -2,9 +2,11 @@ package com.r1.ecommerceproject.dao;
 
 import com.r1.ecommerceproject.model.AddressBean;
 import com.r1.ecommerceproject.model.PhoneNumberBean;
+import com.r1.ecommerceproject.model.ProductBean;
 import com.r1.ecommerceproject.model.UserBean;
 
 import java.sql.SQLException;
+import java.util.Collection;
 
 public interface UserDao {
     public boolean doSave(UserBean user)throws SQLException;

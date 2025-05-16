@@ -113,6 +113,11 @@
                 </div>
                 <button type="submit" class="add-to-cart-button">Aggiungi al Carrello</button>
             </form>
+
+            <form action="<%= request.getContextPath() %>/favorite" method="post" class="product-form">
+                <input type="hidden" name="product_id" value="<%= product.getCodiceProdotto() %>">
+                <button type="submit" class="add-to-favorites-button">♡ Aggiungi ai Preferiti</button>
+            </form>
         </div>
     </div>
 </div>

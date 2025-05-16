@@ -107,3 +107,50 @@ a {
 .add-to-cart-button:hover {
     background-color: #00796B;
 }
+/* MODIFICA: bottone "Aggiungi ai Preferiti" */
+.add-to-favorites-button {
+    padding: 10px 20px;
+    font-size: 1rem;
+    font-weight: bold;
+    background-color: white;        /* Colore di sfondo bianco */
+    color: #333;                    /* Testo nero */
+    border: 2px solid #ccc;         /* Bordo visibile */
+    border-radius: 6px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;                    /* Spazio tra cuore e testo */
+    transition: all 0.3s ease;
+    margin-top: 0.5rem;             /* Spazio sotto al carrello */
+    width: 100%;
+}
+
+/* MODIFICA: hover del bottone */
+.add-to-favorites-button:hover {
+    background-color: #f0f0f0;
+    border-color: #999;
+}
+
+/* MODIFICA: stile per il cuore vuoto */
+.add-to-favorites-button .heart-icon {
+    font-size: 1.2rem;
+    color: #e91e63; /* colore rosa per coerenza visiva */
+}
+
+/* MODIFICA: stile per il cuore PIENO (quando già nei preferiti) */
+.add-to-favorites-button.favorited {
+    background-color: #ffe4ec;
+    border-color: #e91e63;
+    color: #e91e63;
+}
+
+/* MODIFICA: cuore pieno in stato attivo */
+.add-to-favorites-button.favorited .heart-icon::before {
+    content: '❤️'; /* cuore pieno */
+}
+
+/* MODIFICA: cuore vuoto in stato normale */
+.add-to-favorites-button .heart-icon::before {
+    content: '♡'; /* cuore vuoto */
+}

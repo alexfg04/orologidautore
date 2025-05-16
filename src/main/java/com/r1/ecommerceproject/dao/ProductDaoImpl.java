@@ -15,6 +15,7 @@ import java.util.LinkedList;
 public class ProductDaoImpl implements ProductDao {
 
     private static final String TABLE_NAME = "Prodotto";
+    private static final String TABLE_NAME2= "Preferiti";
 
     @Override
     public synchronized void doSave(ProductBean product) throws SQLException {
@@ -126,5 +127,84 @@ public class ProductDaoImpl implements ProductDao {
             }
         }
         return products;
+    }
+
+    @Override
+    public synchronized Collection<ProductBean> doRetrieveAllPreferiti(String orderBy, long Id_Utente) throws SQLException {
+        String selectSQL =
+                "SELECT p.* " +
+                        "  FROM " + TABLE_NAME2 + " f " +
+                        "  JOIN " + TABLE_NAME  + " p " +
+                        "    ON f.codice_prodotto = p.codice_prodotto " +
+                        " WHERE f.Id_Utente = ?";
+
+
+        if (orderBy != null && !orderBy.isBlank()) {
+            if (orderBy.matches("^[a-zA-Z_]+$")) { // Allow only letters and underscores
+                selectSQL += " ORDER BY " + orderBy;
+            } else {
+                throw new IllegalArgumentException("Invalid orderBy parameter");
+            }
+        }
+
+        Collection<ProductBean> products = new LinkedList<>();
+
+        try (Connection connection = DataSourceConnectionPool.getConnection();
+             PreparedStatement preparedStatement = connection.prepareStatement(selectSQL)) {
+
+            preparedStatement.setLong(1, Id_Utente);
+
+            try (ResultSet rs = preparedStatement.executeQuery()) {
+                while (rs.next()) {
+                    products.add(getProductBean(rs));
+                }
+            }
+        }
+        return products;
+    }
+
+    //controlla se il prodotto si trova nei preferiti
+    @Override
+    public boolean isFavorite(long userId, long productId) throws SQLException{
+        String selectSQL="SELECT 1 FROM "+TABLE_NAME2+" WHERE codice_prodotto = ? AND id_utente = ?";
+
+        try (Connection connection = DataSourceConnectionPool.getConnection();
+             PreparedStatement preparedStatement = connection.prepareStatement(selectSQL)) {
+
+            preparedStatement.setLong(1, productId);
+            preparedStatement.setLong(2, userId);
+            try(ResultSet rs=preparedStatement.executeQuery()){
+                return rs.next();
+            }
+        }
+    }
+
+
+    //aggiunge il prodotto ai preferiti
+    @Override
+    public boolean addFavorite(long userId, long productId) throws SQLException{
+        String insertSQL="INSERT INTO "+TABLE_NAME2+" (id_utente, codice_prodotto) VALUES(?,?)";
+
+        try (Connection connection = DataSourceConnectionPool.getConnection();
+        PreparedStatement preparedStatement = connection.prepareStatement(insertSQL)) {
+            preparedStatement.setLong(1, userId);
+            preparedStatement.setLong(2, productId);
+
+            return preparedStatement.executeUpdate()>0;
+        }
+    }
+
+    //rimuove il prodotto dai preferiti
+    @Override
+    public boolean removeFavorite(long userId, long productId) throws SQLException{
+
+        String deleteSQL ="DELETE FROM " + TABLE_NAME2 +
+                        " WHERE codice_prodotto = ? AND id_utente = ?";
+        try (Connection connection = DataSourceConnectionPool.getConnection();
+        PreparedStatement preparedStatement = connection.prepareStatement(deleteSQL)) {
+            preparedStatement.setLong(1, productId);
+            preparedStatement.setLong(2, userId);
+            return preparedStatement.executeUpdate()>0;
+        }
     }
 }
