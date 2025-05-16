@@ -4,6 +4,11 @@
 
 <%
     UserSession userSession = new UserSession(request.getSession());
+    String firstName = userSession.getFirstName();  // modifica: recupero nome
+    boolean loggedIn = (firstName != null);
+
+    String loginUrl = request.getContextPath() + "/login.jsp";
+    String href      = loggedIn ? "#" : loginUrl;
 %>
 
 <header>
@@ -30,11 +35,19 @@
                 </button>
             </form>
 
+
+
             <!-- Icona registrazione/utente con dropdown -->
-            <div class="user-dropdown">
-                <a href="login.jsp" class="user-icon">
+            <div class="user-dropdown<% if(loggedIn){ %> logged-in<% } %>">
+                <%if(!loggedIn) { %>
+                <a href="<%= href %>" class="user-icon">
                     <i data-lucide="user"></i>
                 </a>
+                <%} %>
+                <% if (loggedIn) { %>
+                <!-- modifica: visualizzo nome utente sotto icona -->
+                <span class="user-name"><%= firstName%> </span>
+                <% } %>
                 <ul class="dropdown-menu">
                     <li><a href="orders.jsp">I miei ordini</a></li>
                     <li><a href="account.jsp">Account</a></li>

@@ -47,6 +47,7 @@ public class SigninServlet extends HttpServlet {
             return;
         }
         userSession.setUser(user.getId());
+        userSession.setFirstName(user.getNome());
         response.sendRedirect(request.getContextPath() + "/catalog");
     }
 }
