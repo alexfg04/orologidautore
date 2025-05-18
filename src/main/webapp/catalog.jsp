@@ -78,7 +78,7 @@
                     <span>€0</span>
                     <span>€1000</span>
                 </div>
-                <input type="hidden" name="sort" id="sort-input" value="${param.sort}">
+                <input type="hidden" name="sort" id="sort-input" value="${param.sort}" ${ empty param.sort ? 'disabled' : ''} >
             </div>
 
             <div class="filter-group">
@@ -190,12 +190,19 @@
     window.addEventListener('load', aggiorna);
 
     r.addEventListener('change', function () {
+        if (r.value === '0') {
+            // Disabilita l'input così non viene inviato nel form
+            r.disabled = true;
+        }
         filterForm.submit();
     })
 
     // Aggiungi event listener a tutti i checkbox per invio automatico
     document.querySelectorAll('input[type="checkbox"]').forEach(checkbox => {
         checkbox.addEventListener('change', function () {
+            if(r.value === '0') {
+                r.disabled = true;
+            }
             filterForm.submit();
         });
     });
