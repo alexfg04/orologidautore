@@ -48,7 +48,7 @@
                 </div>
                 <div class="col-div-6">
                     <div class="profile">
-                        <img src="${pageContext.request.contextPath}/admin/img/711218111_h.png" class="pro-img" alt="Profile Image"/>
+                        <img src="${pageContext.request.contextPath}/admin/img/ImgAdmin.png" class="pro-img" alt="Profile Image"/>
                         <p>${UtenteLoggato}&nbsp;<i class="fa fa-ellipsis-v dots"></i></p>
                         <div class="profile-div" style="display:none;">
                             <p><i class="fa fa-user"></i>&nbsp;&nbsp;Profile</p>
