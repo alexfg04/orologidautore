@@ -53,6 +53,7 @@ public class SigninServlet extends HttpServlet {
         // Salvo id e ruolo in sessione
         session.setAttribute("userId", user.getId());
         session.setAttribute("userRole", user.getTipologia());
+        session.setAttribute("UtenteLoggato", user.getNome() + " " + user.getCognome() + "");
 
         if (user.getTipologia() == UserBean.Role.ADMIN) {
             response.sendRedirect(request.getContextPath() + "/admin/dashboard.jsp");

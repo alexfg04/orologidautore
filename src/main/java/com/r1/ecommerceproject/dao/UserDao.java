@@ -5,6 +5,7 @@ import com.r1.ecommerceproject.model.PhoneNumberBean;
 import com.r1.ecommerceproject.model.UserBean;
 
 import java.sql.SQLException;
+import java.util.List;
 
 public interface UserDao {
     public boolean doSave(UserBean user)throws SQLException;
@@ -12,4 +13,6 @@ public interface UserDao {
     public boolean addPhoneNumber(long idUtente, PhoneNumberBean telefono)throws SQLException;
     public boolean userExist(String email)throws SQLException;
     public UserBean doRetrieveByEmail(String email) throws SQLException;
+    List<UserBean> getAllUsers() throws SQLException;
+
 }

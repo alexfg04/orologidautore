@@ -6,6 +6,8 @@ import com.r1.ecommerceproject.model.UserBean;
 import com.r1.ecommerceproject.utils.DataSourceConnectionPool;
 
 import java.sql.*;
+import java.util.ArrayList;
+import java.util.List;
 
 public class UserDaoImpl implements UserDao {
     private static final String TABLE_NAME="Utente";
@@ -155,4 +157,28 @@ public class UserDaoImpl implements UserDao {
         }
         return user;
     }
+
+    @Override
+    public List<UserBean> getAllUsers() throws SQLException {
+        List<UserBean> users = new ArrayList<>();
+        String query = "SELECT * FROM " + TABLE_NAME;
+
+        try (Connection connection = DataSourceConnectionPool.getConnection();
+             PreparedStatement preparedStatement = connection.prepareStatement(query);
+             ResultSet rs = preparedStatement.executeQuery()) {
+
+            while (rs.next()) {
+                UserBean user = new UserBean();
+                user.setNome(rs.getString("nome"));
+                user.setCognome(rs.getString("cognome"));
+                user.setEmail(rs.getString("email"));
+                user.setPassword(rs.getString("password")); // attenzione: di solito non si manda la password alla vista
+                user.setTipologia(UserBean.Role.valueOf(rs.getString("tipologia")));
+                // eventualmente aggiungi altri campi come id o dataDiNascita se li hai
+                users.add(user);
+            }
+        }
+        return users;
+    }
+
 }
