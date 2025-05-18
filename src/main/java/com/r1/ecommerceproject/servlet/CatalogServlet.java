@@ -3,6 +3,7 @@ package com.r1.ecommerceproject.servlet;
 import com.r1.ecommerceproject.dao.ProductDao;
 import com.r1.ecommerceproject.dao.ProductDaoImpl;
 import com.r1.ecommerceproject.model.ProductBean;
+import com.r1.ecommerceproject.utils.ProductFilter;
 
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
@@ -12,28 +13,78 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.sql.SQLException;
-import java.util.List;
+import java.util.Collection;
 
 @WebServlet("/catalog")
 public class CatalogServlet extends HttpServlet {
     private static final long serialVersionUID = 1L;
-    private final ProductDao model = new ProductDaoImpl();
+    private static final ProductDao model = new ProductDaoImpl();
+    private static final int PAGE_SIZE = 12;
 
-    public CatalogServlet() {
-        super();
-    }
+    public void doGet(HttpServletRequest req, HttpServletResponse res) throws ServletException, IOException {
+        // 1. Leggi parametri
+        String[] types = req.getParameterValues("tipo");
+        String[] colors = req.getParameterValues("colore");
+        String[] sizes = req.getParameterValues("taglia");
+        String priceParam = req.getParameter("prezzo");
+        String sort = req.getParameter("sort");
+        String pageParam = req.getParameter("page");
 
-    public void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        List<ProductBean> products;
+        int page;
+        if(pageParam == null) {
+            page = 1;
+        } else {
+            page = parseIntOr(req.getParameter("page"), 1);
+        }
+
+        ProductFilter filter = new ProductFilter();
+
+        if (types != null) {
+            filter.setTypes(types);
+        }
+        if (colors != null) {
+            filter.setColors(colors);
+        }
+        if (sizes != null) {
+            filter.setSizes(sizes);
+        }
+        if (priceParam != null && !priceParam.isEmpty()) {
+            double maxPrice = Double.parseDouble(priceParam);
+            if(maxPrice > 0) {
+                filter.setPriceMax(maxPrice);
+            }
+        }
+        if (sort != null && !sort.trim().isEmpty()) {
+            filter.setOrderBy(sort);
+        }
+
         try {
-            products = (List<ProductBean>) model.doRetrieveAll(null);
+             Collection<ProductBean>products = model.doRetrievePageableProducts(page, PAGE_SIZE, filter);
+             int prCount = model.doCountProducts(filter);
+             int totalPages = prCount / PAGE_SIZE + (prCount % PAGE_SIZE == 0 ? 0 : 1);
+
+            System.out.println("Debug - Products retrieved: " + (products != null ? products.size() : "null"));
+            System.out.println("Debug - Total product count: " + prCount);
+            System.out.println("Debug - Total pages: " + totalPages);
+            System.out.println("Debug - Page: " + page);
+
+            // set attributes
+            req.setAttribute("totalPages", totalPages);
+            req.setAttribute("products", products);
         } catch (SQLException e) {
-            response.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR, "Error retrieving products: " + e.getMessage());
+            res.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR, "Error retrieving products" + e.getMessage() );
             return;
         }
 
-        request.setAttribute("products", products);
-        RequestDispatcher dispatcher = request.getRequestDispatcher("/index.jsp");
-        dispatcher.forward(request, response);
+        req.getRequestDispatcher("/catalog.jsp")
+                .forward(req, res);
+    }
+
+    private int parseIntOr(String s, int def) {
+        try {
+            return Integer.parseInt(s);
+        } catch (Exception e) {
+            return def;
+        }
     }
 }

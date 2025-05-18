@@ -3,18 +3,22 @@ package com.r1.ecommerceproject.dao;
 import com.r1.ecommerceproject.utils.DataSourceConnectionPool;
 import com.r1.ecommerceproject.model.ProductBean;
 import com.r1.ecommerceproject.model.ProductBean.Stato;
+import com.r1.ecommerceproject.utils.ProductFilter;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.Collection;
-import java.util.HashMap;
-import java.util.LinkedList;
+import java.util.*;
 
 public class ProductDaoImpl implements ProductDao {
 
     private static final String TABLE_NAME = "Prodotto";
+
+    private static final List<String> ALLOWED_ORDER_COLUMNS = Arrays.asList(
+            "codice_prodotto", "nome", "prezzo", "categoria", "marca"
+            // Aggiungere altre colonne consentite per l'ordinamento
+    );
 
     @Override
     public synchronized void doSave(ProductBean product) throws SQLException {
@@ -89,14 +93,17 @@ public class ProductDaoImpl implements ProductDao {
     @Override
     public synchronized Collection<ProductBean> doRetrieveAll(String orderBy) throws SQLException {
         String selectSQL = "SELECT * FROM " + TABLE_NAME;
-        if (orderBy != null && !orderBy.isBlank()) {
-            if (orderBy.matches("^[a-zA-Z_]+$")) { // Allow only letters and underscores
-                selectSQL += " ORDER BY " + orderBy;
+        if (orderBy != null && !orderBy.trim().isEmpty()) {
+            String[] parts = orderBy.trim().split("\\s+");
+            String column = parts[0].toLowerCase();
+            String direction = (parts.length > 1 && "DESC".equalsIgnoreCase(parts[1])) ? "DESC" : "ASC";
+
+            if (ALLOWED_ORDER_COLUMNS.contains(column)) {
+                selectSQL += " ORDER BY " + column + " " + direction;
             } else {
-                throw new IllegalArgumentException("Invalid orderBy parameter");
+                throw new IllegalArgumentException("Parametro orderBy non valido: " + orderBy);
             }
         }
-
         Collection<ProductBean> products = new LinkedList<>();
 
         try (Connection connection = DataSourceConnectionPool.getConnection();
@@ -126,5 +133,57 @@ public class ProductDaoImpl implements ProductDao {
             }
         }
         return products;
+    }
+
+    @Override
+    public synchronized Collection<ProductBean> doRetrievePageableProducts(int page, int pageSize, ProductFilter filter) throws SQLException {
+        List<Object> parameters = filter.getParameterValues();
+        String conditions = filter.getQueryCondition();
+
+        String query = "SELECT * FROM " + TABLE_NAME + " " + conditions + " LIMIT ? OFFSET ?";
+
+        Collection<ProductBean> products = new LinkedList<>();
+
+        try (Connection connection = DataSourceConnectionPool.getConnection();
+             PreparedStatement preparedStatement = connection.prepareStatement(query)) {
+
+            int idx = 1;
+            for (Object o : parameters) {
+                preparedStatement.setObject(idx++, o);
+            }
+            // imposta l'offset e il numero di elementi da ritornare per pagina
+            preparedStatement.setInt(idx++, pageSize);
+            preparedStatement.setInt(idx, (page - 1) * pageSize);
+
+            try (ResultSet rs = preparedStatement.executeQuery()) {
+                while (rs.next()) {
+                    ProductBean bean = getProductBean(rs);
+                    products.add(bean);
+                }
+            }
+        }
+        return products;
+    }
+
+    @Override
+    public int doCountProducts(ProductFilter filter) throws SQLException {
+        List<Object> parameters = filter.getParameterValues();
+        String conditions = filter.getQueryCondition();
+
+        String query = "SELECT COUNT(*) FROM " + TABLE_NAME + " " + conditions;
+        int count = 0;
+        try (Connection connection = DataSourceConnectionPool.getConnection();
+             PreparedStatement preparedStatement = connection.prepareStatement(query)) {
+            int idx = 1;
+            for (Object o : parameters) {
+                preparedStatement.setObject(idx++, o);
+            }
+            try (ResultSet rs = preparedStatement.executeQuery()) {
+                if (rs.next()) {
+                    count = rs.getInt(1);
+                }
+            }
+            return count;
+        }
     }
 }
