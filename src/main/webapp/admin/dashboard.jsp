@@ -6,6 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <title>Dashboard con Tabella Utenti AJAX</title>
     <link rel="stylesheet" href="${pageContext.request.contextPath}/admin/css/style.css"/>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" />
 </head>
 <body>
 
@@ -21,7 +22,6 @@
 <div class="overlay" id="overlay"></div>
 
 <main class="content" id="content">
-
     <div class="user-header">
         <img src="https://i.pravatar.cc/40?img=5" alt="Avatar" class="avatar" />
         <span class="user-name">${UtenteLoggato}</span>
@@ -36,19 +36,35 @@
             </div>
         </div>
     </div>
-
     <section id="table1" class="table-section active">
-        <h3>Tabella 1 - Prodotti</h3>
-        <table>
-            <thead>
-            <tr><th>ID</th><th>Nome</th><th>Prezzo</th><th>Disponibilità</th></tr>
-            </thead>
-            <tbody>
-            <tr><td>1</td><td>Mouse</td><td>25€</td><td>Disponibile</td></tr>
-            <tr><td>2</td><td>Tastiera</td><td>45€</td><td>Esaurito</td></tr>
-            <tr><td>3</td><td>Monitor</td><td>150€</td><td>Disponibile</td></tr>
-            </tbody>
-        </table>
+
+        <!-- Box informativi -->
+        <div class="dashboard-boxes">
+            <div class="box">
+                <h3 style="text-align: left">Vendite</h3>
+                <h1 style="text-align: left; margin-bottom: 1px;">1000</h1>
+                <p class="percent"><i class="fa fa-long-arrow-up"></i>5.674% <span>Since Last Months</span></p>
+                <i class="fa fa-line-chart box-icon"></i>
+            </div>
+                <div class="box">
+                    <h3 style="text-align: left">Vendite</h3>
+                    <h1 style="text-align: left">1000</h1>
+                    <p class="percent"><i class="fa fa-long-arrow-down"></i>12.674% <span>Since Last Months</span></p>
+                    <i class="fa fa-circle-o-notch box-icon"></i>
+                </div>
+            <div class="box">
+                <h3 style="text-align: left">Vendite</h3>
+                <h1 style="text-align: left">1000</h1>
+                <p class="percent"><i class="fa fa-long-arrow-up"></i>5.674% <span>Since Last Months</span></p>
+                <i class="fa fa-shopping-bag box-icon"></i>
+            </div>
+        </div>
+
+        <!-- Grafico -->
+        <div class="chart-container">
+            <canvas id="myChart"></canvas>
+        </div>
+
     </section>
 
     <section id="table2" class="table-section">
@@ -70,6 +86,41 @@
     </section>
 
 </main>
+
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script>
+    function getDatiMensili() {
+        return [10, 12, 9, 14, 18, 20, 25, 22, 17, 15, 13, 11]; // dati esempio
+    }
+
+    const ctx = document.getElementById('myChart').getContext('2d');
+
+    const myChart = new Chart(ctx, {
+        type: 'bar',
+        data: {
+            labels: ['Gennaio', 'Febbraio', 'Marzo', 'Aprile', 'Maggio', 'Giugno',
+                'Luglio', 'Agosto', 'Settembre', 'Ottobre', 'Novembre', 'Dicembre'],
+            datasets: [{
+                label: 'Vendite mensili',
+                data: getDatiMensili(),
+                backgroundColor: 'rgba(0,77,64,0.52)',
+                borderColor: 'rgb(0,77,64)',
+                borderWidth: 0
+            }]
+        },
+        options: {
+            responsive: true,
+            maintainAspectRatio: false,
+            scales: {
+                y: {
+                    beginAtZero: true
+                }
+            }
+        }
+    });
+</script>
+
+<!-- Script per menu, dropdown, tab ecc. (rimane invariato) -->
 
 <script>
     const sidebar = document.getElementById('sidebar');
@@ -123,7 +174,6 @@
         }
     });
 
-    // Funzione AJAX per caricare utenti con paginazione
     function loadUserList() {
         console.log("✅ [JS] Inizio chiamata AJAX a /admin/users");
 
@@ -144,20 +194,25 @@
                             var end = start + utentiPerPagina;
                             var paginaUtenti = utenti.slice(start, end);
 
-                            var html = "<table><thead><tr><th>Nome</th><th>Cognome</th><th>Email</th><th>Ruolo</th></tr></thead><tbody>";
+                            var html = "<table><thead><tr><th>Nome</th><th>Cognome</th><th>Email</th><th>Ruolo</th><th>Info</th></tr></thead><tbody>";
 
-                            paginaUtenti.forEach(function(user) {
+                            paginaUtenti.forEach(function(user, index) {
                                 html += "<tr>" +
                                     "<td>" + user.nome + "</td>" +
                                     "<td>" + user.cognome + "</td>" +
                                     "<td>" + user.email + "</td>" +
                                     "<td>" + user.tipologia + "</td>" +
+                                    "<td>" +
+                                    "<form method='post' action='/ecommerce_project_war_exploded/admin/userInfo'>" +
+                                    "<input type='hidden' name='email' value='" + user.email + "' />" +
+                                    "<button type='submit'>Info</button>" +
+                                    "</form>" +
+                                    "</td>" +
                                     "</tr>";
                             });
 
                             html += "</tbody></table>";
 
-                            // Paginazione
                             html += "<div id='paginazione' style='margin-top:10px;'>";
 
                             if (paginaCorrente > 1) {
@@ -170,16 +225,13 @@
                                 html += "<button class='btn-paginazione' onclick='mostraPagina(" + (paginaCorrente + 1) + ")'>Successivo &#8594;</button>";
                             }
 
-
                             html += "</div>";
 
                             document.getElementById("dashboard-user").innerHTML = html;
                         }
 
                         mostraPagina(1);
-
                         window.mostraPagina = mostraPagina;
-
                     } catch (e) {
                         document.getElementById("dashboard-user").innerHTML = "<p>Errore nel formato dei dati ricevuti dal server.</p>";
                     }
@@ -191,7 +243,6 @@
         xhr.send();
     }
 
-    // Se la seconda tab è già attiva all'apertura, carica subito
     if(document.querySelector('section.table-section.active').id === "table2"){
         loadUserList();
     }
