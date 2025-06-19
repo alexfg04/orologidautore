@@ -20,7 +20,7 @@ public class AdminFilter implements Filter {
         HttpSession session = req.getSession(false);
         if(session != null) {
             UserBean.Role role = (UserBean.Role) session.getAttribute("userRole");
-            if(role != null && role == UserBean.Role.ADMIN) {
+            if(role == UserBean.Role.ADMIN) {
                 // Utente admin, lascia passare
                 chain.doFilter(request, response);
                 return;
