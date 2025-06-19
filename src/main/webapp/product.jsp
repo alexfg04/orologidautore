@@ -80,7 +80,7 @@
 <div class="detail-container">
     <div class="detail-card">
         <div class="detail-img">
-            <img src="<%= request.getContextPath() + "/" + product.getImmagine() %>"
+            <img src="<%= product.getImmagine() %>"
                  alt="Immagine di <%= product.getNome() %>">
         </div>
         <div class="detail-info">

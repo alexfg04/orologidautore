@@ -81,14 +81,14 @@ public class ProductFilter {
         if (types != null && types.length > 0) {
             appendWhereOrAnd(queryBuilder, hasWhereClause);
             hasWhereClause = true;
-            queryBuilder.append("categoria IN (") // Assumendo che 'type' nel filtro corrisponda a 'categoria' nel DB
+            queryBuilder.append("categoria IN (")
                     .append(String.join(",", Collections.nCopies(types.length, "?")))
                     .append(") ");
         }
         if (colors != null && colors.length > 0) {
             appendWhereOrAnd(queryBuilder, hasWhereClause);
             hasWhereClause = true;
-            queryBuilder.append("colore IN (") // Assumendo che 'colore' sia un campo nel DB
+            queryBuilder.append("colore IN (")
                     .append(String.join(",", Collections.nCopies(colors.length, "?")))
                     .append(") ");
         }

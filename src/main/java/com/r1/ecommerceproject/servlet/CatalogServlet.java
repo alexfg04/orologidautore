@@ -59,15 +59,9 @@ public class CatalogServlet extends HttpServlet {
         }
 
         try {
-             Collection<ProductBean>products = model.doRetrievePageableProducts(page, PAGE_SIZE, filter);
-             int prCount = model.doCountProducts(filter);
-             int totalPages = prCount / PAGE_SIZE + (prCount % PAGE_SIZE == 0 ? 0 : 1);
-
-            System.out.println("Debug - Products retrieved: " + (products != null ? products.size() : "null"));
-            System.out.println("Debug - Total product count: " + prCount);
-            System.out.println("Debug - Total pages: " + totalPages);
-            System.out.println("Debug - Page: " + page);
-
+            Collection<ProductBean>products = model.doRetrievePageableProducts(page, PAGE_SIZE, filter);
+            int prCount = model.doCountProducts(filter);
+            int totalPages = prCount / PAGE_SIZE + (prCount % PAGE_SIZE == 0 ? 0 : 1);
             // set attributes
             req.setAttribute("totalPages", totalPages);
             req.setAttribute("products", products);

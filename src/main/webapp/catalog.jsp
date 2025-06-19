@@ -22,7 +22,7 @@
 
     Collection<ProductBean> products = (Collection<ProductBean>) request.getAttribute("products");
 
-    if(products == null ) {
+    if (products == null) {
         products = new ArrayList<>();
     }
 
@@ -31,11 +31,12 @@
     if (pageStr != null) {
         try {
             currentPage = Integer.parseInt(pageStr);
-        } catch (NumberFormatException ignored) {}
+        } catch (NumberFormatException ignored) {
+        }
     }
 
     Integer totalPagesObj = (Integer) request.getAttribute("totalPages");
-    int totalPages = totalPagesObj != null ? totalPagesObj.intValue() : 1;
+    int totalPages = totalPagesObj != null ? totalPagesObj : 1;
 %>
 <!DOCTYPE html>
 <html lang="it">
@@ -78,7 +79,7 @@
                     <span>€0</span>
                     <span>€1000</span>
                 </div>
-                <input type="hidden" name="sort" id="sort-input" value="${param.sort}" ${ empty param.sort ? 'disabled' : ''} >
+                <input type="hidden" name="sort" id="sort-input" value="${param.sort}">
             </div>
 
             <div class="filter-group">
@@ -108,8 +109,12 @@
         <!-- Tab ordinamento -->
         <div class="sorting-tabs">
             <button class="${param.sort == 'nome_asc' ? 'active' : ''}" type="button" data-sort="nome_asc">A-Z</button>
-            <button class="${param.sort == 'prezzo_asc' ? 'active' : ''}" type="button" data-sort="prezzo_asc">Prezzo crescente</button>
-            <button class="${param.sort == 'prezzo_desc' ? 'active' : ''}" type="button" data-sort="prezzo_desc">Prezzo decrescente</button>
+            <button class="${param.sort == 'prezzo_asc' ? 'active' : ''}" type="button" data-sort="prezzo_asc">Prezzo
+                crescente
+            </button>
+            <button class="${param.sort == 'prezzo_desc' ? 'active' : ''}" type="button" data-sort="prezzo_desc">Prezzo
+                decrescente
+            </button>
         </div>
 
         <!-- Griglia prodotti -->
@@ -117,19 +122,20 @@
             <% for (Iterator<ProductBean> i = products.iterator(); i.hasNext(); ) { %>
             <% ProductBean p = i.next(); %>
             <div class="product-card">
-                <div class="thumb"><img
-                        src="<%= p.getImmagine()%>"
-                        alt="Prodotto"></div>
-                <h4><%= p.getNome() %>
-                </h4>
-                <p class="price">$<%= String.format("%.2f", p.getPrezzo()) %>
-                </p>
-                <p class="desc"><%= p.getDescrizione()%>
-                </p>
-                <button class="wishlist" aria-label="Aggiungi ai preferiti">
-                    <svg viewBox="0 0 24 24" class="heart-icon">
-                        <path class="heart-shape"
-                              d="M12 21.35l-1.45-1.32
+                <a href="product?id=<%= p.getCodiceProdotto() %>">
+                    <div class="thumb"><img
+                            src="<%= p.getImmagine()%>"
+                            alt="Prodotto"></div>
+                    <h4><%= p.getNome() %>
+                    </h4>
+                    <p class="price">$<%= String.format("%.2f", p.getPrezzo()) %>
+                    </p>
+                    <p class="desc"><%= p.getDescrizione()%>
+                    </p>
+                    <button class="wishlist" aria-label="Aggiungi ai preferiti">
+                        <svg viewBox="0 0 24 24" class="heart-icon">
+                            <path class="heart-shape"
+                                  d="M12 21.35l-1.45-1.32
                                  C5.4 15.36 2 12.28 2 8.5
                                  2 5.42 4.42 3 7.5 3
                                  c1.74 0 3.41.81 4.5 2.09
@@ -137,9 +143,10 @@
                                  19.58 3 22 5.42 22 8.5
                                  c0 3.78-3.4 6.86-8.55 11.54
                                  L12 21.35z">
-                        </path>
-                    </svg>
-                </button>
+                            </path>
+                        </svg>
+                    </button>
+                </a>
             </div>
             <% } %>
             <!-- ... altre card ... -->
@@ -148,7 +155,9 @@
         <!-- Paginazione -->
         <!-- Paginazione dinamica -->
         <nav class="pagination">
-            <a class="prev <%= currentPage == 1 ? "disabled" : "" %>" href="<%= currentPage > 1 ? Utils.addRequestParameter(request, "page", String.valueOf(currentPage - 1)) : "#" %>">&laquo; Precedente</a>
+            <a class="prev <%= currentPage == 1 ? "disabled" : "" %>"
+               href="<%= currentPage > 1 ? Utils.addRequestParameter(request, "page", String.valueOf(currentPage - 1)) : "#" %>">&laquo;
+                Precedente</a>
             <ul>
                 <%
                     boolean ellipsisPrinted = false;
@@ -156,7 +165,9 @@
                         if (i <= 3 || i > totalPages - 2) {
                 %>
                 <li>
-                    <a class="<%= i == currentPage ? "active" : "" %>" href="<%= Utils.addRequestParameter(request, "page", String.valueOf(i)) %>"><%= i %></a>
+                    <a class="<%= i == currentPage ? "active" : "" %>"
+                       href="<%= Utils.addRequestParameter(request, "page", String.valueOf(i)) %>"><%= i %>
+                    </a>
                 </li>
                 <%
                     ellipsisPrinted = false; // reset each time we print a page number
@@ -171,7 +182,9 @@
                     }
                 %>
             </ul>
-            <a class="next <%= currentPage == totalPages ? "disabled" : "" %>" href="<%= currentPage < totalPages ? Utils.addRequestParameter(request, "page", String.valueOf(currentPage + 1)) : "#" %>">Successivo &raquo;</a>
+            <a class="next <%= currentPage == totalPages ? "disabled" : "" %>"
+               href="<%= currentPage < totalPages ? Utils.addRequestParameter(request, "page", String.valueOf(currentPage + 1)) : "#" %>">Successivo
+                &raquo;</a>
         </nav>
     </main>
 </div>
@@ -200,7 +213,7 @@
     // Aggiungi event listener a tutti i checkbox per invio automatico
     document.querySelectorAll('input[type="checkbox"]').forEach(checkbox => {
         checkbox.addEventListener('change', function () {
-            if(r.value === '0') {
+            if (r.value === '0') {
                 r.disabled = true;
             }
             filterForm.submit();
@@ -208,9 +221,15 @@
     });
 
     document.querySelectorAll('.sorting-tabs button').forEach(button => {
-        button.addEventListener('click', function() {
+        button.addEventListener('click', function () {
             // Ottieni il valore di ordinamento dal data-attribute
             const sortValue = this.getAttribute('data-sort');
+            const priceRange = document.getElementById('price-range');
+
+            // Se il prezzo è zero, disabilita l'input così non verrà inviato
+            if (priceRange && priceRange.value === "0") {
+                priceRange.disabled = true;
+            }
 
             // Imposta il valore nell'input nascosto
             document.getElementById('sort-input').value = sortValue;
