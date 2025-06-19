@@ -58,6 +58,7 @@ main.content {
 }
 
 .user-header {
+    flex: 0 0 30%;
     display: flex;
     justify-content: flex-end;
     align-items: center;
@@ -358,7 +359,7 @@ canvas {
     font-style: italic;
 }
 .box {
-    position: relative; /* serve per posizionare assolutamente l'icona dentro */
+    position: relative; /* serve per posizionare  l'icona dentro */
 }
 .box-icon {
     position: absolute;
@@ -366,6 +367,37 @@ canvas {
     right: 12px;  /* distanza da destra */
     font-size: 1.5rem;
     color: green;
-    pointer-events: none; /* opzionale: non interferisce con click */
+    pointer-events: none; /* non interferisce con click */
+}
+
+.user-logo {
+    flex: 0 0 70%;
+    height: 80px;              /* Altezza fissa */
+    max-width: 170%;
+    width: 1000px;/* Non esce dai bordi */
+    display: flex;             /* Per allineamento */
+    justify-content: left;   /* Centra orizzontalmente */
+    align-items: center;       /* Centra verticalmente */
+    overflow: hidden;
+
+}
+
+.user-logo img {
+    height: auto;              /* Altezza fissa */
+    width: auto;               /* Larghezza fluida */
+    max-width: 100%;           /* Non oltre il contenitore */
+    display: block;
+}
+
+
+.header-container {
+    margin: 5px;
+    display: flex;
+    width: 100%;
+    align-items: center;
+    padding: 0 10px;
+    height: 100px; /* o quello che vuoi */
+    background-color: #fff;
+    object-fit: fill;/* o il colore che preferisci */
 }
 

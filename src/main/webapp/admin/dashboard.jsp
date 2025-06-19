@@ -22,20 +22,26 @@
 <div class="overlay" id="overlay"></div>
 
 <main class="content" id="content">
-    <div class="user-header">
-        <img src="https://i.pravatar.cc/40?img=5" alt="Avatar" class="avatar" />
-        <span class="user-name">${UtenteLoggato}</span>
-        <div class="dropdown">
-            <button onclick="toggleDropdown(this)">Menu &#x25BC;</button>
-            <div class="dropdown-menu">
-                <a href="#">Profilo</a>
-                <a href="#">Impostazioni</a>
-                <form action="${pageContext.request.contextPath}/logout" method="get" style="margin:0; padding:0;">
-                    <button type="submit">&nbsp;&nbsp;Log Out</button>
-                </form>
+    <div class="header-container">
+        <div class="user-logo">
+            <img src="${pageContext.request.contextPath}/admin/Admin_IMG/logon.png" alt="Logo" />
+        </div>
+        <div class="user-header">
+            <img src="https://i.pravatar.cc/40?img=5" alt="Avatar" class="avatar" />
+            <span class="user-name">${UtenteLoggato}</span>
+            <div class="dropdown">
+                <button onclick="toggleDropdown(this)">Menu &#x25BC;</button>
+                <div class="dropdown-menu">
+                    <a href="#">Profilo</a>
+                    <a href="#">Impostazioni</a>
+                    <form action="${pageContext.request.contextPath}/logout" method="get" style="margin:0; padding:0;">
+                        <button type="submit">&nbsp;&nbsp;Log Out</button>
+                    </form>
+                </div>
             </div>
         </div>
     </div>
+
     <section id="table1" class="table-section active">
 
         <!-- Box informativi -->
@@ -48,13 +54,13 @@
             </div>
                 <div class="box">
                     <h3 style="text-align: left">Vendite</h3>
-                    <h1 style="text-align: left">1000</h1>
+                    <h1 style="text-align: left; margin-bottom: 1px;">1000</h1>
                     <p class="percent"><i class="fa fa-long-arrow-down"></i>12.674% <span>Since Last Months</span></p>
                     <i class="fa fa-circle-o-notch box-icon"></i>
                 </div>
             <div class="box">
                 <h3 style="text-align: left">Vendite</h3>
-                <h1 style="text-align: left">1000</h1>
+                <h1 style="text-align: left; margin-bottom: 1px;">1000</h1>
                 <p class="percent"><i class="fa fa-long-arrow-up"></i>5.674% <span>Since Last Months</span></p>
                 <i class="fa fa-shopping-bag box-icon"></i>
             </div>
