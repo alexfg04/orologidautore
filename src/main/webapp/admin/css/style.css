@@ -383,7 +383,7 @@ canvas {
 }
 
 .user-logo img {
-    height: auto;              /* Altezza fissa */
+    height: 110px;              /* Altezza fissa */
     width: auto;               /* Larghezza fluida */
     max-width: 100%;           /* Non oltre il contenitore */
     display: block;
