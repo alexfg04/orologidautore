@@ -14,18 +14,20 @@
     }
 %>
 <%
-
+    // filtri
     String[] types = request.getParameterValues("tipo");
     String[] colors = request.getParameterValues("colore");
     String[] sizes = request.getParameterValues("taglia");
     String priceParam = request.getParameter("prezzo");
 
+    // Produtti della pagina corrente
     Collection<ProductBean> products = (Collection<ProductBean>) request.getAttribute("products");
 
     if (products == null) {
         products = new ArrayList<>();
     }
 
+    // numero di pagina corrente, se non è definita viene impostata di default a 1
     int currentPage = 1;
     String pageStr = request.getParameter("page");
     if (pageStr != null) {
@@ -235,7 +237,6 @@
             document.getElementById('sort-input').value = sortValue;
 
             // Rimuovi la classe active da tutti i pulsanti
-
             document.querySelectorAll('.sorting-tabs button').forEach(btn => {
                 btn.classList.remove('active');
             });

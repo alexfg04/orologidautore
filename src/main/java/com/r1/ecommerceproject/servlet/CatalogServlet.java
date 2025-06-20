@@ -30,6 +30,7 @@ public class CatalogServlet extends HttpServlet {
         String sort = req.getParameter("sort");
         String pageParam = req.getParameter("page");
 
+        // Se la pagina non è specificata, di default è la prima
         int page;
         if(pageParam == null) {
             page = 1;
@@ -37,8 +38,10 @@ public class CatalogServlet extends HttpServlet {
             page = parseIntOr(req.getParameter("page"), 1);
         }
 
+        // Creazione dell'istanza della classe Filtro
         ProductFilter filter = new ProductFilter();
 
+        // Imposta i filtri in base a ciò che riceve la servlet
         if (types != null) {
             filter.setTypes(types);
         }
@@ -58,9 +61,15 @@ public class CatalogServlet extends HttpServlet {
             filter.setOrderBy(sort);
         }
 
+        // Recupera i prodotti divisi in pagine
         try {
+            // Il metodo doRetrievePageableProducts restuisce i prodotti filtrati
             Collection<ProductBean>products = model.doRetrievePageableProducts(page, PAGE_SIZE, filter);
+
+            // Il metodo doCountProducts il numero totale di prodotti
             int prCount = model.doCountProducts(filter);
+
+            // totale delle pagine dei prodotti da visualizzare nel catalogo
             int totalPages = prCount / PAGE_SIZE + (prCount % PAGE_SIZE == 0 ? 0 : 1);
             // set attributes
             req.setAttribute("totalPages", totalPages);
