@@ -46,7 +46,7 @@ document.addEventListener('DOMContentLoaded', () => {
         xhr.send(body);
     });
 
-    // Delegate quantity change and removal events on body
+    // aggiorna quantità
     document.body.addEventListener('change', async event => {
         const input = event.target.closest('.quantity-input');
         if (!input) return;
@@ -75,6 +75,7 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     });
 
+    // rimuovi prodotto
     document.body.addEventListener('click', async event => {
         const btn = event.target.closest('.remove-icon');
         if (!btn) return;
