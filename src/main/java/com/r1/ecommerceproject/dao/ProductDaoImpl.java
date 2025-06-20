@@ -130,7 +130,7 @@ public class ProductDaoImpl implements ProductDao {
     }
 
     @Override
-    public synchronized Collection<ProductBean> doRetrieveAllPreferiti(String orderBy, long Id_Utente) throws SQLException {
+    public synchronized Collection<ProductBean> doRetrieveAllFavorites(String orderBy, long Id_Utente) throws SQLException {
         String selectSQL =
                 "SELECT p.* " +
                         "  FROM " + TABLE_NAME2 + " f " +

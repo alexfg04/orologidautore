@@ -2,8 +2,11 @@ package com.r1.ecommerceproject.utils;
 
 import com.r1.ecommerceproject.dao.ProductDao;
 import com.r1.ecommerceproject.dao.ProductDaoImpl;
+import com.r1.ecommerceproject.model.ProductBean;
 
 import javax.servlet.http.HttpSession;
+import java.sql.SQLException;
+import java.util.Collection;
 import java.util.HashMap;
 import java.util.Set;
 import java.util.HashSet;
@@ -148,6 +151,19 @@ public class UserSession {
     /*Restituisce il numero di preferiti.*/
     public int getFavoritesCount() {
         return getFavorites().size();
+    }
+
+    public void putAllFavoritesToSession() {
+        ProductDao favoriteDao = new ProductDaoImpl();
+        try {
+            Collection<ProductBean> all = favoriteDao.doRetrieveAllFavorites(null, this.getUserId());
+
+            for (ProductBean product : all) {                                     //aggiungiamo tutti i preferiti associati all'utente nella sessione
+                this.addFavorite(product.getCodiceProdotto());
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
     }
 
     //metodo di set per firstName

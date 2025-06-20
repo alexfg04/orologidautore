@@ -14,7 +14,7 @@
     ProductDaoImpl dao = new ProductDaoImpl();
     Collection<ProductBean> favorites;
     try {
-        favorites = dao.doRetrieveAllPreferiti("codice_prodotto", userId);
+        favorites = dao.doRetrieveAllFavorites("codice_prodotto", userId);
     } catch (Exception e) {
         favorites = java.util.Collections.emptyList();
         e.printStackTrace();

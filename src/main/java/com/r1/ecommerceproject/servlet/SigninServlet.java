@@ -48,6 +48,11 @@ public class SigninServlet extends HttpServlet {
         }
         userSession.setUser(user.getId());
         userSession.setFirstName(user.getNome());
+        /*
+        Questo metodo trasferisce tutti i preferiti presenti nel database nella sessione
+        per tracciare i preferiti più velocemente.s
+        */
+        userSession.putAllFavoritesToSession();
         response.sendRedirect(request.getContextPath() + "/catalog");
     }
 }

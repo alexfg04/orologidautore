@@ -9,7 +9,6 @@ import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.*;
 import java.io.IOException;
-import java.io.PrintWriter;
 import java.sql.SQLException;
 import java.util.Collection;
 
@@ -22,11 +21,8 @@ public class FavoriteServlet extends HttpServlet {
         favoriteDao = new ProductDaoImpl(); // Assicurati di avere questa DAO
     }
 
-
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-
-
         HttpSession session = request.getSession(false);
         if (session == null || session.getAttribute("userId") == null) {
             // non c’è sessione valida → rimanda al login
@@ -38,21 +34,16 @@ public class FavoriteServlet extends HttpServlet {
         long userId = userSession.getUserId();
 
         try {
-            Collection<ProductBean> allPreferits = favoriteDao.doRetrieveAllPreferiti(null, userId);
-
-            for (ProductBean product : allPreferits) {                                     //aggiungiamo tutti i preferiti associati all'utente nella sessione
-                userSession.addFavorite(product.getCodiceProdotto());
-            }
             long productId = Long.parseLong(request.getParameter("product_id"));        //prendiamo il codice del prodotto che vogliamo inserire
             boolean alreadyInFavorites = favoriteDao.isFavorite(userId, productId);            //controlliamo se il prodotto è nei preferiti
 
-            boolean success;
             if (alreadyInFavorites) {
-                success = favoriteDao.removeFavorite(userId, productId);                        //se il prodotto è  nei preferiti allora vogliamo rimuoverlo
+                favoriteDao.removeFavorite(userId, productId);                       //se il prodotto è  nei preferiti allora vogliamo rimuoverlo
+                userSession.addFavorite(productId);
             } else {
-                success = favoriteDao.addFavorite(userId, productId);                           //se il prodotto non è nei preferiti , allora vogliamo inserirlo
+                favoriteDao.addFavorite(userId, productId);                           //se il prodotto non è nei preferiti , allora vogliamo inserirlo
+                userSession.removeFavorite(productId);
             }
-
 
         }catch (SQLException sqle) {
             sqle.printStackTrace();
