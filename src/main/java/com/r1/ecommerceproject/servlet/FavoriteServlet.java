@@ -43,12 +43,13 @@ public class FavoriteServlet extends HttpServlet {
 
             if (alreadyInFavorites) {
                 favoriteDao.removeFavorite(userId, productId);                       //se il prodotto è  nei preferiti allora vogliamo rimuoverlo
-                userSession.addFavorite(productId);
-                response.getWriter().write("{\"success\": true}");
-            } else {
-                favoriteDao.addFavorite(userId, productId);                           //se il prodotto non è nei preferiti , allora vogliamo inserirlo
                 userSession.removeFavorite(productId);
                 response.getWriter().write("{\"success\": true, \"removed\": true}");
+            } else {
+                favoriteDao.addFavorite(userId, productId);                           //se il prodotto non è nei preferiti , allora vogliamo inserirlo
+                userSession.addFavorite(productId);
+                response.getWriter().write("{\"success\": true}");
+
             }
             response.getWriter().flush();
 

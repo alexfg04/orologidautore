@@ -42,7 +42,7 @@
 </head>
 <body>
 <%@ include file="navbar.jsp" %>
-<div class="container">©
+<div class="container">
     <!-- Sidebar filtri -->
     <aside class="sidebar">
         <h2>Filtro</h2>
