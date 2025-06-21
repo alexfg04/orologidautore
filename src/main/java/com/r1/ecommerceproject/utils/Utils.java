@@ -3,6 +3,7 @@ package com.r1.ecommerceproject.utils;
 import javax.servlet.http.HttpServletRequest;
 import java.net.URLEncoder;
 import java.nio.charset.StandardCharsets;
+import java.util.Arrays;
 
 public class Utils {
     /**
@@ -55,5 +56,17 @@ public class Utils {
         return url.substring(0, start)
                 + newValue
                 + url.substring(end);
+    }
+
+    /**
+     * 
+     * @param selected array di stringhe in input
+     * @param value valure da controllare
+     * @return true se il valore è presente altrimenti falso
+     */
+
+    public static boolean isChecked(String[] selected, String value) {
+        if (selected == null) return false;
+        return Arrays.asList(selected).contains(value);
     }
 }

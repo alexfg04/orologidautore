@@ -3,16 +3,8 @@
 <%@ page import="java.util.Iterator" %>
 <%@ page import="com.r1.ecommerceproject.utils.Utils" %>
 <%@ page import="java.util.ArrayList" %>
+<%@ page import="static com.r1.ecommerceproject.utils.Utils.isChecked" %>
 <%@ page contentType="text/html; charset=UTF-8" language="java" %>
-<%!
-    public boolean isChecked(String[] selected, String value) {
-        if (selected == null) return false;
-        for (String s : selected) {
-            if (value.equals(s)) return true;
-        }
-        return false;
-    }
-%>
 <%
     // filtri
     String[] types = request.getParameterValues("tipo");
@@ -134,7 +126,7 @@
                     </p>
                     <p class="desc"><%= p.getDescrizione()%>
                     </p>
-                    <button class="wishlist" aria-label="Aggiungi ai preferiti">
+                    <button id="wishlist" aria-label="Aggiungi ai preferiti">
                         <svg viewBox="0 0 24 24" class="heart-icon">
                             <path class="heart-shape"
                                   d="M12 21.35l-1.45-1.32
