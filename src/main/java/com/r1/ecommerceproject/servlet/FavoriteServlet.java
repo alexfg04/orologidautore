@@ -26,7 +26,9 @@ public class FavoriteServlet extends HttpServlet {
         HttpSession session = request.getSession(false);
         if (session == null || session.getAttribute("userId") == null) {
             // non c’è sessione valida → rimanda al login
-            response.sendRedirect(request.getContextPath() + "/login.jsp");
+            response.setContentType("application/json");
+            // set redirect with json
+            response.getWriter().write("{\"redirect\": \"login.jsp\"}");
             return;
         }
 
@@ -34,25 +36,26 @@ public class FavoriteServlet extends HttpServlet {
         long userId = userSession.getUserId();
 
         try {
-            long productId = Long.parseLong(request.getParameter("product_id"));        //prendiamo il codice del prodotto che vogliamo inserire
+            long productId = Long.parseLong(request.getParameter("productId"));        //prendiamo il codice del prodotto che vogliamo inserire
             boolean alreadyInFavorites = favoriteDao.isFavorite(userId, productId);            //controlliamo se il prodotto è nei preferiti
+
+            response.setContentType("application/json");
 
             if (alreadyInFavorites) {
                 favoriteDao.removeFavorite(userId, productId);                       //se il prodotto è  nei preferiti allora vogliamo rimuoverlo
                 userSession.addFavorite(productId);
+                response.getWriter().write("{\"success\": true}");
             } else {
                 favoriteDao.addFavorite(userId, productId);                           //se il prodotto non è nei preferiti , allora vogliamo inserirlo
                 userSession.removeFavorite(productId);
+                response.getWriter().write("{\"success\": true, \"removed\": true}");
             }
+            response.getWriter().flush();
 
-        }catch (SQLException sqle) {
-            sqle.printStackTrace();
-            session.setAttribute("flashMessage", "Errore di database: impossibile aggiornare i preferiti.");
-            response.sendRedirect(request.getContextPath() + "/product?id=" + request.getParameter("product_id"));
-            return;
+        }catch (SQLException e) {
+            response.setContentType("application/json");
+            response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
+            response.getWriter().write("{\"status\": \"error\", \"message\": \"" + e.getMessage() + "\"}");
         }
-
-        response.sendRedirect(request.getContextPath() + "/favorites.jsp");
     }
-
 }

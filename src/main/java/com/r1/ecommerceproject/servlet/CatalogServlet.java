@@ -5,7 +5,6 @@ import com.r1.ecommerceproject.dao.ProductDaoImpl;
 import com.r1.ecommerceproject.model.ProductBean;
 import com.r1.ecommerceproject.utils.ProductFilter;
 
-import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -17,7 +16,6 @@ import java.util.Collection;
 
 @WebServlet("/catalog")
 public class CatalogServlet extends HttpServlet {
-    private static final long serialVersionUID = 1L;
     private static final ProductDao model = new ProductDaoImpl();
     private static final int PAGE_SIZE = 12;
 
@@ -35,7 +33,7 @@ public class CatalogServlet extends HttpServlet {
         if(pageParam == null) {
             page = 1;
         } else {
-            page = parseIntOr(req.getParameter("page"), 1);
+            page = parseIntOr(req.getParameter("page"));
         }
 
         // Creazione dell'istanza della classe Filtro
@@ -83,11 +81,11 @@ public class CatalogServlet extends HttpServlet {
                 .forward(req, res);
     }
 
-    private int parseIntOr(String s, int def) {
+    private int parseIntOr(String s) {
         try {
             return Integer.parseInt(s);
         } catch (Exception e) {
-            return def;
+            return 1;
         }
     }
 }

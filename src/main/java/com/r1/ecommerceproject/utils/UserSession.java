@@ -143,6 +143,11 @@ public class UserSession {
         }
     }
 
+    public boolean isFavorite(long productId) {
+        Set<Long> fav = getFavorites();
+        return fav.contains(productId);
+    }
+
     /*Rimuove tutti i preferiti*/
     public void clearFavorites() {
         session.removeAttribute(FAVORITES_ATTRIBUTE);

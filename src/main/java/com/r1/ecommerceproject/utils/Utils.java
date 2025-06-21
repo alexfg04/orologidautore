@@ -69,4 +69,16 @@ public class Utils {
         if (selected == null) return false;
         return Arrays.asList(selected).contains(value);
     }
+
+    /**
+     * Sfugge i caratteri speciali in una stringa JSON sostituendo le virgolette doppie con virgolette escaped
+     * e rimuovendo i caratteri di nuova riga e ritorno carrello.
+     *
+     * @param s la stringa di input da fare l'escape, può essere null
+     * @return la stringa JSON con l'escape, o una stringa vuota se l'input è null
+     */
+    public static String escapeJson(String s) {
+        if (s == null) return "";
+        return s.replace("\"", "\\\"").replace("\n", "").replace("\r", "");
+    }
 }
