@@ -54,7 +54,7 @@
                     <% if (loggedIn) { %>
                     <li><a href="orders.jsp">I miei ordini</a></li>
                     <li><a href="account.jsp">Account</a></li>
-                    <li><a href="/logout">Logout</a></li>
+                    <li><a href="${pageContext.request.contextPath}/logout">Logout</a></li>
                     <% } else { %>
                     <li><a href="login.jsp">Accedi</a></li>
                     <% } %>
