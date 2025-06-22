@@ -1,18 +1,23 @@
-const r = document.getElementById('price-range');
-const v = document.getElementById('price-display');
+const slider = document.getElementById('price-range');
+const output = document.getElementById('price-display');
 const filterForm = document.getElementById('filter-form');
 
-function aggiorna() {
-    v.textContent = r.value;
+
+function updateSlider() {
+    const val = slider.value;
+    output.textContent = `${val}`;
+    const percent = (val - slider.min) / (slider.max - slider.min) * 100;
+    slider.style.setProperty('--value', percent + '%');
 }
 
-r.addEventListener('input', aggiorna);
-window.addEventListener('load', aggiorna);
+slider.addEventListener('input', updateSlider);
+// Inizializza
+updateSlider();
 
-r.addEventListener('change', function () {
-    if (r.value === '0') {
+slider.addEventListener('change', function () {
+    if (slider.value === '0') {
         // Disabilita l'input così non viene inviato nel form
-        r.disabled = true;
+        slider.disabled = true;
     }
     filterForm.submit();
 })
@@ -20,9 +25,6 @@ r.addEventListener('change', function () {
 // Aggiungi event listener a tutti i checkbox per invio automatico
 document.querySelectorAll('input[type="checkbox"]').forEach(checkbox => {
     checkbox.addEventListener('change', function () {
-        if (r.value === '0') {
-            r.disabled = true;
-        }
         filterForm.submit();
     });
 });

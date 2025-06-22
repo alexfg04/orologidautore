@@ -49,17 +49,29 @@
         <form id="filter-form" action="${pageContext.request.contextPath}/catalog" method="get">
             <div class="filter-group">
                 <h3>Tipo</h3>
-                <label><input type="checkbox" name="tipo"
-                              value="Classico" <%= isChecked(types, "Classico") ? "checked" : "" %>> Classico</label>
-                <label><input type="checkbox" name="tipo"
-                              value="Estivo" <%= isChecked(types, "Estivo") ? "checked" : "" %>> Estivo</label>
-                <label><input type="checkbox" name="tipo"
-                              value="Digitale" <%= isChecked(types, "Digitale") ? "checked" : "" %>>Digitale</label>
+                <label>
+                    <input type="checkbox" name="tipo"
+                              value="Classico" <%= isChecked(types, "Classico") ? "checked" : "" %>>
+                    <span class="checkmark"></span>
+                    Classico
+                </label>
+                <label>
+                    <input type="checkbox" name="tipo"
+                              value="Estivo" <%= isChecked(types, "Estivo") ? "checked" : "" %>>
+                    <span class="checkmark"></span>
+                    Estivo
+                </label>
+                <label>
+                    <input type="checkbox" name="tipo"
+                              value="Digitale" <%= isChecked(types, "Digitale") ? "checked" : "" %>>
+                    <span class="checkmark"></span>
+                    Digitale
+                </label>
             </div>
 
             <div class="filter-group">
                 <div class="price-slider-header">
-                    <div class="price-slider-title">Prezzo</div>
+                    <div class="price-slider-title">Prezzo massimo</div>
                     <div class="price-value">€<span
                             id="price-display"><%= priceParam == null ? "0" : priceParam %></span></div>
                 </div>
@@ -78,22 +90,46 @@
 
             <div class="filter-group">
                 <h3>Colore</h3>
-                <label><input type="checkbox" name="colore"
-                              value="Nero" <%= isChecked(colors, "Nero") ? "checked" : "" %>>Nero</label>
-                <label><input type="checkbox" name="colore"
-                              value="Blu" <%= isChecked(colors, "Blu") ? "checked" : "" %>>Blu</label>
-                <label><input type="checkbox" name="colore"
-                              value="Bianco" <%= isChecked(colors, "Bianco") ? "checked" : "" %>> Bianco</label>
+                <label>
+                    <input type="checkbox" name="colore"
+                              value="Nero" <%= isChecked(colors, "Nero") ? "checked" : "" %>>
+                    <span class="checkmark"></span>
+                    Nero
+                </label>
+                <label>
+                    <input type="checkbox" name="colore"
+                              value="Blu" <%= isChecked(colors, "Blu") ? "checked" : "" %>>
+                    <span class="checkmark"></span>
+                    Blu
+                </label>
+                <label>
+                    <input type="checkbox" name="colore"
+                              value="Bianco" <%= isChecked(colors, "Bianco") ? "checked" : "" %>>
+                    <span class="checkmark"></span>
+                    Bianco
+                </label>
             </div>
 
             <div class="filter-group">
                 <h3>Taglia</h3>
-                <label><input type="checkbox" name="taglia"
-                              value="One Size" <%= isChecked(sizes, "One Size") ? "checked" : "" %>> One Size</label>
-                <label><input type="checkbox" name="taglia"
-                              value="31 mm" <%= isChecked(sizes, "31 mm") ? "checked" : "" %>> 31 mm</label>
-                <label><input type="checkbox" name="taglia"
-                              value="41 mm" <%= isChecked(sizes, "41 mm") ? "checked" : "" %>> 41 mm</label>
+                <label>
+                    <input type="checkbox" name="taglia"
+                              value="One Size" <%= isChecked(sizes, "One Size") ? "checked" : "" %>>
+                    <span class="checkmark"></span>
+                    One Size
+                </label>
+                <label>
+                    <input type="checkbox" name="taglia"
+                              value="31 mm" <%= isChecked(sizes, "31 mm") ? "checked" : "" %>>
+                    <span class="checkmark"></span>
+                    31 mm
+                </label>
+                <label>
+                    <input type="checkbox" name="taglia"
+                              value="41 mm" <%= isChecked(sizes, "41 mm") ? "checked" : "" %>>
+                    <span class="checkmark"></span>
+                    41 mm
+                </label>
             </div>
         </form>
     </aside>
