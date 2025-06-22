@@ -16,7 +16,7 @@
 <div class="container">
     <img src="assets/img/header_image.jpg" alt="Immagine" class="image">
     <div class="text-overlay">Compra un orologio di qualità!</div>
-    <a href="${pageContext.request.contextPath}/catalog"><button class="button">Aquista ora ➟</button></a>
+    <a href="${pageContext.request.contextPath}/catalog"><button class="button">Acquista ora ➟</button></a>
 </div>
 <script src="https://unpkg.com/lucide@latest"></script>
 <script>
