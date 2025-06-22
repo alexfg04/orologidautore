@@ -1,6 +1,7 @@
 package com.r1.ecommerceproject.filter;
 
 import com.r1.ecommerceproject.model.UserBean;
+import com.r1.ecommerceproject.utils.UserSession;
 
 import javax.servlet.*;
 import javax.servlet.annotation.WebFilter;
@@ -19,8 +20,8 @@ public class AdminFilter implements Filter {
 
         HttpSession session = req.getSession(false);
         if(session != null) {
-            UserBean.Role role = (UserBean.Role) session.getAttribute("userRole");
-            if(role == UserBean.Role.ADMIN) {
+            UserSession userSession = new UserSession(session);
+            if(userSession.isLoggedIn() && userSession.isAdmin()) {
                 // Utente admin, lascia passare
                 chain.doFilter(request, response);
                 return;

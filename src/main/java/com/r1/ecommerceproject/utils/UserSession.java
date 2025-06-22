@@ -67,7 +67,11 @@ public class UserSession {
     }
 
     public long getUserId() {
-        return session.getAttribute(SESSION_USER_ID_ATTRIBUTE) != null ? (long) session.getAttribute(SESSION_USER_ID_ATTRIBUTE) : -1;
+        return session.getAttribute(SESSION_USER_ID_ATTRIBUTE) != null ? (long) session.getAttribute(SESSION_USER_ID_ATTRIBUTE) : -1L;
+    }
+
+    public boolean isLoggedIn() {
+        return session.getAttribute(SESSION_USER_ID_ATTRIBUTE) != null;
     }
 
     public void setUser(long id) {

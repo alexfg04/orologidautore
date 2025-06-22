@@ -28,8 +28,8 @@ public class SigninServlet extends HttpServlet {
         UserBean user;
         UserSession userSession = new UserSession(request.getSession());
 
-        if(userSession.getUserId() != -1) {
-            request.getRequestDispatcher("/catalog").forward(request, response);
+        if(userSession.isLoggedIn()) {
+            response.sendRedirect(request.getContextPath() + "/catalog");
             return;
         }
 
@@ -48,6 +48,8 @@ public class SigninServlet extends HttpServlet {
         }
         userSession.setUser(user.getId());
         userSession.setFirstName(user.getNome());
+        userSession.setLastName(user.getCognome());
+        System.out.println("Session userId: " + request.getSession().getAttribute("userId"));
         /*
         Questo metodo trasferisce tutti i preferiti presenti nel database nella sessione
         per tracciare i preferiti più velocemente.s
@@ -55,4 +57,11 @@ public class SigninServlet extends HttpServlet {
         userSession.putAllFavoritesToSession();
         response.sendRedirect(request.getContextPath() + "/catalog");
     }
+
+    @Override
+    protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+        // Puoi reindirizzare o mostrare un messaggio
+        resp.sendRedirect(req.getContextPath() + "/login.jsp");
+    }
+
 }

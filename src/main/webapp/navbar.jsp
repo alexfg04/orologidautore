@@ -3,12 +3,11 @@
 <link rel="stylesheet" href="assets/css/navbar.css">
 
 <%
-    UserSession userSession = new UserSession(request.getSession());
-    String firstName = userSession.getFirstName();  // modifica: recupero nome
-    boolean loggedIn = (firstName != null);
+    UserSession userSession = new UserSession(request.getSession());// modifica: recupero nome
+    boolean loggedIn = userSession.isLoggedIn();
 
-    String loginUrl = request.getContextPath() + "/login.jsp";
-    String href      = loggedIn ? "#" : loginUrl;
+    String firstName = userSession.getFirstName();
+    String lastName = userSession.getLastName();
 %>
 
 <header>
@@ -27,30 +26,38 @@
         </div>
 
         <!-- Destra: Form di ricerca e icone outline -->
+
         <div class="navbar-right">
+            <!--
             <form action="search" method="get" class="search-form">
                 <input type="text" name="query" placeholder="Cerca...">
                 <button type="submit">
                     <i data-lucide="search"></i>
                 </button>
             </form>
-
-
+            -->
 
             <!-- Icona registrazione/utente con dropdown -->
-            <div class="user-dropdown<% if(loggedIn){ %> logged-in<% } %>">
-                <%if(!loggedIn) { %>
-                <a href="<%= href %>" class="user-icon">
-                    <i data-lucide="user"></i>
-                </a>
-                <%} %>
+            <!-- Invece di mostrare <a>…</a> solo se non loggato, mostra SEMPRE l’icona dentro <div> -->
+            <div class="user-dropdown">
                 <% if (loggedIn) { %>
-                <!-- modifica: visualizzo nome utente sotto icona -->
-                <span class="user-name"><%= firstName%> </span>
+                <span class="user-name">
+                    <%= ("" + firstName.charAt(0) + lastName.charAt(0)).toUpperCase()%>
+                    <i data-lucide="chevron-down"></i>
+                </span>
+                <% } else { %>
+                <span class="user-icon icon">
+                    <i data-lucide="user"></i>
+                </span>
                 <% } %>
                 <ul class="dropdown-menu">
+                    <% if (loggedIn) { %>
                     <li><a href="orders.jsp">I miei ordini</a></li>
                     <li><a href="account.jsp">Account</a></li>
+                    <li><a href="/logout">Logout</a></li>
+                    <% } else { %>
+                    <li><a href="login.jsp">Accedi</a></li>
+                    <% } %>
                 </ul>
             </div>
 

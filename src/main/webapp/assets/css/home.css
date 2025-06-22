@@ -1,3 +1,9 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
 .catalog {
     display: flex;
     flex-wrap: wrap; /* Permette alle card di adattarsi al layout */

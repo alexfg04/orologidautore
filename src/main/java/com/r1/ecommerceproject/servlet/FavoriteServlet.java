@@ -3,14 +3,11 @@ package com.r1.ecommerceproject.servlet;
 import com.r1.ecommerceproject.dao.ProductDaoImpl;
 import com.r1.ecommerceproject.utils.UserSession;
 
-import com.r1.ecommerceproject.model.ProductBean;
-
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.*;
 import java.io.IOException;
 import java.sql.SQLException;
-import java.util.Collection;
 
 @WebServlet("/favorite")
 public class FavoriteServlet extends HttpServlet {
@@ -24,7 +21,8 @@ public class FavoriteServlet extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         HttpSession session = request.getSession(false);
-        if (session == null || session.getAttribute("userId") == null) {
+        UserSession userSession = new UserSession(session);
+        if (!userSession.isLoggedIn()) {
             // non c’è sessione valida → rimanda al login
             response.setContentType("application/json");
             // set redirect with json
@@ -32,7 +30,6 @@ public class FavoriteServlet extends HttpServlet {
             return;
         }
 
-        UserSession userSession = new UserSession(session);
         long userId = userSession.getUserId();
 
         try {
