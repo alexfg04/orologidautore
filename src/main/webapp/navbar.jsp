@@ -3,7 +3,11 @@
 <link rel="stylesheet" href="assets/css/navbar.css">
 
 <%
-    UserSession userSession = new UserSession(request.getSession());
+    UserSession userSession = new UserSession(request.getSession());// modifica: recupero nome
+    boolean loggedIn = userSession.isLoggedIn();
+
+    String firstName = userSession.getFirstName();
+    String lastName = userSession.getLastName();
 %>
 
 <header>
@@ -22,18 +26,40 @@
         </div>
 
         <!-- Destra: Form di ricerca e icone outline -->
+
         <div class="navbar-right">
+            <!--
             <form action="search" method="get" class="search-form">
                 <input type="text" name="query" placeholder="Cerca...">
                 <button type="submit">
                     <i data-lucide="search"></i>
                 </button>
             </form>
+            -->
 
-            <!-- Icona utente -->
-            <a href="login.jsp">
-                <i data-lucide="user" class="icon"></i>
-            </a>
+            <!-- Icona registrazione/utente con dropdown -->
+            <!-- Invece di mostrare <a>…</a> solo se non loggato, mostra SEMPRE l’icona dentro <div> -->
+            <div class="user-dropdown">
+                <% if (loggedIn) { %>
+                <span class="user-name">
+                    <%= ("" + firstName.charAt(0) + lastName.charAt(0)).toUpperCase()%>
+                    <i data-lucide="chevron-down"></i>
+                </span>
+                <% } else { %>
+                <span class="user-icon icon">
+                    <i data-lucide="user"></i>
+                </span>
+                <% } %>
+                <ul class="dropdown-menu">
+                    <% if (loggedIn) { %>
+                    <li><a href="orders.jsp">I miei ordini</a></li>
+                    <li><a href="account.jsp">Account</a></li>
+                    <li><a href="${pageContext.request.contextPath}/logout">Logout</a></li>
+                    <% } else { %>
+                    <li><a href="login.jsp">Accedi</a></li>
+                    <% } %>
+                </ul>
+            </div>
 
             <!-- Icona cuore -->
             <a href="favorites.jsp">

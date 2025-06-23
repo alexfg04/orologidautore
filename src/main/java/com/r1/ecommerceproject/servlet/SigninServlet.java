@@ -11,7 +11,6 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
 import java.io.IOException;
 import java.sql.SQLException;
 
@@ -27,11 +26,9 @@ public class SigninServlet extends HttpServlet {
         String email = request.getParameter("email");
         String password = request.getParameter("password");
         UserBean user;
+        UserSession userSession = new UserSession(request.getSession());
 
-        HttpSession session = request.getSession();
-
-        // Se già loggato, reindirizza al catalogo
-        if(session.getAttribute("userId") != null) {
+        if(userSession.isLoggedIn()) {
             response.sendRedirect(request.getContextPath() + "/catalog");
             return;
         }
@@ -42,23 +39,29 @@ public class SigninServlet extends HttpServlet {
             request.setAttribute("errorMessage", e.getMessage());
             request.getRequestDispatcher("/login.jsp").forward(request, response);
             return;
-        }
 
-        if(user == null || !Security.verifyPassword(password, user.getPassword())) {
+        }
+        if(!Security.verifyPassword(password, user.getPassword())) {
             request.setAttribute("errorMessage", "Email o password non validi");
             request.getRequestDispatcher("/login.jsp").forward(request, response);
             return;
         }
-
-        // Salvo id e ruolo in sessione
-        session.setAttribute("userId", user.getId());
-        session.setAttribute("userRole", user.getTipologia());
-        session.setAttribute("UtenteLoggato", user.getNome() + " " + user.getCognome() + "");
-
-        if (user.getTipologia() == UserBean.Role.ADMIN) {
-            response.sendRedirect(request.getContextPath() + "/admin/dashboard.jsp");
-        } else {
-            response.sendRedirect(request.getContextPath() + "/catalog");
-        }
+        userSession.setUser(user.getId());
+        userSession.setFirstName(user.getNome());
+        userSession.setLastName(user.getCognome());
+        System.out.println("Session userId: " + request.getSession().getAttribute("userId"));
+        /*
+        Questo metodo trasferisce tutti i preferiti presenti nel database nella sessione
+        per tracciare i preferiti più velocemente.s
+        */
+        userSession.putAllFavoritesToSession();
+        response.sendRedirect(request.getContextPath() + "/catalog");
     }
+
+    @Override
+    protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+        // Puoi reindirizzare o mostrare un messaggio
+        resp.sendRedirect(req.getContextPath() + "/login.jsp");
+    }
+
 }

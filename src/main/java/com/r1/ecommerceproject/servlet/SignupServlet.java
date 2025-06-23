@@ -70,9 +70,24 @@ public class SignupServlet extends HttpServlet {
         user.setDataDiNascita(birthdate);
         user.setTipologia(UserBean.Role.UTENTE);
         try {
-            if (userDao.doSave(user)) {
+           /* if (userDao.doSave(user)) {
                 request.getSession().setAttribute("flashMessage", "Registrazione avvenuta con successo.");
                 response.sendRedirect(request.getContextPath() + "/login.jsp");
+            }*/
+            if (userDao.doSave(user)) {
+                // Verifica che l'ID sia stato assegnato dopo il salvataggio
+                long userId = user.getId();
+                if (userId <= 0) {
+                    throw new ServletException("Registrazione fallita: ID utente non valorizzato.");
+                }
+
+                // Salva l'utente in sessione
+                com.r1.ecommerceproject.utils.UserSession userSession = new com.r1.ecommerceproject.utils.UserSession(request.getSession());
+                userSession.setUser(userId);
+                userSession.setFirstName((user.getNome()));
+
+                request.getSession().setAttribute("flashMessage", "Registrazione avvenuta con successo.");
+                response.sendRedirect(request.getContextPath() + "/catalog");
             }
 
         } catch (SQLException e) {
@@ -80,3 +95,4 @@ public class SignupServlet extends HttpServlet {
         }
     }
 }
+

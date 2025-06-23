@@ -18,20 +18,20 @@ header {
     justify-content: space-between;
     align-items: center;
     width: 100%;
+    overflow: visible;
 }
 
 /* Sinistra: logo */
 .navbar-left {
-    display: flex;           /* abilita flexbox */
+    display: flex;
     align-items: center;
-    height: 60px;/* centra verticalmente */
+    height: 60px;
 }
 
-/* Regole per l’immagine del logo */
 .navbar-left img {
-    max-height: 100%;        /* l’immagine non supera l’altezza del contenitore */
-    width: auto;             /* mantiene le proporzioni */
-    display: block;          /* evita spazi bianchi indesiderati */
+    max-height: 100%;
+    width: auto;
+    display: block;
 }
 
 /* Centro: link */
@@ -50,25 +50,8 @@ header {
 .navbar-right {
     display: flex;
     align-items: center;
-}
-
-.search-form {
-    display: flex;
-    margin-right: 15px;
-}
-
-.search-form input {
-    padding: 6px 10px;
-    border: 1px solid #ccc;
-    border-radius: 4px 0 0 4px;
-}
-
-.search-form button {
-    padding: 3px 8px;
-    border: none;
-    background-color: #ffffff;
-    cursor: pointer;
-    border-radius: 0 4px 4px 0;
+    justify-content: flex-end;
+    overflow: visible;
 }
 
 /* Icone SVG outline */
@@ -77,7 +60,7 @@ header {
     height: 24px;
     stroke: #ffffff;
     stroke-width: 2;
-    fill: none; /* per farla outline */
+    fill: none;
     margin-left: 12px;
     cursor: pointer;
     transition: transform 0.2s;
@@ -96,30 +79,91 @@ header {
     position: absolute;
     top: -8px;
     right: -8px;
-    background-color: #ffffff; /* Red background */
+    background-color: #ffffff;
     color: black;
     font-size: 12px;
     font-weight: bold;
     width: 16px;
     height: 16px;
-    border-radius: 50%; /* Makes it circular */
+    border-radius: 50%;
     display: flex;
     justify-content: center;
     align-items: center;
     padding: 2px;
 }
 
-/* Hide badge when count is zero */
 .badge:empty,
 .badge[data-count="0"] {
     display: none;
 }
 
-/* Specific styles for different badge types if needed */
 .cart-badge {
-    background-color: #ffffff; /* Red for cart */
+    background-color: #ffffff;
 }
 
 .favorites-badge {
-    background-color: #ff3366; /* Pink for favorites */
+    background-color: #ff3366;
+}
+
+/* User dropdown: mantiene allineamento orizzontale */
+.user-dropdown {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+}
+
+/* Icona utente nascosta in logged-in via HTML/JSP */
+.user-dropdown .icon {
+    color: #ffffff;
+}
+
+/* Modifica: stile "carino" per nome utente */
+.user-dropdown .user-name {
+    font-size: 1.3rem;
+    color: #ffffff;
+    text-align: center;
+    line-height: 1.2;
+    letter-spacing: 0.5px;
+    text-shadow: 0 1px 2px rgba(0,0,0,0.3);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+/* Dropdown menu */
+.user-dropdown .dropdown-menu {
+    visibility: hidden;
+    opacity: 0;
+    position: absolute;
+    top: 100%;
+    right: 0;
+    width: 220px;
+    background: #00695C;
+    border: 1px solid #e0e0e0;
+    box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+    font-family: sans-serif;
+    list-style: none;
+    z-index: 2000;
+    transition: visibility 0s, opacity 0.2s ease;
+    margin-top: 2px;
+}
+
+.user-dropdown .dropdown-menu li a {
+    display: block;
+    padding: 6px 12px;
+    text-decoration: none;
+    color: #f0f0f0;
+    white-space: nowrap;
+}
+
+.user-dropdown .dropdown-menu li:hover {
+    background: #00796B;
+}
+
+.user-dropdown:hover .dropdown-menu {
+    visibility: visible;
+    opacity: 1;
 }

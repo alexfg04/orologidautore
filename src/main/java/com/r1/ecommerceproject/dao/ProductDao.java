@@ -13,4 +13,14 @@ public interface ProductDao extends BaseDao<ProductBean, Long> {
     Collection<ProductBean> doRetrievePageableProducts(int page, int pageSize, ProductFilter filter) throws SQLException;
     int doCountProducts(ProductFilter filter) throws SQLException;
 
+    //controlla se il prodotto si trova nei preferiti
+    boolean isFavorite(long userId, long productId) throws SQLException;
+
+    //aggiunge il prodotto ai preferiti
+    boolean addFavorite(long userId, long productId) throws SQLException;
+
+    //rimuove il prodotto dai preferiti
+    boolean removeFavorite(long userId, long productId) throws SQLException;
+
+    Collection<ProductBean> doRetrieveAllFavorites(String orderBy, long Id_Utente) throws SQLException;
 }

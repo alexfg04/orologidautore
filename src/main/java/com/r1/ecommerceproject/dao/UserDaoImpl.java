@@ -18,15 +18,16 @@ public class UserDaoImpl implements UserDao {
     //metodo che ci permette di effettuare l'intera registazione di un nuovo utente e dei suoi dati
     @Override
     public boolean doSave(UserBean user) throws SQLException {
-
-        //creazione di un nuovo utente nel database
-        String insertSQL ="INSERT INTO " + TABLE_NAME +
-                " (nome, cognome, email, password,tipologia,data_nascita)" +
-                "VALUES ( ?, ?, ?, ?, ?, ?)";
+        String insertSQL =
+                "INSERT INTO " + TABLE_NAME +
+                        " (nome, cognome, email, password, tipologia, data_nascita)" +
+                        " VALUES (?, ?, ?, ?, ?, ?)";
 
         try (Connection connection = DataSourceConnectionPool.getConnection();
-             PreparedStatement stmt = connection.prepareStatement(insertSQL)) {
+             PreparedStatement stmt = connection.prepareStatement(
+                     insertSQL, Statement.RETURN_GENERATED_KEYS)) {
 
+            // 1) Imposta i parametri
             stmt.setString(1, user.getNome());
             stmt.setString(2, user.getCognome());
             stmt.setString(3, user.getEmail());
@@ -34,10 +35,23 @@ public class UserDaoImpl implements UserDao {
             stmt.setString(5, user.getTipologia().name());
             stmt.setDate(6, Date.valueOf(user.getDataDiNascita()));
 
-            if(stmt.executeUpdate() == 0){
-                throw new SQLException("Creazione utente fallita");
+            // 2) Esegui l'INSERT
+            int affectedRows = stmt.executeUpdate();
+            if (affectedRows == 0) {
+                throw new SQLException("Creazione utente fallita: nessuna riga inserita.");
+            }
+
+            // 3) Recupera la chiave generata e valorizza il bean
+            try (ResultSet generatedKeys = stmt.getGeneratedKeys()) {
+                if (generatedKeys.next()) {
+                    long newId = generatedKeys.getLong(1);
+                    user.setId(newId);      // usa il setter corretto del tuo bean
+                } else {
+                    throw new SQLException("Creazione utente fallita: impossibile ottenere l'ID generato.");
+                }
             }
         }
+
         return true;
     }
 
@@ -145,6 +159,7 @@ public class UserDaoImpl implements UserDao {
             try (ResultSet rs = preparedStatement.executeQuery()) {
                 if (rs.next()) {
                     user = new UserBean();
+                    user.setId(rs.getLong("id_utente"));
                     user.setNome(rs.getString("nome"));
                     user.setCognome(rs.getString("cognome"));
                     user.setEmail(rs.getString("email"));

@@ -2,6 +2,8 @@ package com.r1.ecommerceproject.servlet;
 
 
 
+import com.r1.ecommerceproject.utils.UserSession;
+
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -17,12 +19,10 @@ public class LogoutServlet extends HttpServlet {
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
 
-        HttpSession session = request.getSession(false); // prendi la sessione, se esiste
-        if (session != null) {
-            session.invalidate(); // elimina la sessione, quindi logout
-        }
+        UserSession userSession = new UserSession(request.getSession());
+        userSession.logout();
 
         // reindirizza al login o alla home pubblica
-        response.sendRedirect(request.getContextPath() + "/login.jsp");
+        response.sendRedirect(request.getContextPath() + "/index.jsp");
     }
 }

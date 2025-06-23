@@ -3,16 +3,8 @@
 <%@ page import="java.util.Iterator" %>
 <%@ page import="com.r1.ecommerceproject.utils.Utils" %>
 <%@ page import="java.util.ArrayList" %>
+<%@ page import="static com.r1.ecommerceproject.utils.Utils.isChecked" %>
 <%@ page contentType="text/html; charset=UTF-8" language="java" %>
-<%!
-    public boolean isChecked(String[] selected, String value) {
-        if (selected == null) return false;
-        for (String s : selected) {
-            if (value.equals(s)) return true;
-        }
-        return false;
-    }
-%>
 <%
     // filtri
     String[] types = request.getParameterValues("tipo");
@@ -57,17 +49,29 @@
         <form id="filter-form" action="${pageContext.request.contextPath}/catalog" method="get">
             <div class="filter-group">
                 <h3>Tipo</h3>
-                <label><input type="checkbox" name="tipo"
-                              value="Classico" <%= isChecked(types, "Classico") ? "checked" : "" %>> Classico</label>
-                <label><input type="checkbox" name="tipo"
-                              value="Estivo" <%= isChecked(types, "Estivo") ? "checked" : "" %>> Estivo</label>
-                <label><input type="checkbox" name="tipo"
-                              value="Digitale" <%= isChecked(types, "Digitale") ? "checked" : "" %>>Digitale</label>
+                <label>
+                    <input type="checkbox" name="tipo"
+                              value="Classico" <%= isChecked(types, "Classico") ? "checked" : "" %>>
+                    <span class="checkmark"></span>
+                    Classico
+                </label>
+                <label>
+                    <input type="checkbox" name="tipo"
+                              value="Estivo" <%= isChecked(types, "Estivo") ? "checked" : "" %>>
+                    <span class="checkmark"></span>
+                    Estivo
+                </label>
+                <label>
+                    <input type="checkbox" name="tipo"
+                              value="Digitale" <%= isChecked(types, "Digitale") ? "checked" : "" %>>
+                    <span class="checkmark"></span>
+                    Digitale
+                </label>
             </div>
 
             <div class="filter-group">
                 <div class="price-slider-header">
-                    <div class="price-slider-title">Prezzo</div>
+                    <div class="price-slider-title">Prezzo massimo</div>
                     <div class="price-value">€<span
                             id="price-display"><%= priceParam == null ? "0" : priceParam %></span></div>
                 </div>
@@ -86,22 +90,46 @@
 
             <div class="filter-group">
                 <h3>Colore</h3>
-                <label><input type="checkbox" name="colore"
-                              value="Nero" <%= isChecked(colors, "Nero") ? "checked" : "" %>>Nero</label>
-                <label><input type="checkbox" name="colore"
-                              value="Blu" <%= isChecked(colors, "Blu") ? "checked" : "" %>>Blu</label>
-                <label><input type="checkbox" name="colore"
-                              value="Bianco" <%= isChecked(colors, "Bianco") ? "checked" : "" %>> Bianco</label>
+                <label>
+                    <input type="checkbox" name="colore"
+                              value="Nero" <%= isChecked(colors, "Nero") ? "checked" : "" %>>
+                    <span class="checkmark"></span>
+                    Nero
+                </label>
+                <label>
+                    <input type="checkbox" name="colore"
+                              value="Blu" <%= isChecked(colors, "Blu") ? "checked" : "" %>>
+                    <span class="checkmark"></span>
+                    Blu
+                </label>
+                <label>
+                    <input type="checkbox" name="colore"
+                              value="Bianco" <%= isChecked(colors, "Bianco") ? "checked" : "" %>>
+                    <span class="checkmark"></span>
+                    Bianco
+                </label>
             </div>
 
             <div class="filter-group">
                 <h3>Taglia</h3>
-                <label><input type="checkbox" name="taglia"
-                              value="One Size" <%= isChecked(sizes, "One Size") ? "checked" : "" %>> One Size</label>
-                <label><input type="checkbox" name="taglia"
-                              value="31 mm" <%= isChecked(sizes, "31 mm") ? "checked" : "" %>> 31 mm</label>
-                <label><input type="checkbox" name="taglia"
-                              value="41 mm" <%= isChecked(sizes, "41 mm") ? "checked" : "" %>> 41 mm</label>
+                <label>
+                    <input type="checkbox" name="taglia"
+                              value="One Size" <%= isChecked(sizes, "One Size") ? "checked" : "" %>>
+                    <span class="checkmark"></span>
+                    One Size
+                </label>
+                <label>
+                    <input type="checkbox" name="taglia"
+                              value="31 mm" <%= isChecked(sizes, "31 mm") ? "checked" : "" %>>
+                    <span class="checkmark"></span>
+                    31 mm
+                </label>
+                <label>
+                    <input type="checkbox" name="taglia"
+                              value="41 mm" <%= isChecked(sizes, "41 mm") ? "checked" : "" %>>
+                    <span class="checkmark"></span>
+                    41 mm
+                </label>
             </div>
         </form>
     </aside>
@@ -134,10 +162,11 @@
                     </p>
                     <p class="desc"><%= p.getDescrizione()%>
                     </p>
-                    <button class="wishlist" aria-label="Aggiungi ai preferiti">
-                        <svg viewBox="0 0 24 24" class="heart-icon">
-                            <path class="heart-shape"
-                                  d="M12 21.35l-1.45-1.32
+                </a>
+                <button class="wishlist" aria-label="Aggiungi ai preferiti" data-codice="<%= p.getCodiceProdotto() %>">
+                    <svg viewBox="0 0 24 24" class="heart-icon">
+                        <path class="<%= userSession.isFavorite(p.getCodiceProdotto()) ? "heart-full" : "heart-shape" %>"
+                              d="M12 21.35l-1.45-1.32
                                  C5.4 15.36 2 12.28 2 8.5
                                  2 5.42 4.42 3 7.5 3
                                  c1.74 0 3.41.81 4.5 2.09
@@ -145,10 +174,9 @@
                                  19.58 3 22 5.42 22 8.5
                                  c0 3.78-3.4 6.86-8.55 11.54
                                  L12 21.35z">
-                            </path>
-                        </svg>
-                    </button>
-                </a>
+                        </path>
+                    </svg>
+                </button>
             </div>
             <% } %>
             <!-- ... altre card ... -->
@@ -191,64 +219,9 @@
     </main>
 </div>
 <script src="https://unpkg.com/lucide@latest"></script>
+<script src="${pageContext.request.contextPath}/assets/js/catalog-scripts.js"></script>
 <script>
     lucide.createIcons();
-    const r = document.getElementById('price-range');
-    const v = document.getElementById('price-display');
-    const filterForm = document.getElementById('filter-form');
-
-    function aggiorna() {
-        v.textContent = r.value;
-    }
-
-    r.addEventListener('input', aggiorna);
-    window.addEventListener('load', aggiorna);
-
-    r.addEventListener('change', function () {
-        if (r.value === '0') {
-            // Disabilita l'input così non viene inviato nel form
-            r.disabled = true;
-        }
-        filterForm.submit();
-    })
-
-    // Aggiungi event listener a tutti i checkbox per invio automatico
-    document.querySelectorAll('input[type="checkbox"]').forEach(checkbox => {
-        checkbox.addEventListener('change', function () {
-            if (r.value === '0') {
-                r.disabled = true;
-            }
-            filterForm.submit();
-        });
-    });
-
-    document.querySelectorAll('.sorting-tabs button').forEach(button => {
-        button.addEventListener('click', function () {
-            // Ottieni il valore di ordinamento dal data-attribute
-            const sortValue = this.getAttribute('data-sort');
-            const priceRange = document.getElementById('price-range');
-
-            // Se il prezzo è zero, disabilita l'input così non verrà inviato
-            if (priceRange && priceRange.value === "0") {
-                priceRange.disabled = true;
-            }
-
-            // Imposta il valore nell'input nascosto
-            document.getElementById('sort-input').value = sortValue;
-
-            // Rimuovi la classe active da tutti i pulsanti
-            document.querySelectorAll('.sorting-tabs button').forEach(btn => {
-                btn.classList.remove('active');
-            });
-
-            // Aggiungi la classe active a questo pulsante
-            this.classList.add('active');
-
-            // Invia il form
-            filterForm.submit();
-        });
-    });
-
 </script>
 </body>
 </html>

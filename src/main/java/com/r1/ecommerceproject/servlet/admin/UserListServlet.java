@@ -12,6 +12,8 @@ import java.io.IOException;
 import java.sql.SQLException;
 import java.util.List;
 
+import static com.r1.ecommerceproject.utils.Utils.escapeJson;
+
 @WebServlet("/admin/users")
 public class UserListServlet extends HttpServlet {
 
@@ -64,10 +66,5 @@ public class UserListServlet extends HttpServlet {
             response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
             response.getWriter().write("{\"error\":\"JSON_ERROR\",\"message\":\"Errore nel generare JSON\"}");
         }
-    }
-
-    private String escapeJson(String s) {
-        if (s == null) return "";
-        return s.replace("\"", "\\\"").replace("\n", "").replace("\r", "");
     }
 }

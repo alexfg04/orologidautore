@@ -1,5 +1,7 @@
 package com.r1.ecommerceproject.dao;
 
+import com.r1.ecommerceproject.model.ProductBean;
+
 import java.sql.SQLException;
 import java.util.Collection;
 
@@ -9,4 +11,5 @@ public interface BaseDao<T, K> {
     void doSave(T entity) throws SQLException;
     void doUpdate(T entity) throws SQLException;
     void doDelete(K id) throws SQLException;
-}
+
+    }

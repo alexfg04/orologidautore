@@ -3,6 +3,7 @@ package com.r1.ecommerceproject.utils;
 import javax.servlet.http.HttpServletRequest;
 import java.net.URLEncoder;
 import java.nio.charset.StandardCharsets;
+import java.util.Arrays;
 
 public class Utils {
     /**
@@ -55,5 +56,29 @@ public class Utils {
         return url.substring(0, start)
                 + newValue
                 + url.substring(end);
+    }
+
+    /**
+     * 
+     * @param selected array di stringhe in input
+     * @param value valure da controllare
+     * @return true se il valore è presente altrimenti falso
+     */
+
+    public static boolean isChecked(String[] selected, String value) {
+        if (selected == null) return false;
+        return Arrays.asList(selected).contains(value);
+    }
+
+    /**
+     * Sfugge i caratteri speciali in una stringa JSON sostituendo le virgolette doppie con virgolette escaped
+     * e rimuovendo i caratteri di nuova riga e ritorno carrello.
+     *
+     * @param s la stringa di input da fare l'escape, può essere null
+     * @return la stringa JSON con l'escape, o una stringa vuota se l'input è null
+     */
+    public static String escapeJson(String s) {
+        if (s == null) return "";
+        return s.replace("\"", "\\\"").replace("\n", "").replace("\r", "");
     }
 }
