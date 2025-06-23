@@ -9,6 +9,7 @@
     <link rel="stylesheet" href="${pageContext.request.contextPath}/assets/css/marche.css">
     <link rel="stylesheet" href="${pageContext.request.contextPath}/assets/css/PreviewFooter.css">
     <link rel="stylesheet" href="${pageContext.request.contextPath}/assets/css/footer.css">
+
 </head>
 <body>
 <%@ include file="navbar.jsp" %>
@@ -22,6 +23,7 @@
 <script>
     lucide.createIcons();
 </script>
+<jsp:include page="IndexProduct.jsp" />
 <%@ include file="marche.jsp" %>
 <%@ include file="body.jsp" %>
 <%@ include file="previewFooter.jsp" %>
