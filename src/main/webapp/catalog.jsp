@@ -6,6 +6,13 @@
 <%@ page import="static com.r1.ecommerceproject.utils.Utils.isChecked" %>
 <%@ page contentType="text/html; charset=UTF-8" language="java" %>
 <%
+    UserSession sessioneUtente = new UserSession(request.getSession());
+    if (!sessioneUtente.isLoggedIn()) {
+        response.sendRedirect(request.getContextPath() + "/login.jsp");
+        return;
+    }
+
+
     // filtri
     String[] types = request.getParameterValues("tipo");
     String[] colors = request.getParameterValues("colore");

@@ -1,4 +1,8 @@
 /* Header */
+
+@import url("layout.css");
+
+/* Header */
 header {
     width: 100%;
     background-color: #00695C;
@@ -11,7 +15,7 @@ header {
 /* Navbar */
 .navbar {
     max-width: 1200px;
-    margin: 0 auto; /* Centra la navbar */
+    margin: 0 auto;
     padding: 10px 20px;
     box-sizing: border-box;
     display: flex;
@@ -20,6 +24,7 @@ header {
     width: 100%;
     overflow: visible;
 }
+
 
 /* Sinistra: logo */
 .navbar-left {

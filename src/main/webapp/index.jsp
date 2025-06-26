@@ -1,4 +1,11 @@
 <%@ page contentType="text/html; charset=UTF-8" %>
+<%
+    UserSession sessioneUtente = new UserSession(request.getSession());
+    if (!sessioneUtente.isLoggedIn()) {
+        response.sendRedirect(request.getContextPath() + "/login.jsp");
+        return;
+    }
+%>
 <!DOCTYPE html>
 <html>
 <head>

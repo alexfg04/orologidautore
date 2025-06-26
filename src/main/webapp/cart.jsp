@@ -8,6 +8,12 @@
 <%@ page contentType="text/html; charset=UTF-8" %>
 <%@ page import="java.util.*, com.r1.ecommerceproject.model.ProductBean" %>
 <%
+
+    UserSession sessioneUtente = new UserSession(request.getSession());
+    if (!sessioneUtente.isLoggedIn()) {
+        response.sendRedirect(request.getContextPath() + "/login.jsp");
+        return;
+    }
     HashMap<ProductBean, Integer> cartItems = (HashMap<ProductBean, Integer>) request.getAttribute("cart");
 
     if (cartItems == null) {
@@ -85,8 +91,10 @@
             <p><strong>€ <%= String.format("%.2f", totalPrice) %>
             </strong></p>
         </div>
-        <button class="button">Acquista ➟</button>
-    </div>
+            <form action="${pageContext.request.contextPath}/checkout" method="post">
+                <button type="submit" class="button">Acquista ➟</button>
+            </form>
+        </div>
     <% } %>
 </div>
 <script>
