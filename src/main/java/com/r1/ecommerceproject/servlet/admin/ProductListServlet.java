@@ -51,6 +51,7 @@ public class ProductListServlet extends HttpServlet {
             int i = 0;
             for (ProductBean p : products) {
                 json.append("{")
+                        .append("\"codiceProdotto\":").append(p.getCodiceProdotto()).append(",") // <--- qui
                         .append("\"nome\":\"").append(escapeJson(p.getNome())).append("\",")
                         .append("\"marca\":\"").append(escapeJson(p.getMarca())).append("\",")
                         .append("\"categoria\":\"").append(escapeJson(p.getCategoria())).append("\",")

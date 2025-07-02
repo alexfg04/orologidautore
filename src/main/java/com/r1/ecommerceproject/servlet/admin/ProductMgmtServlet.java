@@ -1,4 +1,4 @@
-package com.r1.ecommerceproject.servlet;
+package com.r1.ecommerceproject.servlet.admin;
 
 import com.r1.ecommerceproject.dao.ProductDaoImpl;
 import com.r1.ecommerceproject.model.ProductBean;
@@ -21,7 +21,7 @@ import javax.servlet.http.Part;
 /**
  * Servlet implementation class ProductMgmtServlet
  */
-@WebServlet("/gestione")
+@WebServlet("/admin/gestione")
 @MultipartConfig(fileSizeThreshold = 1024 * 1024 * 2, // 2MB
         maxFileSize = 1024 * 1024 * 10, // 10MB
         maxRequestSize = 1024 * 1024 * 50)
@@ -55,18 +55,10 @@ public class ProductMgmtServlet extends HttpServlet {
             System.out.println("Error:" + e.getMessage());
         }
 
-        String sort = request.getParameter("sort");
-
-        try {
-            request.removeAttribute("products");
-            request.setAttribute("products", model.doRetrieveAll(sort));
-        } catch (SQLException e) {
-            System.out.println("Error:" + e.getMessage());
-        }
-
-        RequestDispatcher dispatcher = getServletContext().getRequestDispatcher("/ManageView.jsp");
-        dispatcher.forward(request, response);
+        // Non più forward, ma redirect con ancoraggio alla tabella
+        response.sendRedirect(request.getContextPath() + "/admin/dashboard.jsp#tableProdotti");
     }
+
 
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
@@ -117,7 +109,8 @@ public class ProductMgmtServlet extends HttpServlet {
             }
         }
 
-        response.sendRedirect(request.getContextPath() + "/gestione");
+        response.sendRedirect(request.getContextPath() + "/admin/dashboard.jsp#tableProdotti");
+
     }
 
     private String extractFileName(Part part) {

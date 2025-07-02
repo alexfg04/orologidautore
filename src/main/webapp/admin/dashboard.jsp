@@ -8,6 +8,82 @@
     <title>Dashboard con Tabella Utenti AJAX</title>
     <link rel="stylesheet" href="${pageContext.request.contextPath}/admin/css/style.css"/>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" />
+    <style>
+        /* Container form */
+        #tableAddProduct form {
+            max-width: 600px;
+            margin: 20px auto;
+            background: #f9f9f9;
+            padding: 20px 30px;
+            border-radius: 8px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        /* Form fields */
+        #tableAddProduct form div {
+            margin-bottom: 15px;
+            display: flex;
+            flex-direction: column;
+        }
+
+        /* Label styling */
+        #tableAddProduct label {
+            font-weight: 600;
+            margin-bottom: 6px;
+            color: #004d40;
+        }
+
+        /* Inputs and textarea */
+        #tableAddProduct input[type="text"],
+        #tableAddProduct input[type="number"],
+        #tableAddProduct input[type="file"],
+        #tableAddProduct textarea {
+            padding: 8px 12px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            font-size: 1rem;
+            transition: border-color 0.3s ease;
+        }
+
+        #tableAddProduct input[type="text"]:focus,
+        #tableAddProduct input[type="number"]:focus,
+        #tableAddProduct input[type="file"]:focus,
+        #tableAddProduct textarea:focus {
+            border-color: #00796b;
+            outline: none;
+        }
+
+        /* Textarea resize */
+        #tableAddProduct textarea {
+            resize: vertical;
+            min-height: 80px;
+        }
+
+        /* Submit button */
+        #tableAddProduct button[type="submit"] {
+            background-color: #00796b;
+            color: white;
+            padding: 10px 20px;
+            font-weight: 700;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 1.1rem;
+            transition: background-color 0.3s ease;
+        }
+
+        #tableAddProduct button[type="submit"]:hover {
+            background-color: #004d40;
+        }
+
+        /* Responsive */
+        @media (max-width: 640px) {
+            #tableAddProduct form {
+                padding: 15px 20px;
+            }
+        }
+    </style>
 </head>
 <body>
 
@@ -19,6 +95,8 @@
     <a href="#" onclick="showTable('table2', this)">Tabella 2</a>
     <a href="#" onclick="showTable('table3', this)">Tabella 3</a>
     <a href="#" onclick="showTable('tableProdotti', this)">Prodotti</a>
+    <a href="#" onclick="showTable('tableAddProduct', this)">Aggiungi Prodotto</a>
+
 
 </nav>
 
@@ -95,6 +173,51 @@
     <section id="tableProdotti" class="table-section">
         <h3>Tabella Prodotti</h3>
         <div id="dashboard-products"> <!-- Tabella prodotti caricata dinamicamente qui --></div>
+    </section>
+
+    <section id="tableAddProduct" class="table-section">
+        <h3>Aggiungi Nuovo Prodotto</h3>
+        <form id="formAddProduct" method="post" action="${pageContext.request.contextPath}/admin/gestione" enctype="multipart/form-data">
+            <div>
+                <label for="nome">Nome:</label>
+                <input type="text" id="nome" name="nome" required />
+            </div>
+            <div>
+                <label for="marca">Marca:</label>
+                <input type="text" id="marca" name="marca" required />
+            </div>
+            <div>
+                <label for="categoria">Categoria:</label>
+                <input type="text" id="categoria" name="categoria" required />
+            </div>
+            <div>
+                <label for="modello">Modello:</label>
+                <input type="text" id="modello" name="modello" required />
+            </div>
+            <div>
+                <label for="descrizione">Descrizione:</label>
+                <textarea id="descrizione" name="descrizione" rows="3" required></textarea>
+            </div>
+            <div>
+                <label for="taglia">Taglia:</label>
+                <input type="text" id="taglia" name="taglia" />
+            </div>
+            <div>
+                <label for="materiale">Materiale:</label>
+                <input type="text" id="materiale" name="materiale" />
+            </div>
+            <div>
+                <label for="prezzo">Prezzo (€):</label>
+                <input type="number" id="prezzo" name="prezzo" step="0.01" min="0" required />
+            </div>
+            <div>
+                <label for="image">Immagine:</label>
+                <input type="file" id="image" name="image" accept="image/*" required />
+            </div>
+            <div>
+                <button type="submit">Aggiungi Prodotto</button>
+            </div>
+        </form>
     </section>
 
 </main>
@@ -287,11 +410,12 @@
 
                         var html = "<table><thead><tr>" +
                             "<th>Nome</th><th>Marca</th><th>Categoria</th><th>Prezzo</th><th>Modello</th>" +
-                            "<th>Descrizione</th><th>Taglia</th><th>Materiale</th><th>Immagine</th>" +
+                            "<th>Descrizione</th><th>Taglia</th><th>Materiale</th><th>Immagine</th><th>Azione</th>" +
                             "</tr></thead><tbody>";
 
                         prodotti.forEach(function(prodotto) {
                             html += "<tr>" +
+
                                 "<td>" + prodotto.nome + "</td>" +
                                 "<td>" + prodotto.marca + "</td>" +
                                 "<td>" + prodotto.categoria + "</td>" +
@@ -301,12 +425,13 @@
                                 "<td>" + prodotto.taglia + "</td>" +
                                 "<td>" + prodotto.materiale + "</td>" +
                                 "<td><img src='" + prodotto.image_url + "' alt='immagine prodotto' style='max-width:50px; max-height:50px;'/></td>" +
-                                "</tr>";
+                                "<td>" +
+                                "<a href='gestione?action=delete&product_id=" + prodotto.codiceProdotto + "'>Elimina</a>" +
+                                "</td>"
+                            "</tr>";
                         });
 
                         html += "</tbody></table>";
-
-                        // Se vuoi metti l'HTML in un div dedicato, ad esempio con id="dashboard-products"
                         document.getElementById("dashboard-products").innerHTML = html;
 
                     } catch (e) {
