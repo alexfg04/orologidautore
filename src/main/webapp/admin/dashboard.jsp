@@ -1,3 +1,4 @@
+
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <!DOCTYPE html>
 <html lang="it">
@@ -17,6 +18,8 @@
     <a href="#" class="active" onclick="showTable('table1', this)">Tabella 1</a>
     <a href="#" onclick="showTable('table2', this)">Tabella 2</a>
     <a href="#" onclick="showTable('table3', this)">Tabella 3</a>
+    <a href="#" onclick="showTable('tableProdotti', this)">Prodotti</a>
+
 </nav>
 
 <div class="overlay" id="overlay"></div>
@@ -43,7 +46,6 @@
     </div>
 
     <section id="table1" class="table-section active">
-
         <!-- Box informativi -->
         <div class="dashboard-boxes">
             <div class="box">
@@ -52,12 +54,12 @@
                 <p class="percent"><i class="fa fa-long-arrow-up"></i>5.674% <span>Since Last Months</span></p>
                 <i class="fa fa-line-chart box-icon"></i>
             </div>
-                <div class="box">
-                    <h3 style="text-align: left">Vendite</h3>
-                    <h1 style="text-align: left; margin-bottom: 1px;">1000</h1>
-                    <p class="percent"><i class="fa fa-long-arrow-down"></i>12.674% <span>Since Last Months</span></p>
-                    <i class="fa fa-circle-o-notch box-icon"></i>
-                </div>
+            <div class="box">
+                <h3 style="text-align: left">Vendite</h3>
+                <h1 style="text-align: left; margin-bottom: 1px;">1000</h1>
+                <p class="percent"><i class="fa fa-long-arrow-down"></i>12.674% <span>Since Last Months</span></p>
+                <i class="fa fa-circle-o-notch box-icon"></i>
+            </div>
             <div class="box">
                 <h3 style="text-align: left">Vendite</h3>
                 <h1 style="text-align: left; margin-bottom: 1px;">1000</h1>
@@ -70,7 +72,6 @@
         <div class="chart-container">
             <canvas id="myChart"></canvas>
         </div>
-
     </section>
 
     <section id="table2" class="table-section">
@@ -91,10 +92,16 @@
         </table>
     </section>
 
+    <section id="tableProdotti" class="table-section">
+        <h3>Tabella Prodotti</h3>
+        <div id="dashboard-products"> <!-- Tabella prodotti caricata dinamicamente qui --></div>
+    </section>
+
 </main>
 
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 <script>
+    // Chart.js
     function getDatiMensili() {
         return [10, 12, 9, 14, 18, 20, 25, 22, 17, 15, 13, 11]; // dati esempio
     }
@@ -124,11 +131,8 @@
             }
         }
     });
-</script>
 
-<!-- Script per menu, dropdown, tab ecc. (rimane invariato) -->
-
-<script>
+    // Menu hamburger e overlay
     const sidebar = document.getElementById('sidebar');
     const hamburger = document.querySelector('.hamburger');
     const overlay = document.getElementById('overlay');
@@ -155,16 +159,23 @@
         if(id === "table2"){
             loadUserList();
         }
+        if(id === "tableProdotti"){
+            loadProductList();
+        }
     }
 
+
+    // Dropdown utente
     function toggleDropdown(button) {
         const dropdown = button.parentElement;
         const isOpen = dropdown.classList.toggle('open');
+        // Chiude altri dropdown aperti
         document.querySelectorAll('.dropdown.open').forEach(d => {
             if (d !== dropdown) d.classList.remove('open');
         });
     }
 
+    // Chiude menu se ridimensionamento viewport grande
     window.addEventListener('resize', () => {
         if(window.innerWidth > 600) {
             sidebar.classList.remove('open');
@@ -174,13 +185,19 @@
         }
     });
 
+    // Chiude dropdown se click esterno
     window.addEventListener('click', (e) => {
         if (!e.target.closest('.dropdown')) {
             document.querySelectorAll('.dropdown.open').forEach(d => d.classList.remove('open'));
         }
     });
 
+    // Carica lista utenti via AJAX con paginazione
+    let utentiCaricati = false;
     function loadUserList() {
+        if(utentiCaricati) return; // evita chiamate ripetute inutili
+        utentiCaricati = true;
+
         console.log("✅ [JS] Inizio chiamata AJAX a /admin/users");
 
         var xhr = new XMLHttpRequest();
@@ -202,7 +219,7 @@
 
                             var html = "<table><thead><tr><th>Nome</th><th>Cognome</th><th>Email</th><th>Ruolo</th><th>Info</th></tr></thead><tbody>";
 
-                            paginaUtenti.forEach(function(user, index) {
+                            paginaUtenti.forEach(function(user) {
                                 html += "<tr>" +
                                     "<td>" + user.nome + "</td>" +
                                     "<td>" + user.cognome + "</td>" +
@@ -249,9 +266,60 @@
         xhr.send();
     }
 
-    if(document.querySelector('section.table-section.active').id === "table2"){
-        loadUserList();
+    // Caricamento iniziale se sezione utenti è attiva
+    window.onload = () => {
+        if(document.querySelector('section.table-section.active').id === "table2"){
+            loadUserList();
+        }
+    };
+
+    function loadProductList() {
+        console.log("✅ [JS] Inizio chiamata AJAX a /admin/products");
+
+        var xhr = new XMLHttpRequest();
+        xhr.open("GET", "${pageContext.request.contextPath}/admin/products", true);
+
+        xhr.onreadystatechange = function() {
+            if (xhr.readyState === 4) {
+                if (xhr.status === 200) {
+                    try {
+                        var prodotti = JSON.parse(xhr.responseText);
+
+                        var html = "<table><thead><tr>" +
+                            "<th>Nome</th><th>Marca</th><th>Categoria</th><th>Prezzo</th><th>Modello</th>" +
+                            "<th>Descrizione</th><th>Taglia</th><th>Materiale</th><th>Immagine</th>" +
+                            "</tr></thead><tbody>";
+
+                        prodotti.forEach(function(prodotto) {
+                            html += "<tr>" +
+                                "<td>" + prodotto.nome + "</td>" +
+                                "<td>" + prodotto.marca + "</td>" +
+                                "<td>" + prodotto.categoria + "</td>" +
+                                "<td>" + prodotto.prezzo + "€</td>" +
+                                "<td>" + prodotto.modello + "</td>" +
+                                "<td>" + prodotto.descrizione + "</td>" +
+                                "<td>" + prodotto.taglia + "</td>" +
+                                "<td>" + prodotto.materiale + "</td>" +
+                                "<td><img src='" + prodotto.image_url + "' alt='immagine prodotto' style='max-width:50px; max-height:50px;'/></td>" +
+                                "</tr>";
+                        });
+
+                        html += "</tbody></table>";
+
+                        // Se vuoi metti l'HTML in un div dedicato, ad esempio con id="dashboard-products"
+                        document.getElementById("dashboard-products").innerHTML = html;
+
+                    } catch (e) {
+                        document.getElementById("dashboard-products").innerHTML = "<p>Errore nel formato dati prodotti.</p>";
+                    }
+                } else {
+                    document.getElementById("dashboard-products").innerHTML = "<p>Errore server: codice " + xhr.status + "</p>";
+                }
+            }
+        };
+        xhr.send();
     }
+
 </script>
 
 </body>

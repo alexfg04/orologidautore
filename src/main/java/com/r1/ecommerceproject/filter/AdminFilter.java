@@ -1,4 +1,4 @@
-package com.r1.ecommerceproject.filter;
+/*package com.r1.ecommerceproject.filter;
 
 import com.r1.ecommerceproject.model.UserBean;
 import com.r1.ecommerceproject.utils.UserSession;
@@ -32,3 +32,4 @@ public class AdminFilter implements Filter {
         res.sendRedirect(req.getContextPath() + "/index.jsp");
     }
 }
+*/
