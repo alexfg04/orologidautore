@@ -115,13 +115,13 @@ CREATE TABLE Preferiti (
 
 -- Tabella di associazione Contiene
 CREATE TABLE Prodotti_Ordine (
-    numero_ordine VARCHAR(8) NOT NULL,
+    id BIGINT NOT NULL,
     codice_prodotto INT NOT NULL,
     prezzo_prodotto DECIMAL(10,2) NOT NULL,
     IVA_prodotto DECIMAL(10,2) NOT NULL,
     quantita INT NOT NULL,
-    PRIMARY KEY (numero_ordine, codice_prodotto),
-    CONSTRAINT fk_contiene_ordine FOREIGN KEY (numero_ordine) REFERENCES Ordine(numero_ordine),
+    PRIMARY KEY (id, codice_prodotto),
+    CONSTRAINT fk_contiene_ordine FOREIGN KEY (id) REFERENCES Ordine(id),
     CONSTRAINT fk_contiene_prodotto FOREIGN KEY (codice_prodotto) REFERENCES Prodotto(codice_prodotto)
 ) ;
 
