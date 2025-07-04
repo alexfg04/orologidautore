@@ -78,16 +78,15 @@ CREATE TABLE Fattura (
 
 -- Creazione della tabella Ordine
 CREATE TABLE Ordine (
-    numero_ordine VARCHAR(8) PRIMARY KEY,
+    id            BIGINT AUTO_INCREMENT PRIMARY KEY,
+    numero_ordine VARCHAR(17) NOT NULL,
     data_ordine TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
     data_arrivo TIMESTAMP,
     note TEXT NOT NULL,
     totale_ordine DECIMAL(10,2) NOT NULL,
     id_utente INT NOT NULL,
-    id_metodo INT NOT NULL,
     id_indirizzo INT NOT NULL,
     CONSTRAINT fk_ordine_utente FOREIGN KEY (id_utente) REFERENCES Utente(id_utente),
-    CONSTRAINT fk_ordine_metodo FOREIGN KEY (id_metodo) REFERENCES MetodoPagamento(id_metodo),
     CONSTRAINT fk_ordine_indirizzo FOREIGN KEY (id_indirizzo) REFERENCES Indirizzo(id_indirizzo)
 );
 
