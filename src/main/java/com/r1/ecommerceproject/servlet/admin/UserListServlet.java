@@ -1,6 +1,6 @@
 package com.r1.ecommerceproject.servlet.admin;
 
-import com.r1.ecommerceproject.dao.UserDaoImpl;
+import com.r1.ecommerceproject.dao.impl.UserDaoImpl;
 import com.r1.ecommerceproject.model.UserBean;
 
 import javax.servlet.ServletException;

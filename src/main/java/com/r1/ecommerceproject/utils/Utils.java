@@ -4,6 +4,7 @@ import javax.servlet.http.HttpServletRequest;
 import java.net.URLEncoder;
 import java.nio.charset.StandardCharsets;
 import java.util.Arrays;
+import java.util.UUID;
 
 public class Utils {
     /**
@@ -80,5 +81,22 @@ public class Utils {
     public static String escapeJson(String s) {
         if (s == null) return "";
         return s.replace("\"", "\\\"").replace("\n", "").replace("\r", "");
+    }
+
+    public static String escapeHtml(String s) {
+        if (s == null) return "";
+        return s.replace("&", "&amp;")
+                .replace("<", "&lt;")
+                .replace(">", "&gt;")
+                .replace("\"", "&quot;")
+                .replace("'", "&#39;");
+    }
+
+    public static String generateOrderNumber() {
+        return UUID.randomUUID()
+                .toString()
+                .replace("-", "")
+                .substring(0, 8)
+                .toUpperCase();
     }
 }

@@ -178,7 +178,7 @@
                 <% if (defaultShippingAddress != null) { %>
                 <p class="address-detail"><strong id="displayUserName"><%= userName %></strong></p>
                 <p class="address-detail" id="displayVia"><%= defaultShippingAddress.getVia() %></p>
-                <p class="address-detail" id="displayCittaCap"><%= defaultShippingAddress.getCitta() %>, <%= defaultShippingAddress.getCAP() %></p>
+                <p class="address-detail" id="displayCittaCap"><%= defaultShippingAddress.getCitta() %>, <%= defaultShippingAddress.getCap() %></p>
                 <p class="address-detail">Italia</p>
                 <p class="contact-detail" id="displayUserPhone">Telefono: </p>
                 <p class="contact-detail" id="displayUserEmail">Email: <%= userEmail %></p>
@@ -199,7 +199,7 @@
                 <% for (AddressBean addr : userAddresses) { %>
                 <option value="<%= addr.getId() %>"
                         <%= (defaultShippingAddress != null && addr.getId() == defaultShippingAddress.getId()) ? "selected" : "" %>>
-                    <%= addr.getVia() %>, <%= addr.getCitta() %>, <%= addr.getCAP() %> (<%= addr.getTipologia().name().toLowerCase() %>)
+                    <%= addr.getVia() %>, <%= addr.getCitta() %>, <%= addr.getCap() %> (<%= addr.getTipologia().name().toLowerCase() %>)
                 </option>
                 <% } %>
             </select>
@@ -233,7 +233,7 @@
             <% for (ProductBean p : cartItems.keySet()) { %>
             <% int qty = cartItems.get(p); %>
             <div class="order-item">
-                <img src="<%= request.getContextPath() + "/" + p.getImmagine() %>" alt="Immagine di <%= p.getNome() %>">
+                <img src="<%= p.getImmagine() %>" alt="Immagine di <%= p.getNome() %>">
                 <div class="item-details">
                     <h3><%= p.getNome() %></h3>
                     <p><%= p.getDescrizione() %></p>
@@ -296,12 +296,12 @@
         <ul style="list-style: none; padding: 0;" id="existingAddressesList">
             <% for (AddressBean addr : userAddresses) { %>
             <li data-id="<%= addr.getId() %>" style="display: flex; justify-content: space-between; align-items: center; padding: 8px 0; border-bottom: 1px dashed #eee;">
-                <span><%= addr.getVia() %>, <%= addr.getCitta() %>, <%= addr.getCAP() %> (<%= addr.getTipologia().name().toLowerCase() %>)</span>
+                <span><%= addr.getVia() %>, <%= addr.getCitta() %>, <%= addr.getCap() %> (<%= addr.getTipologia().name().toLowerCase() %>)</span>
                 <div>
                     <button type="button" class="button-modify edit-address-btn" data-id="<%= addr.getId() %>"
                             data-via="<%= addr.getVia() %>"
                             data-citta="<%= addr.getCitta() %>"
-                            data-cap="<%= addr.getCAP() %>"
+                            data-cap="<%= addr.getCap() %>"
                             data-tipologia="<%= addr.getTipologia().name().toLowerCase() %>">Modifica</button>
                 </div>
             </li>
@@ -382,7 +382,7 @@
                 id: '<%= defaultShippingAddress != null ? defaultShippingAddress.getId() : "" %>',
                 via: '<%= defaultShippingAddress != null ? defaultShippingAddress.getVia() : "" %>',
                 citta: '<%= defaultShippingAddress != null ? defaultShippingAddress.getCitta() : "" %>',
-                cap: '<%= defaultShippingAddress != null ? defaultShippingAddress.getCAP() : "" %>',
+                cap: '<%= defaultShippingAddress != null ? defaultShippingAddress.getCap() : "" %>',
                 tipologia: '<%= defaultShippingAddress != null ? defaultShippingAddress.getTipologia().name().toLowerCase() : "" %>'
             };
             openAddressModal(false, currentAddress);
@@ -423,10 +423,8 @@
         event.preventDefault(); // Previene il ricaricamento della pagina
 
         const formData = new FormData(addressForm);
-        const action = formData.get('action');
-
         try {
-            const response = await fetch(addressForm.action, {
+            const response = await fetch("address", {
                 method: 'POST',
                 body: new URLSearchParams(formData)
             });
@@ -450,7 +448,7 @@
                 // la lista aggiornata di tutti gli indirizzi, non solo quello modificato.
                 // Per questo esempio, ci concentriamo sull'aggiornamento dell'indirizzo predefinito.
                 // Un semplice ricaricamento della pagina (come fallback per la lista nel modale e la select) è comunque efficace.
-                window.location.reload(); // Ricarica per aggiornare lista indirizzi esistenti e select
+                // window.location.reload(); // Ricarica per aggiornare lista indirizzi esistenti e select
             } else {
                 const errorText = await response.text();
                 alert('Errore durante il salvataggio dell\'indirizzo: ' + errorText);
@@ -482,9 +480,9 @@
 
         displayUserName.textContent = currentUserName; // Il nome utente rimane lo stesso
         displayVia.textContent = address.via;
-        displayCittaCap.textContent = `${address.citta}, ${address.cap}`;
-        displayUserPhone.textContent = `Telefono: ${currentUserPhone}`;
-        displayUserEmail.textContent = `Email: ${currentUserEmail}`;
+        displayCittaCap.textContent = address.citta + ', ' + address.cap;
+        displayUserPhone.textContent =  "Telefono " + address.phone;
+        displayUserEmail.textContent = "Email " + address.email;
 
         // Aggiorna anche l'ID nascosto per il form di conferma ordine
         finalShippingAddressId.value = address.id;
@@ -495,6 +493,7 @@
     if (changeSelectedAddressBtn) {
         changeSelectedAddressBtn.addEventListener('click', async () => {
             const selectedId = selectedAddressSelect.value;
+            console.log('Cambiato indirizzo selezionato:', selectedId);
             finalShippingAddressId.value = selectedId;
 
             try {
@@ -502,12 +501,17 @@
                 // e/o per recuperare i suoi dettagli per l'aggiornamento dinamico della pagina.
                 // Questo presuppone che la tua AddressServlet abbia un'azione 'set_default' o simile
                 // che restituisca l'indirizzo appena impostato come JSON.
-                const response = await fetch(`${pageContext.request.contextPath}/address?action=set_default&addressId=${selectedId}`, {
-                    method: 'GET' // O POST se preferisci, ma GET con parametri è comune per queste azioni
+                const params = new URLSearchParams();
+                params.append('action', 'setDefault');
+                params.append('addressId', selectedId);
+                const response = await fetch("address", {
+                    method: 'POST',
+                    body: params
                 });
 
                 if (response.ok) {
                     const defaultAddr = await response.json();
+                    console.log(defaultAddr);
                     updateDisplayedAddress(defaultAddr); // Aggiorna la visualizzazione principale
                     alert('Indirizzo di spedizione predefinito aggiornato.');
                 } else {

@@ -1,5 +1,6 @@
-package com.r1.ecommerceproject.dao;
+package com.r1.ecommerceproject.dao.impl;
 
+import com.r1.ecommerceproject.dao.ProductDao;
 import com.r1.ecommerceproject.utils.DataSourceConnectionPool;
 import com.r1.ecommerceproject.model.ProductBean;
 import com.r1.ecommerceproject.model.ProductBean.Stato;

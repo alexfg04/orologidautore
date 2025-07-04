@@ -1,5 +1,5 @@
 <%@ page import="java.util.Collection" %>
-<%@ page import="com.r1.ecommerceproject.dao.ProductDaoImpl" %>
+<%@ page import="com.r1.ecommerceproject.dao.impl.ProductDaoImpl" %>
 <%@ page import="com.r1.ecommerceproject.model.ProductBean" %>
 <%@ page import="com.r1.ecommerceproject.utils.UserSession" %>
 <%@ page contentType="text/html; charset=UTF-8" %>

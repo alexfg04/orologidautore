@@ -1,5 +1,6 @@
-package com.r1.ecommerceproject.dao;
+package com.r1.ecommerceproject.dao.impl;
 
+import com.r1.ecommerceproject.dao.UserDao;
 import com.r1.ecommerceproject.model.AddressBean;
 import com.r1.ecommerceproject.model.PhoneNumberBean;
 import com.r1.ecommerceproject.model.UserBean;
@@ -69,7 +70,7 @@ public class UserDaoImpl implements UserDao {
 
             preparedStatement.setString(1,Indirizzo.getVia());
             preparedStatement.setString(2,Indirizzo.getCitta());
-            preparedStatement.setString(3,Indirizzo.getCAP());
+            preparedStatement.setString(3,Indirizzo.getCap());
 
 
             if(preparedStatement.executeUpdate() == 0) {

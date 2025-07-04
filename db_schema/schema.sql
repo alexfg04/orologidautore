@@ -18,7 +18,8 @@ CREATE TABLE Indirizzo (
     id_indirizzo INT AUTO_INCREMENT PRIMARY KEY,
     via VARCHAR(100) NOT NULL,
     citta VARCHAR(50) NOT NULL,
-    CAP VARCHAR(10) NOT NULL
+    CAP VARCHAR(5) NOT NULL,
+    tipologia ENUM('FATTURAZIONE', 'SPEDIZIONE', 'ENTRAMBI') NOT NULL
 );
 
 -- Creazione della tabella NumeroTelefono
@@ -36,7 +37,7 @@ CREATE TABLE MetodoPagamento (
     tipo_di_carta VARCHAR(50) NOT NULL,
     numero_di_carta VARCHAR(20) NOT NULL,
     scadenza DATE NOT NULL,
-    cvv VARCHAR(5) NOT NULL
+    cvv VARCHAR(3) NOT NULL
 ) ;
 
 -- Creazione della tabella Prodotto
@@ -77,16 +78,18 @@ CREATE TABLE Fattura (
 
 -- Creazione della tabella Ordine
 CREATE TABLE Ordine (
-    numero_ordine INT AUTO_INCREMENT PRIMARY KEY,
+    numero_ordine VARCHAR(8) PRIMARY KEY,
     data_ordine TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
     data_arrivo TIMESTAMP,
     note TEXT NOT NULL,
     totale_ordine DECIMAL(10,2) NOT NULL,
     id_utente INT NOT NULL,
     id_metodo INT NOT NULL,
+    id_indirizzo INT NOT NULL,
     CONSTRAINT fk_ordine_utente FOREIGN KEY (id_utente) REFERENCES Utente(id_utente),
-    CONSTRAINT fk_ordine_metodo FOREIGN KEY (id_metodo) REFERENCES MetodoPagamento(id_metodo)
-) ;
+    CONSTRAINT fk_ordine_metodo FOREIGN KEY (id_metodo) REFERENCES MetodoPagamento(id_metodo),
+    CONSTRAINT fk_ordine_indirizzo FOREIGN KEY (id_indirizzo) REFERENCES Indirizzo(id_indirizzo)
+);
 
 -- Creazione della tabella Recensione
 CREATE TABLE Recensione (
@@ -113,7 +116,7 @@ CREATE TABLE Preferiti (
 
 -- Tabella di associazione Contiene
 CREATE TABLE Prodotti_Ordine (
-    numero_ordine INT NOT NULL,
+    numero_ordine VARCHAR(8) NOT NULL,
     codice_prodotto INT NOT NULL,
     prezzo_prodotto DECIMAL(10,2) NOT NULL,
     IVA_prodotto DECIMAL(10,2) NOT NULL,
@@ -125,7 +128,7 @@ CREATE TABLE Prodotti_Ordine (
 
 -- Tabella di associazione Genera
 CREATE TABLE Fatture_Generate (
-    numero_ordine INT NOT NULL,
+    numero_ordine VARCHAR(8) NOT NULL,
     numero_fattura INT NOT NULL,
     PRIMARY KEY (numero_ordine, numero_fattura),
     CONSTRAINT fk_genera_ordine FOREIGN KEY (numero_ordine) REFERENCES Ordine(numero_ordine),
@@ -147,9 +150,7 @@ CREATE TABLE Indirizzo_Utente (
     id_indirizzo INT NOT NULL,
     id_utente INT NOT NULL,
     is_default BOOLEAN NOT NULL DEFAULT FALSE,
-    tipologia ENUM('FATTURAZIONE', 'SPEDIZIONE', 'ENTRAMBI') NOT NULL,
     PRIMARY KEY (id_indirizzo , id_utente),
-    UNIQUE (id_utente , id_indirizzo, tipologia),
     CONSTRAINT fk_locato_indirizzo FOREIGN KEY (id_indirizzo)
         REFERENCES Indirizzo (id_indirizzo),
     CONSTRAINT fk_locato_utente FOREIGN KEY (id_utente)
