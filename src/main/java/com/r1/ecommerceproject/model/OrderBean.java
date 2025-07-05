@@ -1,23 +1,23 @@
 package com.r1.ecommerceproject.model;
 
+import java.math.BigDecimal;
 import java.sql.Time;
 import java.sql.Timestamp;
 import java.time.LocalDate;
 
 public class OrderBean {
-    private String id;
+
+    private String numeroOrdine;
     private String note;
     private Timestamp dataOrdine;
     private Timestamp dataArrivo;
-    private double totale;
+    private BigDecimal totale;
 
-    public String getId() {
-        return id;
-    }
 
-    public void setId(String id) {
-        this.id = id;
-    }
+    public String getNumeroOrdine() { return numeroOrdine; }
+
+    public void setNumeroOrdine(String numeroOrdine) { this.numeroOrdine = numeroOrdine; }
+
 
     public String getNote() {
         return note;
@@ -43,11 +43,13 @@ public class OrderBean {
         this.dataArrivo = dataArrivo;
     }
 
-    public double getTotale() {
+    public BigDecimal getTotale() {
         return totale;
     }
 
-    public void setTotale(double totale) {
+    public void setTotale(BigDecimal totale) {
         this.totale = totale;
     }
+
+
 }

@@ -5,11 +5,9 @@ import com.r1.ecommerceproject.model.AddressBean;
 import com.r1.ecommerceproject.model.OrderBean;
 import com.r1.ecommerceproject.model.ProductBean;
 import com.r1.ecommerceproject.utils.DataSourceConnectionPool;
+import com.r1.ecommerceproject.utils.Utils;
 
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
+import java.sql.*;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
@@ -23,21 +21,21 @@ public class OrderDaoImpl implements OrderDao {
     );
 
     @Override
-    public OrderBean doRetrieveById(String orderId) throws SQLException {
-        String query = "SELECT * FROM " + ORDER_TABLE + " WHERE numero_ordine = ?";
+    public OrderBean doRetrieveById(String orderNumber) throws SQLException {
+        String query = "SELECT * FROM " + ORDER_TABLE + " WHERE id = ?";
         OrderBean order = null;
 
         try(Connection conn = DataSourceConnectionPool.getConnection();
             PreparedStatement stmt = conn.prepareStatement(query)) {
-            stmt.setString(1, orderId);
+            stmt.setString(1, orderNumber);
             try(ResultSet rs = stmt.executeQuery()) {
                 if(rs.next()) {
                     order = new OrderBean();
-                    order.setId(rs.getString("numero_ordine"));
+                    order.setNumeroOrdine(rs.getString("numero_ordine"));
                     order.setNote(rs.getString("note"));
                     order.setDataOrdine(rs.getTimestamp("data_ordine"));
                     order.setDataArrivo(rs.getTimestamp("data_arrivo"));
-                    order.setTotale(rs.getDouble("totale"));
+                    order.setTotale(rs.getBigDecimal("totale"));
                 }
             }
         }
@@ -45,8 +43,13 @@ public class OrderDaoImpl implements OrderDao {
     }
 
     @Override
-    public void doDelete(String orderId) throws SQLException {
-
+    public void doDelete(String orderNumber) throws SQLException {
+        String sql = "DELETE FROM " + ORDER_TABLE + " WHERE id = ?";
+        try (Connection conn = DataSourceConnectionPool.getConnection();
+             PreparedStatement stmt = conn.prepareStatement(sql)) {
+            stmt.setString(1, orderNumber);
+            stmt.executeUpdate();
+        }
     }
 
     @Override
@@ -71,11 +74,11 @@ public class OrderDaoImpl implements OrderDao {
             try(ResultSet rs = stmt.executeQuery()) {
                 while(rs.next()) {
                     OrderBean order = new OrderBean();
-                    order.setId(rs.getString("numero_ordine"));
+                    order.setNumeroOrdine(rs.getString("numero_ordine"));
                     order.setNote(rs.getString("note"));
                     order.setDataOrdine(rs.getTimestamp("data_ordine"));
                     order.setDataArrivo(rs.getTimestamp("data_arrivo"));
-                    order.setTotale(rs.getDouble("totale"));
+                    order.setTotale(rs.getBigDecimal("totale"));
                     orders.add(order);
                 }
             }
@@ -83,14 +86,63 @@ public class OrderDaoImpl implements OrderDao {
         return orders;
     }
 
+    //metodo implementato per togliere l'errore riguardo l'implementazione del metodo doSave in BaseDao
     @Override
-    public void doSave(OrderBean entity) throws SQLException {
+    public void doSave(OrderBean order)throws SQLException {}
+
+    @Override
+    public void doSave(OrderBean order, long addressId, long userId) throws SQLException{
+
+        String orderNumber=Utils.generateOrderNumber();
+        String insertSql =
+                "INSERT INTO Ordine (numero_ordine, data_ordine,data_arrivo, note, totale_ordine, id_utente, id_indirizzo) " +
+                        "VALUES (?, ? ,?, ?, ?, ?, ?)";
+
+        try (Connection connection = DataSourceConnectionPool.getConnection();
+             PreparedStatement ps = connection.prepareStatement(insertSql)) {
+
+            ps.setString(1, orderNumber);
+            ps.setTimestamp(2, new Timestamp(order.getDataOrdine().getTime()));
+            ps.setTimestamp(3, new Timestamp(order.getDataArrivo().getTime()));
+            ps.setString(4, order.getNote());
+            ps.setBigDecimal(5, order.getTotale());
+            ps.setLong(6, userId);
+            ps.setLong(7, addressId);
+            ps.executeUpdate();
+        }
+    }
+
+
+    //metodo che fa la stessa cosa di doSave
+    @Override
+    public void doUpdate(OrderBean entity) throws SQLException {
 
     }
 
     @Override
-    public void doUpdate(OrderBean entity) throws SQLException {
+    public void doUpdate(OrderBean entity, long addressId, long userId) throws SQLException {
+        String updateSql =
+                "UPDATE Ordine SET " +
+                        "data_ordine = ?,"+
+                        "data_arrivo   = ?, " +
+                        "note          = ?, " +
+                        "totale_ordine = ?, " +
+                        "id_utente     = ?, " +
+                        "id_indirizzo  = ?  " +
+                        "WHERE numero_ordine = ?";
 
+        try (Connection conn = DataSourceConnectionPool.getConnection();
+             PreparedStatement ps = conn.prepareStatement(updateSql)) {
+
+            ps.setTimestamp(1, new Timestamp(entity.getDataOrdine().getTime()));
+            ps.setTimestamp(2, new Timestamp(entity.getDataArrivo().getTime()));
+            ps.setString(3, entity.getNote());
+            ps.setBigDecimal(4, entity.getTotale());
+            ps.setLong(5, userId);
+            ps.setLong(6, addressId);
+            ps.setString(7, entity.getNumeroOrdine());
+            ps.executeUpdate();
+        }
     }
 
     @Override
@@ -104,11 +156,11 @@ public class OrderDaoImpl implements OrderDao {
             try(ResultSet rs = preparedStatement.executeQuery()) {
                 while(rs.next()) {
                     OrderBean order = new OrderBean();
-                    order.setId(rs.getString("numero_ordine"));
+                    order.setNumeroOrdine(rs.getString("numero_ordine"));
                     order.setNote(rs.getString("note"));
                     order.setDataOrdine(rs.getTimestamp("data_ordine"));
                     order.setDataArrivo(rs.getTimestamp("data_arrivo"));
-                    order.setTotale(rs.getDouble("totale"));
+                    order.setTotale(rs.getBigDecimal("totale"));
                     orders.add(order);
                 }
             }
@@ -116,10 +168,6 @@ public class OrderDaoImpl implements OrderDao {
         return orders;
     }
 
-    @Override
-    public void doSave(OrderBean order, long addressId, long PaymentId) throws SQLException {
-
-    }
 
     @Override
     public Collection<ProductBean> doRetrieveAllProductsInOrder(String orderId) throws SQLException {
@@ -136,7 +184,7 @@ public class OrderDaoImpl implements OrderDao {
                     ProductBean product = new ProductBean();
                     product.setCodiceProdotto(rs.getInt("codice_prodotto"));
                     product.setNome(rs.getString("nome"));
-                    product.setPrezzo(rs.getDouble("prezzo"));
+                    product.setPrezzo(rs.getBigDecimal("prezzo"));
                     product.setStato(ProductBean.Stato.valueOf(rs.getString("stato")));
                     product.setCategoria(rs.getString("categoria"));
                     product.setTaglia(rs.getString("taglia"));
@@ -153,6 +201,29 @@ public class OrderDaoImpl implements OrderDao {
 
     @Override
     public AddressBean doRetrieveAddress(String orderId) throws SQLException {
-        return null;
+        AddressBean address = null;
+        String query = "SELECT i.id_indirizzo, i.via, i.citta, i.CAP, i.tipologia " +
+                "FROM Ordine o JOIN Indirizzo i ON o.id_indirizzo = i.id_indirizzo " +
+                "WHERE o.numero_ordine = ?";
+
+        try (Connection con = DataSourceConnectionPool.getConnection(); // Assumi che tu abbia un DataSource definito
+             PreparedStatement ps = con.prepareStatement(query)) {
+
+            ps.setString(1, orderId);
+
+            try (ResultSet rs = ps.executeQuery()) {
+                if (rs.next()) {
+                    address = new AddressBean();
+                    address.setId(rs.getLong("id_indirizzo"));
+                    address.setVia(rs.getString("via"));
+                    address.setCitta(rs.getString("citta"));
+                    address.setCap(rs.getString("CAP"));
+                    address.setTipologia(AddressBean.Tipo.valueOf(rs.getString("tipologia")));
+                }
+            }
+        }
+
+        return address;
     }
+
 }

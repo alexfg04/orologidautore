@@ -1,6 +1,7 @@
 package com.r1.ecommerceproject.model;
 
 import java.io.Serializable;
+import java.math.BigDecimal;
 import java.util.Objects;
 
 public class ProductBean implements Serializable {
@@ -13,7 +14,7 @@ public class ProductBean implements Serializable {
 	String categoria;
 	String taglia;
 	String marca;
-	double prezzo;
+	BigDecimal prezzo;
 	Stato stato;
 	String modello;
 	String descrizione;
@@ -76,11 +77,11 @@ public class ProductBean implements Serializable {
 		this.marca = marca;
 	}
 
-	public double getPrezzo() {
+	public BigDecimal getPrezzo() {
 		return prezzo;
 	}
 
-	public void setPrezzo(double prezzo) {
+	public void setPrezzo(BigDecimal prezzo) {
 		this.prezzo = prezzo;
 	}
 
@@ -134,10 +135,24 @@ public class ProductBean implements Serializable {
 
 	@Override
 	public boolean equals(Object o) {
+		if (this == o) return true;
 		if (o == null || getClass() != o.getClass()) return false;
+
 		ProductBean that = (ProductBean) o;
-		return getCodiceProdotto() == that.getCodiceProdotto() && Double.compare(getPrezzo(), that.getPrezzo()) == 0 && Objects.equals(getMateriale(), that.getMateriale()) && Objects.equals(getCategoria(), that.getCategoria()) && Objects.equals(getTaglia(), that.getTaglia()) && Objects.equals(getMarca(), that.getMarca()) && getStato() == that.getStato() && Objects.equals(getModello(), that.getModello()) && Objects.equals(getDescrizione(), that.getDescrizione()) && Objects.equals(getNome(), that.getNome()) && Objects.equals(getImmagine(), that.getImmagine());
+
+		return getCodiceProdotto() == that.getCodiceProdotto()
+				&& getPrezzo().compareTo(that.getPrezzo()) == 0
+				&& Objects.equals(getMateriale(), that.getMateriale())
+				&& Objects.equals(getCategoria(), that.getCategoria())
+				&& Objects.equals(getTaglia(), that.getTaglia())
+				&& Objects.equals(getMarca(), that.getMarca())
+				&& getStato() == that.getStato()
+				&& Objects.equals(getModello(), that.getModello())
+				&& Objects.equals(getDescrizione(), that.getDescrizione())
+				&& Objects.equals(getNome(), that.getNome())
+				&& Objects.equals(getImmagine(), that.getImmagine());
 	}
+
 
 	@Override
 	public int hashCode() {
