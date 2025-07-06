@@ -5,9 +5,9 @@ import com.paypal.orders.OrderRequest;
 import com.paypal.orders.OrdersCaptureRequest;
 import com.r1.ecommerceproject.dao.OrderDao;
 import com.r1.ecommerceproject.dao.impl.OrderDaoImpl;
-import com.r1.ecommerceproject.dao.impl.ProductDaoImpl;
 import com.r1.ecommerceproject.model.PaymentBean;
 import com.r1.ecommerceproject.utils.PayPalClient;
+import com.r1.ecommerceproject.utils.UserSession;
 
 import javax.servlet.*;
 import javax.servlet.annotation.WebServlet;
@@ -56,6 +56,10 @@ public class PaymentServlet extends HttpServlet {
                 payment.setEmailPayer(order.payer().email());
                 payment.setToken(token);
                 orderDao.savePayment(payment, orderId);
+
+                // svuota il carrello
+                UserSession userSession = new UserSession(req.getSession(false));
+                userSession.clearCart();
 
                 // risposta temporanea, CAMBIARE
                 resp.getWriter().println("Pagamento avvenuto con successo.");
