@@ -14,6 +14,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.io.IOException;
+import java.math.BigDecimal;
 import java.sql.SQLException; // Importa SQLException per la gestione degli errori del DAO
 import java.util.HashMap;
 import java.util.List;
@@ -56,7 +57,7 @@ public class CheckoutServlet extends HttpServlet {
             }
 
             // 3. Calcola il totale basandoti sulla Map con ProductBean
-            double totalPrice = userSession.getCartTotal();
+            BigDecimal totalPrice = userSession.getCartTotal();
 
             AddressDao addressDao = new AddressDaoImpl();
             List<AddressBean> addresses = addressDao.doRetrieveAddressesByUserId(userSession.getUserId());

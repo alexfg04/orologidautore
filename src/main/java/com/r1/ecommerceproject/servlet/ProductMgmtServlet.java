@@ -6,6 +6,7 @@ import com.r1.ecommerceproject.dao.ProductDao;
 
 import java.io.File;
 import java.io.IOException;
+import java.math.BigDecimal;
 import java.sql.SQLException;
 import java.util.UUID;
 
@@ -92,7 +93,7 @@ public class ProductMgmtServlet extends HttpServlet {
                 String categoria = request.getParameter("categoria");
                 String taglia = request.getParameter("taglia");
                 String marca = request.getParameter("marca");
-                double prezzo = Double.parseDouble(request.getParameter("prezzo"));
+                BigDecimal prezzo = new BigDecimal(request.getParameter("prezzo"));
                 String modello = request.getParameter("modello");
                 String descrizione = request.getParameter("descrizione");
                 String nome = request.getParameter("nome");

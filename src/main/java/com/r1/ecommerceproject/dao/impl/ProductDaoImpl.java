@@ -33,7 +33,7 @@ public class ProductDaoImpl implements ProductDao {
 
             preparedStatement.setString(1, product.getNome());
             preparedStatement.setString(2, product.getDescrizione());
-            preparedStatement.setDouble(3, product.getPrezzo());
+            preparedStatement.setBigDecimal(3, product.getPrezzo());
             preparedStatement.setString(4, product.getModello());
             preparedStatement.setString(5, product.getMarca());
             preparedStatement.setString(6, product.getCategoria());
@@ -71,7 +71,7 @@ public class ProductDaoImpl implements ProductDao {
         bean.setCategoria(rs.getString("categoria"));
         bean.setTaglia(rs.getString("taglia"));
         bean.setMarca(rs.getString("marca"));
-        bean.setPrezzo(rs.getDouble("prezzo"));
+        bean.setPrezzo(rs.getBigDecimal("prezzo"));
         bean.setStato(Stato.valueOf(rs.getString("stato")));
         bean.setModello(rs.getString("modello"));
         bean.setDescrizione(rs.getString("descrizione"));

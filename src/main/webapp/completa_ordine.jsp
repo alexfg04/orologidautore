@@ -4,6 +4,8 @@
 <%@ page import="com.r1.ecommerceproject.model.UserBean" %>
 <%@ page import="com.r1.ecommerceproject.utils.UserSession" %>
 <%@ page import="java.util.HashMap, java.util.Map, java.util.List" %>
+<%@ page import="java.math.RoundingMode" %>
+<%@ page import="java.math.BigDecimal" %>
 
 
 <%
@@ -19,8 +21,8 @@
             (HashMap<ProductBean, Integer>) request.getAttribute("cartItems");
 
     // Recupera il totale calcolato dalla servlet
-    Double totalPriceObject = (Double) request.getAttribute("totalPrice");
-    double total = (totalPriceObject != null) ? totalPriceObject : 0.0;
+    BigDecimal totalPriceObject = (BigDecimal) request.getAttribute("totalPrice");
+    BigDecimal total = (totalPriceObject != null) ? totalPriceObject : BigDecimal.ZERO;
 
     // Recupera l'indirizzo predefinito e la lista di indirizzi dalla request
     AddressBean defaultShippingAddress = (AddressBean) request.getAttribute("defaultShippingAddress");
@@ -192,9 +194,10 @@
         <%-- Sezione per selezionare un altro indirizzo (se ce ne sono più di uno) --%>
         <%-- La logica per aggiornare questa select dinamicamente sarà più complessa via AJAX,
              quindi per ora la lasciamo come era, e un ricaricamento pagina la aggiornerà. --%>
-        <% if (userAddresses != null && userAddresses.size() > 1) { %>
+        <% if (userAddresses != null) { %>
         <div class="info-box">
             <h3>Seleziona un altro indirizzo</h3>
+            <label for="selectedAddress"></label>
             <select name="selectedAddress" id="selectedAddress" class="form-control">
                 <% for (AddressBean addr : userAddresses) { %>
                 <option value="<%= addr.getId() %>"
@@ -203,7 +206,7 @@
                 </option>
                 <% } %>
             </select>
-            <button class="button-modify" id="changeSelectedAddressBtn">CAMBIA</button>
+            <button class="button-modify" id="changeSelectedAddressBtn">IMPOSTA</button>
         </div>
         <% } %>
 
@@ -221,7 +224,10 @@
         </div>
 
         <form action="${pageContext.request.contextPath}/processOrder" method="post">
-            <input type="hidden" name="shippingAddressId" value="<%= (defaultShippingAddress != null) ? defaultShippingAddress.getId() : "" %>" id="finalShippingAddressId">
+            <input type="hidden" name="addressId" value="<%= (defaultShippingAddress != null) ? defaultShippingAddress.getId() : "" %>" id="finalShippingAddressId">
+            <input type="hidden" name="total" value="<%= total.add(BigDecimal.valueOf(6.50)) %>">
+            <label for="note"></label>
+            <textarea name="note" id="note" placeholder="Note per il tuo ordine (facoltativo)"></textarea>
             <button type="submit" class="confirm-button">Conferma e Paga</button>
         </form>
     </div>
@@ -239,7 +245,8 @@
                     <p><%= p.getDescrizione() %></p>
                     <p class="price">€ <%= String.format("%.2f", p.getPrezzo()) %></p>
                     <p>Qtà: <%= qty %></p>
-                    <p class="subtotal">Subtotale: € <%= String.format("%.2f", p.getPrezzo() * qty) %></p>
+                    <p class="subtotal">Subtotale: € <%= String.format("%.2f", p.getPrezzo().multiply(BigDecimal.valueOf(qty))
+                            .setScale(2, RoundingMode.HALF_UP)) %></p>
                 </div>
             </div>
             <% } %>
@@ -247,8 +254,8 @@
 
         <div class="order-total">
             <p>Subtotale: € <%= String.format("%.2f", total) %></p>
-            <p>Spedizione: € 6.50</p>
-            <h3>TOTALE: <strong>€ <%= String.format("%.2f", total + 6.50) %></strong></h3>
+            <p>Spedizione: € <%= String.format("%.2f", 6.50) %></p>
+            <h3>TOTALE: <strong>€ <%= String.format("%.2f", total.add(BigDecimal.valueOf(6.50))) %></strong></h3>
         </div>
     </div>
 </div>

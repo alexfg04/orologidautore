@@ -3,6 +3,7 @@ package com.r1.ecommerceproject.dao.impl;
 import com.r1.ecommerceproject.dao.OrderDao;
 import com.r1.ecommerceproject.model.AddressBean;
 import com.r1.ecommerceproject.model.OrderBean;
+import com.r1.ecommerceproject.model.PaymentBean;
 import com.r1.ecommerceproject.model.ProductBean;
 import com.r1.ecommerceproject.utils.DataSourceConnectionPool;
 import com.r1.ecommerceproject.utils.Utils;
@@ -88,26 +89,47 @@ public class OrderDaoImpl implements OrderDao {
 
     //metodo implementato per togliere l'errore riguardo l'implementazione del metodo doSave in BaseDao
     @Override
-    public void doSave(OrderBean order)throws SQLException {}
+    public void doSave(OrderBean entity) throws SQLException {
+
+    }
 
     @Override
-    public void doSave(OrderBean order, long addressId, long userId) throws SQLException{
+    public Long doSave(OrderBean order, long addressId, long userId) throws SQLException{
 
-        String orderNumber=Utils.generateOrderNumber();
+        String orderNumber= Utils.generateOrderNumber();
         String insertSql =
-                "INSERT INTO Ordine (numero_ordine, data_ordine,data_arrivo, note, totale_ordine, id_utente, id_indirizzo) " +
-                        "VALUES (?, ? ,?, ?, ?, ?, ?)";
+                "INSERT INTO Ordine (numero_ordine, note, totale_ordine, id_utente, id_indirizzo) " +
+                        "VALUES (?, ? ,?, ?, ?)";
 
         try (Connection connection = DataSourceConnectionPool.getConnection();
-             PreparedStatement ps = connection.prepareStatement(insertSql)) {
+             PreparedStatement ps = connection.prepareStatement(insertSql, Statement.RETURN_GENERATED_KEYS)) {
 
             ps.setString(1, orderNumber);
-            ps.setTimestamp(2, new Timestamp(order.getDataOrdine().getTime()));
-            ps.setTimestamp(3, new Timestamp(order.getDataArrivo().getTime()));
-            ps.setString(4, order.getNote());
-            ps.setBigDecimal(5, order.getTotale());
-            ps.setLong(6, userId);
-            ps.setLong(7, addressId);
+            ps.setString(2, order.getNote());
+            ps.setBigDecimal(3, order.getTotale());
+            ps.setLong(4, userId);
+            ps.setLong(5, addressId);
+            ps.executeUpdate();
+
+            ResultSet rs = ps.getGeneratedKeys();
+            if(rs.next()) {
+                return rs.getLong(1);
+            } else {
+                throw new SQLException("Errore durante l'inserimento dell'ordine");
+            }
+        }
+    }
+
+    @Override
+    public void doSaveOrderProduct(Long orderId, ProductBean product, int quantity) throws SQLException {
+        String query = "INSERT INTO Prodotti_Ordine (id_ordine, codice_prodotto,  prezzo_unitario, quantita) VALUES (?, ?, ?, ?)";
+        try (Connection conn = DataSourceConnectionPool.getConnection();
+             PreparedStatement ps = conn.prepareStatement(query)) {
+
+            ps.setLong(1, orderId);
+            ps.setLong(2, product.getCodiceProdotto());
+            ps.setBigDecimal(3, product.getPrezzo());
+            ps.setInt(4, quantity);
             ps.executeUpdate();
         }
     }
@@ -170,15 +192,15 @@ public class OrderDaoImpl implements OrderDao {
 
 
     @Override
-    public Collection<ProductBean> doRetrieveAllProductsInOrder(String orderId) throws SQLException {
+    public Collection<ProductBean> doRetrieveAllProductsInOrder(Long orderId) throws SQLException {
         String query = "SELECT p.* FROM " + ORDER_TABLE + " o " +
-                "JOIN Prodotti_Ordine po ON o.numero_ordine = po.numero_ordine " +
+                "JOIN Prodotti_Ordine po ON o.id = po.id " +
                 "JOIN Prodotto p ON po.codice_prodotto = p.codice_prodotto " +
                 "WHERE o.numero_ordine = ?";
         Collection<ProductBean> products = new ArrayList<>();
         try(Connection connection = DataSourceConnectionPool.getConnection();
             PreparedStatement preparedStatement = connection.prepareStatement(query)) {
-            preparedStatement.setString(1, orderId);
+            preparedStatement.setLong(1, orderId);
             try(ResultSet rs = preparedStatement.executeQuery()) {
                 while(rs.next()) {
                     ProductBean product = new ProductBean();
@@ -224,6 +246,21 @@ public class OrderDaoImpl implements OrderDao {
         }
 
         return address;
+    }
+
+    @Override
+    public void savePayment(PaymentBean payment, Long orderId) throws SQLException {
+        String query = "INSERT INTO PagamentoOrdine (id_ordine, token, paypal_email, amount, currency) VALUES (?, ?, ?, ?, ?)";
+
+        try (Connection conn = DataSourceConnectionPool.getConnection();
+        PreparedStatement ps = conn.prepareStatement(query)) {
+            ps.setLong(1, orderId);
+            ps.setString(2, payment.getToken());
+            ps.setString(3, payment.getEmailPayer());
+            ps.setBigDecimal(4, payment.getAmount());
+            ps.setString(5, payment.getCurrency());
+            ps.executeUpdate();
+        }
     }
 
 }

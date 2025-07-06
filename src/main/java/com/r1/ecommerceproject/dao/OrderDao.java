@@ -2,6 +2,7 @@ package com.r1.ecommerceproject.dao;
 
 import com.r1.ecommerceproject.model.AddressBean;
 import com.r1.ecommerceproject.model.OrderBean;
+import com.r1.ecommerceproject.model.PaymentBean;
 import com.r1.ecommerceproject.model.ProductBean;
 
 import java.sql.SQLException;
@@ -12,8 +13,10 @@ public interface OrderDao extends BaseDao<OrderBean, String> {
     void doDelete(String orderNumber) throws SQLException;
     Collection<OrderBean> doRetrieveAll(String orderBy) throws SQLException;
     Collection<OrderBean> doRetrieveAllOrdersByUserId(long userId) throws SQLException;
-    void doSave(OrderBean order, long addressId, long userId) throws SQLException;
+    Long doSave(OrderBean order, long addressId, long userId) throws SQLException;
+    void doSaveOrderProduct(Long orderId, ProductBean product, int quantity) throws SQLException;
     void doUpdate(OrderBean entity, long addressId, long userId) throws SQLException;
-        Collection<ProductBean> doRetrieveAllProductsInOrder(String orderId) throws SQLException;
+    Collection<ProductBean> doRetrieveAllProductsInOrder(Long orderId) throws SQLException;
     AddressBean doRetrieveAddress(String orderId) throws SQLException;
+    void savePayment(PaymentBean payment, Long orderId) throws SQLException;
 }

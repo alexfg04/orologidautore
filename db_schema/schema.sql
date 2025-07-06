@@ -35,13 +35,15 @@ CREATE TABLE NumeroTelefono
 );
 
 -- Creazione della tabella MetodoPagamento
-CREATE TABLE MetodoPagamento
+CREATE TABLE PagamentoOrdine
 (
-    id_metodo       INT AUTO_INCREMENT PRIMARY KEY,
-    tipo_di_carta   VARCHAR(50) NOT NULL,
-    numero_di_carta VARCHAR(20) NOT NULL,
-    scadenza        DATE        NOT NULL,
-    cvv             VARCHAR(3)  NOT NULL
+    id_metodo    INT AUTO_INCREMENT PRIMARY KEY,
+    id_ordine    BIGINT         NOT NULL REFERENCES Ordine (id) ON DELETE CASCADE,
+    token        VARCHAR(64)    NOT NULL UNIQUE,
+    paypal_email VARCHAR(255)   NOT NULL,
+    amount       DECIMAL(10, 2) NOT NULL,
+    currency     CHAR(3)        NOT NULL,
+    created_at   DATETIME       NOT NULL DEFAULT NOW()
 );
 
 -- Creazione della tabella Prodotto
@@ -90,7 +92,7 @@ CREATE TABLE Ordine
     numero_ordine VARCHAR(17)    NOT NULL,
     data_ordine   TIMESTAMP      NOT NULL DEFAULT CURRENT_TIMESTAMP,
     data_arrivo   TIMESTAMP,
-    note          TEXT           NOT NULL,
+    note          TEXT,
     totale_ordine DECIMAL(10, 2) NOT NULL,
     id_utente     INT            NOT NULL,
     id_indirizzo  INT            NOT NULL,
@@ -126,14 +128,20 @@ CREATE TABLE Preferiti
 -- Tabella di associazione Contiene
 CREATE TABLE Prodotti_Ordine
 (
-    id              BIGINT         NOT NULL,
+    id_ordine       BIGINT         NOT NULL,
     codice_prodotto INT            NOT NULL,
-    prezzo_prodotto DECIMAL(10, 2) NOT NULL,
-    IVA_prodotto    DECIMAL(10, 2) NOT NULL,
+    prezzo_unitario DECIMAL(10, 2) NOT NULL, -- prezzo unitario al momento dell'ordine
+    iva_percentuale DECIMAL(4, 2)  NOT NULL DEFAULT 22.00,
     quantita        INT            NOT NULL,
-    PRIMARY KEY (id, codice_prodotto),
-    CONSTRAINT fk_contiene_ordine FOREIGN KEY (id) REFERENCES Ordine (id),
-    CONSTRAINT fk_contiene_prodotto FOREIGN KEY (codice_prodotto) REFERENCES Prodotto (codice_prodotto)
+    subtotal        DECIMAL(12, 2) AS (prezzo_unitario * quantita) STORED,
+    created_at      DATETIME       NOT NULL DEFAULT NOW(),
+    updated_at      DATETIME       NOT NULL DEFAULT NOW() ON UPDATE NOW(),
+    PRIMARY KEY (id_ordine, codice_prodotto),
+    CONSTRAINT fk_po_ordine FOREIGN KEY (id_ordine)
+        REFERENCES Ordine (id)
+        ON DELETE CASCADE,
+    CONSTRAINT fk_po_prodotto FOREIGN KEY (codice_prodotto)
+        REFERENCES Prodotto (codice_prodotto)
 );
 
 -- Tabella di associazione Genera
@@ -144,17 +152,6 @@ CREATE TABLE Fatture_Generate
     PRIMARY KEY (id, numero_fattura),
     CONSTRAINT fk_genera_ordine FOREIGN KEY (id) REFERENCES Ordine (id),
     CONSTRAINT fk_genera_fattura FOREIGN KEY (numero_fattura) REFERENCES Fattura (numero_fattura)
-);
-
--- Tabella di associazione Registra
-CREATE TABLE MetodoPagamento_Utente
-(
-    id_utente  INT     NOT NULL,
-    id_metodo  INT     NOT NULL,
-    is_default BOOLEAN NOT NULL DEFAULT FALSE,
-    PRIMARY KEY (id_utente, id_metodo),
-    CONSTRAINT fk_registra_utente FOREIGN KEY (id_utente) REFERENCES Utente (id_utente),
-    CONSTRAINT fk_registra_metodo FOREIGN KEY (id_metodo) REFERENCES MetodoPagamento (id_metodo)
 );
 
 -- Tabella di associazione Locato
