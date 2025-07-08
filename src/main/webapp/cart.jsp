@@ -7,6 +7,7 @@
 --%>
 <%@ page contentType="text/html; charset=UTF-8" %>
 <%@ page import="java.util.*, com.r1.ecommerceproject.model.ProductBean" %>
+<%@ page import="java.math.BigDecimal" %>
 <%
 
     UserSession sessioneUtente = new UserSession(request.getSession());
@@ -50,7 +51,7 @@
     <p>Non hai ancora aggiunto nessun prodotto al carrello.</p>
 </div>
 <% } else { %>
-<% double totalPrice = new UserSession(session).getCartTotal(); %>
+<% BigDecimal totalPrice = new UserSession(session).getCartTotal(); %>
 <div class="cart-container">
     <div class="container product-container">
         <h2 style="display: flex; justify-content: space-between; align-items: center;">

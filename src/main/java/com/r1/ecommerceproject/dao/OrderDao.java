@@ -16,7 +16,7 @@ public interface OrderDao extends BaseDao<OrderBean, String> {
     Long doSave(OrderBean order, long addressId, long userId) throws SQLException;
     void doSaveOrderProduct(Long orderId, ProductBean product, int quantity) throws SQLException;
     void doUpdate(OrderBean entity, long addressId, long userId) throws SQLException;
-    Collection<ProductBean> doRetrieveAllProductsInOrder(Long orderId) throws SQLException;
+    Collection<ProductBean> doRetrieveAllProductsInOrder(String orderNumber) throws SQLException;
     AddressBean doRetrieveAddress(String orderId) throws SQLException;
     void savePayment(PaymentBean payment, Long orderId) throws SQLException;
 }

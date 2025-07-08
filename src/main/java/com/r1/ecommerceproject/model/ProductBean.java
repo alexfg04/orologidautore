@@ -3,6 +3,7 @@ package com.r1.ecommerceproject.model;
 import java.io.Serializable;
 import java.math.BigDecimal;
 import java.util.Objects;
+import java.math.RoundingMode;
 
 public class ProductBean implements Serializable {
 
@@ -19,9 +20,12 @@ public class ProductBean implements Serializable {
 	String modello;
 	String descrizione;
 	String nome;
-
 	String immagine;
-	
+	private int quantity;
+	private BigDecimal prezzoUnitario;
+	private BigDecimal ivaPercentuale;
+
+
 	public enum Stato{ ATTIVATO, DISATTIVATO}
 
     // Costruttore vuoto
@@ -111,6 +115,64 @@ public class ProductBean implements Serializable {
 
 	public String getNome() {
 		return nome;
+	}
+
+	public int getQuantity() { return quantity; }
+
+	public void setQuantity(int quantity) { this.quantity = quantity;}
+
+	public BigDecimal getPrezzoUnitario() {
+		return prezzoUnitario;
+	}
+	public void setPrezzoUnitario(BigDecimal prezzoUnitario) {
+		this.prezzoUnitario = prezzoUnitario;
+	}
+
+	public BigDecimal getIvaPercentuale() { return ivaPercentuale; }
+	public void setIvaPercentuale(BigDecimal ivaPercentuale) { this.ivaPercentuale = ivaPercentuale; }
+
+	/** Subtotale arrotondato a 2 decimali */
+	public BigDecimal getSubtotale() {
+		return prezzoUnitario
+				.multiply(BigDecimal.valueOf(quantity))
+				.setScale(2, RoundingMode.HALF_UP);
+	}
+
+	/** Totale con IVA arrotondato a 2 decimali */
+	public BigDecimal getTotaleConIva() {
+		return getSubtotale()
+				.add(getIvaValore())
+				.setScale(2, RoundingMode.HALF_UP);
+	}
+
+	/** Prezzo netto per unità (due decimali) */
+	public BigDecimal getPrezzoNetto() {
+		BigDecimal factor = BigDecimal.ONE.add(
+				ivaPercentuale.divide(BigDecimal.valueOf(100), 4, RoundingMode.HALF_UP)
+		);
+		return prezzoUnitario.divide(factor, 2, RoundingMode.HALF_UP);
+	}
+
+	/** Subtotale netto sulla quantità */
+	public BigDecimal getSubtotaleNetto() {
+		return getPrezzoNetto()
+				.multiply(BigDecimal.valueOf(quantity))
+				.setScale(2, RoundingMode.HALF_UP);
+	}
+
+	/** Valore IVA complessivo sulla riga */
+	public BigDecimal getIvaValore() {
+		// differenza lordo - netto, moltiplicata per quantità
+		BigDecimal delta = prezzoUnitario.subtract(getPrezzoNetto());
+		return delta.multiply(BigDecimal.valueOf(quantity))
+				.setScale(2, RoundingMode.HALF_UP);
+	}
+
+	/** Totale lordo sulla riga (uguale a prezzoUnitario*quantity) */
+	public BigDecimal getTotaleLordo() {
+		return prezzoUnitario
+				.multiply(BigDecimal.valueOf(quantity))
+				.setScale(2, RoundingMode.HALF_UP);
 	}
 
 	public void setNome(String nome) {
