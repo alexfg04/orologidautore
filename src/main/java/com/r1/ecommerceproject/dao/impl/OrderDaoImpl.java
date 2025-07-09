@@ -137,8 +137,8 @@ public class OrderDaoImpl implements OrderDao {
         String orderNumber = Utils.generateOrderNumber();
         String insertSql =
                 "INSERT INTO " + ORDER_TABLE + " " +
-                        "(numero_ordine, note, totalE_ordine, id_utente, id_indirizzo, totale_ordine) " +
-                        "VALUES (?, ?, ?, ?, ?, ?)"; // include totale_ordine if necessary
+                        "(numero_ordine, note, id_utente, id_indirizzo, totale_ordine) " +
+                        "VALUES (?, ?, ?, ?, ?)";
 
         try (Connection connection = DataSourceConnectionPool.getConnection();
              PreparedStatement ps = connection.prepareStatement(insertSql, Statement.RETURN_GENERATED_KEYS)) {

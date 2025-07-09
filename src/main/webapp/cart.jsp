@@ -61,7 +61,7 @@
         <div class="cart">
             <% for (ProductBean p : cartItems.keySet()) { %>
             <div class="cart-item" id="item_<%= p.getCodiceProdotto() %>">
-                <img src="<%= request.getContextPath() + "/" + p.getImmagine() %>" alt="Immagine di <%= p.getNome() %>">
+                <img src="<%= p.getImmagine() %>" alt="Immagine di <%= p.getNome() %>">
                 <div class="item-details">
                     <h3><%= p.getNome() %>
                     </h3>
