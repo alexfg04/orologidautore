@@ -1,17 +1,26 @@
 <%@ page contentType="text/html; charset=UTF-8" language="java" %>
+
 <!DOCTYPE html>
 <html lang="it">
 <head>
   <meta charset="UTF-8">
   <title>Ordine non completato</title>
   <link rel="stylesheet" href="${pageContext.request.contextPath}/assets/css/footer.css">
+  <link rel="stylesheet" href="${pageContext.request.contextPath}/assets/css/navbar.css">
   <style>
-    body {
-      font-family: 'Segoe UI', sans-serif;
-      background-color: #fef2f2;
+    html, body {
       margin: 0;
       padding: 0;
+      min-height: 100vh;
+      background-color: #fef2f2;
+      font-family: 'Segoe UI', sans-serif;
       color: #b91c1c;
+      display: flex;
+      flex-direction: column;
+    }
+
+    main {
+      flex: 1;
     }
 
     .container {
@@ -92,22 +101,73 @@
   </style>
 </head>
 <body>
-<div class="container">
-  <!-- Cerchio con croce -->
-  <div class="error-circle">
-    <svg width="65" height="65" viewBox="0 0 24 24" fill="none" stroke="#dc2626" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round">
-      <line x1="18" y1="6" x2="6" y2="18"></line>
-      <line x1="6" y1="6" x2="18" y2="18"></line>
-    </svg>
+
+<!-- NAVBAR SIMULATA -->
+<header>
+  <nav class="navbar">
+    <div class="navbar-left">
+      <img src="${pageContext.request.contextPath}/assets/img/Logo.png" alt="Logo">
+    </div>
+
+    <div class="navbar-center">
+      <a href="index.jsp">Home</a>
+      <a href="catalog.jsp">Novità</a>
+      <a href="about.jsp">Uomo</a>
+      <a href="contact.jsp">Donna</a>
+    </div>
+
+    <div class="navbar-right">
+      <div class="user-dropdown">
+        <span class="user-name">
+          JD
+          <i data-lucide="chevron-down"></i>
+        </span>
+        <ul class="dropdown-menu">
+          <li><a href="orders.jsp">I miei ordini</a></li>
+          <li><a href="account.jsp">Account</a></li>
+          <li><a href="${pageContext.request.contextPath}/logout">Logout</a></li>
+        </ul>
+      </div>
+
+      <a href="favorites.jsp">
+        <i data-lucide="heart" class="icon"></i>
+        <span class="badge favorites-badge" data-count="0"></span>
+      </a>
+
+      <a href="cart.jsp" class="icon-with-badge">
+        <i data-lucide="shopping-cart" class="icon"></i>
+        <span class="badge cart-badge" data-count="2">2</span>
+      </a>
+    </div>
+  </nav>
+</header>
+
+<!-- CONTENUTO PRINCIPALE -->
+<main>
+  <div class="container">
+    <div class="error-circle">
+      <svg width="65" height="65" viewBox="0 0 24 24" fill="none" stroke="#dc2626" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round">
+        <line x1="18" y1="6" x2="6" y2="18"></line>
+        <line x1="6" y1="6" x2="18" y2="18"></line>
+      </svg>
+    </div>
+
+    <div class="title">Ordine non completato</div>
+    <p class="error-desc">
+      Purtroppo si è verificato un errore durante il processo di pagamento.
+      Ti invitiamo a riprovare o a contattare il nostro servizio clienti se il problema persiste.
+    </p>
+
+    <a class="btn-home" href="<%= request.getContextPath() %>/">Torna alla Home</a>
   </div>
+</main>
 
-  <div class="title">Ordine non completato</div>
-  <p class="error-desc">Purtroppo si è verificato un errore durante il processo di pagamento.
-    Ti invitiamo a riprovare o a contattare il nostro servizio clienti se il problema persiste.</p>
-
-  <a class="btn-home" href="<%= request.getContextPath() %>/">Torna alla Home</a>
-</div>
-
+<!-- FOOTER INCLUSO -->
 <%@ include file="footer.jsp" %>
+
+<!-- Script per icone (lucide.js) -->
+<script src="https://unpkg.com/lucide@latest"></script>
+<script>lucide.createIcons();</script>
+
 </body>
 </html>
