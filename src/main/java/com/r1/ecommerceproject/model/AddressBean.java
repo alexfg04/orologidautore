@@ -7,9 +7,17 @@ public class AddressBean {
     private long id;
     private String via;
     private String citta;
-    private String CAP;
+    private String cap;
     private Tipo tipologia;
+    private boolean isDefault = false;
 
+    public boolean isDefault() {
+        return isDefault;
+    }
+
+    public void setDefault(boolean aDefault) {
+        isDefault = aDefault;
+    }
 
     public long getId() {
         return id;
@@ -27,8 +35,8 @@ public class AddressBean {
         this.citta = citta;
     }
 
-    public void setCAP(String cAP) {
-        CAP = cAP;
+    public void setCap(String cAP) {
+        cap = cAP;
     }
 
     public void setTipologia(Tipo tipologia) {
@@ -43,8 +51,8 @@ public class AddressBean {
         return citta;
     }
 
-    public String getCAP() {
-        return CAP;
+    public String getCap() {
+        return cap;
     }
 
     public Tipo getTipologia() {
@@ -53,7 +61,7 @@ public class AddressBean {
 
     @Override
     public String toString() {
-        return "IndirizzoBean [Id_indirizzo=" + id + ", via=" + via + ", citta=" + citta + ", CAP=" + CAP
+        return "IndirizzoBean [Id_indirizzo=" + id + ", via=" + via + ", citta=" + citta + ", CAP=" + cap
                 + ", tipologia=" + tipologia + "]";
     }
 }

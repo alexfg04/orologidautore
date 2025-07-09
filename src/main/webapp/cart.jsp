@@ -7,7 +7,14 @@
 --%>
 <%@ page contentType="text/html; charset=UTF-8" %>
 <%@ page import="java.util.*, com.r1.ecommerceproject.model.ProductBean" %>
+<%@ page import="java.math.BigDecimal" %>
 <%
+
+    UserSession sessioneUtente = new UserSession(request.getSession());
+    if (!sessioneUtente.isLoggedIn()) {
+        response.sendRedirect(request.getContextPath() + "/login.jsp");
+        return;
+    }
     HashMap<ProductBean, Integer> cartItems = (HashMap<ProductBean, Integer>) request.getAttribute("cart");
 
     if (cartItems == null) {
@@ -44,7 +51,7 @@
     <p>Non hai ancora aggiunto nessun prodotto al carrello.</p>
 </div>
 <% } else { %>
-<% double totalPrice = new UserSession(session).getCartTotal(); %>
+<% BigDecimal totalPrice = new UserSession(session).getCartTotal(); %>
 <div class="cart-container">
     <div class="container product-container">
         <h2 style="display: flex; justify-content: space-between; align-items: center;">
@@ -54,7 +61,7 @@
         <div class="cart">
             <% for (ProductBean p : cartItems.keySet()) { %>
             <div class="cart-item" id="item_<%= p.getCodiceProdotto() %>">
-                <img src="<%= request.getContextPath() + "/" + p.getImmagine() %>" alt="Immagine di <%= p.getNome() %>">
+                <img src="<%= p.getImmagine() %>" alt="Immagine di <%= p.getNome() %>">
                 <div class="item-details">
                     <h3><%= p.getNome() %>
                     </h3>
@@ -85,8 +92,10 @@
             <p><strong>€ <%= String.format("%.2f", totalPrice) %>
             </strong></p>
         </div>
-        <button class="button">Acquista ➟</button>
-    </div>
+            <form action="${pageContext.request.contextPath}/checkout" method="post">
+                <button type="submit" class="button">Acquista ➟</button>
+            </form>
+        </div>
     <% } %>
 </div>
 <script>

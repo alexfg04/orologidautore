@@ -3,7 +3,10 @@ package com.r1.ecommerceproject.utils;
 import javax.servlet.http.HttpServletRequest;
 import java.net.URLEncoder;
 import java.nio.charset.StandardCharsets;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.Arrays;
+import java.util.UUID;
 
 public class Utils {
     /**
@@ -80,5 +83,25 @@ public class Utils {
     public static String escapeJson(String s) {
         if (s == null) return "";
         return s.replace("\"", "\\\"").replace("\n", "").replace("\r", "");
+    }
+
+    public static String escapeHtml(String s) {
+        if (s == null) return "";
+        return s.replace("&", "&amp;")
+                .replace("<", "&lt;")
+                .replace(">", "&gt;")
+                .replace("\"", "&quot;")
+                .replace("'", "&#39;");
+    }
+
+    // Genera numero ordine nel formato UUID + data di effettuazione dell'ordine
+    public static String generateOrderNumber() {
+        String uuid = UUID.randomUUID()
+                .toString()
+                .replace("-", "")
+                .substring(0, 8)
+                .toUpperCase();
+        return LocalDate.now().format(DateTimeFormatter.BASIC_ISO_DATE)
+                + "-" + uuid;
     }
 }

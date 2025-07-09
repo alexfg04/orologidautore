@@ -9,6 +9,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.io.IOException;
+import java.math.BigDecimal;
 
 @WebServlet("/updateQuantity")
 public class UpdateQuantityServlet extends HttpServlet  {
@@ -31,7 +32,7 @@ public class UpdateQuantityServlet extends HttpServlet  {
             // 2. Perform business logic
             UserSession userSession = new UserSession(httpSession);
             userSession.updateProductInCart(productId, quantity);
-            double total = userSession.getCartTotal();
+            BigDecimal total = userSession.getCartTotal();
 
             // return json
             response.setContentType("application/json");

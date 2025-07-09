@@ -1,3 +1,5 @@
+@import url("layout.css");
+
 .footer-main {
   display: flex;
   justify-content: space-between;

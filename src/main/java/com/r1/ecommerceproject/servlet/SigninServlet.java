@@ -1,7 +1,7 @@
 package com.r1.ecommerceproject.servlet;
 
 import com.r1.ecommerceproject.dao.UserDao;
-import com.r1.ecommerceproject.dao.UserDaoImpl;
+import com.r1.ecommerceproject.dao.impl.UserDaoImpl;
 import com.r1.ecommerceproject.model.UserBean;
 import com.r1.ecommerceproject.utils.Security;
 import com.r1.ecommerceproject.utils.UserSession;

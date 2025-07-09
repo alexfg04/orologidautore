@@ -1,0 +1,264 @@
+/* Colori base */
+:root {
+    --primary-green: #378a59; /* Verde della navbar (esempio, puoi aggiustarlo) */
+    --white: #ffffff;
+    --black: #000000;
+    --light-gray: #f5f5f5; /* Per sfondi di sezioni */
+    --border-color: #e0e0e0; /* Bordi leggeri */
+    --text-color: #333333;
+    --subtle-text: #666666;
+}
+
+body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+    background-color: var(--light-gray); /* Sfondo leggermente grigio */
+    color: var(--text-color);
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh; /* Per far sì che il footer resti in fondo */
+}
+
+/* Include il CSS della navbar e del footer se non sono già qui */
+/* @import url("navbar.css"); */
+/* @import url("footer.css"); */
+
+.checkout-container {
+    display: flex; /* Abilita Flexbox per le due colonne principali */
+    justify-content: center; /* Centra il contenuto orizzontalmente */
+    gap: 30px; /* Spazio tra le due colonne */
+    padding: 40px 20px;
+    max-width: 1200px; /* Larghezza massima del contenitore principale */
+    margin: 20px auto; /* Centra il contenitore sulla pagina */
+    background-color: var(--white);
+    border-radius: 8px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1); /* Leggera ombra */
+}
+
+/* Colonna sinistra: Riepilogo Ordine (Prodotti e Totale) */
+.order-summary-section {
+    flex: 2; /* Occupa più spazio (es. 2/3 della larghezza disponibile) */
+    padding-right: 20px; /* Spazio a destra per separazione */
+    border-right: 1px solid var(--border-color); /* Separatore sottile */
+}
+
+.order-summary-section h2 {
+    color: var(--black);
+    font-size: 24px;
+    margin-bottom: 25px;
+    border-bottom: 1px solid var(--border-color);
+    padding-bottom: 15px;
+}
+
+.order-items {
+    margin-bottom: 30px;
+}
+
+.order-item {
+    display: flex;
+    align-items: center;
+    padding: 15px 0;
+    border-bottom: 1px dashed var(--border-color); /* Linea tratteggiata per gli item */
+}
+
+.order-item:last-child {
+    border-bottom: none; /* Rimuovi il bordo dall'ultimo elemento */
+}
+
+.order-item img {
+    width: 80px; /* Dimensione dell'immagine del prodotto */
+    height: 80px;
+    object-fit: contain; /* Mantiene le proporzioni */
+    margin-right: 15px;
+    border: 1px solid var(--border-color);
+    border-radius: 4px;
+}
+
+.item-details {
+    flex-grow: 1;
+}
+
+.item-details h3 {
+    margin: 0 0 5px 0;
+    font-size: 18px;
+    color: var(--text-color);
+}
+
+.item-details p {
+    margin: 2px 0;
+    font-size: 14px;
+    color: var(--subtle-text);
+}
+
+.item-details .price {
+    font-weight: bold;
+    color: var(--black);
+    margin-top: 5px;
+}
+
+.item-details .subtotal {
+    font-weight: bold;
+    color: var(--primary-green);
+    font-size: 15px;
+}
+
+.order-total {
+    padding-top: 20px;
+    border-top: 2px solid var(--border-color); /* Linea più spessa per il totale */
+    text-align: right; /* Allinea a destra il totale */
+}
+
+.order-total h3 {
+    margin: 0;
+    font-size: 22px;
+    color: var(--primary-green); /* Verde per il totale finale */
+    display: flex;
+    justify-content: space-between; /* Spazia "Totale" e il valore */
+    align-items: center;
+}
+.order-total h3 strong {
+    font-size: 26px; /* Rendi il valore del totale più grande */
+}
+
+
+/* Colonna destra: Indirizzo e Pagamento */
+.shipping-payment-section {
+    flex: 1; /* Occupa meno spazio (es. 1/3 della larghezza disponibile) */
+    padding-left: 20px; /* Spazio a sinistra */
+}
+
+.shipping-payment-section h2 {
+    color: var(--black);
+    font-size: 24px;
+    margin-bottom: 25px;
+    border-bottom: 1px solid var(--border-color);
+    padding-bottom: 15px;
+}
+
+.info-box {
+    background-color: var(--light-gray); /* Sfondo leggermente grigio per i box */
+    border: 1px solid var(--border-color);
+    border-radius: 8px;
+    padding: 20px;
+    margin-bottom: 20px;
+}
+
+.info-box h3 {
+    margin-top: 0;
+    color: var(--black);
+    font-size: 18px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 15px;
+}
+
+.info-box p {
+    margin: 5px 0;
+    line-height: 1.6;
+    font-size: 14px;
+}
+
+.info-box .address-detail {
+    font-weight: normal;
+    color: var(--text-color);
+}
+
+.info-box .contact-detail {
+    font-style: italic;
+    color: var(--subtle-text);
+}
+
+.button-modify {
+    background: none;
+    border: none;
+    color: var(--primary-green);
+    font-weight: bold;
+    cursor: pointer;
+    font-size: 14px;
+    padding: 5px 10px;
+    border-radius: 4px;
+    transition: background-color 0.3s ease;
+}
+
+.button-modify:hover {
+    background-color: rgba(55, 138, 89, 0.1); /* Leggera sfumatura verde all'hover */
+}
+
+/* Stili per il form di pagamento/spedizione (se lo implementi) */
+.form-group {
+    margin-bottom: 15px;
+}
+
+.form-group label {
+    display: block;
+    margin-bottom: 8px;
+    font-weight: bold;
+    color: var(--text-color);
+    font-size: 15px;
+}
+
+.form-group input[type="text"],
+.form-group input[type="email"],
+.form-group select {
+    width: calc(100% - 20px); /* Larghezza completa con padding */
+    padding: 10px;
+    border: 1px solid var(--border-color);
+    border-radius: 5px;
+    font-size: 16px;
+    box-sizing: border-box; /* Include padding e border nella larghezza */
+}
+
+.confirm-button {
+    background-color: var(--primary-green);
+    color: var(--white);
+    padding: 15px 30px;
+    border: none;
+    border-radius: 8px;
+    font-size: 18px;
+    cursor: pointer;
+    width: 100%;
+    margin-top: 20px;
+    transition: background-color 0.3s ease;
+}
+
+.confirm-button:hover {
+    background-color: #2a6f47; /* Verde leggermente più scuro all'hover */
+}
+
+/* Media Queries per la Responsività */
+@media (max-width: 992px) {
+    .checkout-container {
+        flex-direction: column; /* Impila le colonne su schermi più piccoli */
+        padding: 20px;
+        margin: 20px;
+    }
+
+    .order-summary-section {
+        padding-right: 0;
+        border-right: none;
+        border-bottom: 1px solid var(--border-color); /* Separatore orizzontale */
+        padding-bottom: 30px;
+        margin-bottom: 30px;
+    }
+
+    .shipping-payment-section {
+        padding-left: 0;
+    }
+}
+
+@media (max-width: 600px) {
+    .order-item {
+        flex-direction: column; /* Impila immagine e dettagli su schermi molto piccoli */
+        align-items: flex-start;
+    }
+    .order-item img {
+        margin-right: 0;
+        margin-bottom: 10px;
+    }
+    .item-details {
+        text-align: left;
+        width: 100%;
+    }
+}

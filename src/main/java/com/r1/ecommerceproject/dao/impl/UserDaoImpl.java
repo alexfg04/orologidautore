@@ -1,5 +1,6 @@
-package com.r1.ecommerceproject.dao;
+package com.r1.ecommerceproject.dao.impl;
 
+import com.r1.ecommerceproject.dao.UserDao;
 import com.r1.ecommerceproject.model.AddressBean;
 import com.r1.ecommerceproject.model.PhoneNumberBean;
 import com.r1.ecommerceproject.model.UserBean;
@@ -69,7 +70,7 @@ public class UserDaoImpl implements UserDao {
 
             preparedStatement.setString(1,Indirizzo.getVia());
             preparedStatement.setString(2,Indirizzo.getCitta());
-            preparedStatement.setString(3,Indirizzo.getCAP());
+            preparedStatement.setString(3,Indirizzo.getCap());
 
 
             if(preparedStatement.executeUpdate() == 0) {
@@ -194,6 +195,29 @@ public class UserDaoImpl implements UserDao {
             }
         }
         return users;
+    }
+
+    @Override
+    public UserBean doRetrieveById(long id) throws SQLException {
+        String sql = "SELECT * FROM Utente WHERE id_utente = ?";
+        try (Connection conn = DataSourceConnectionPool.getConnection();
+             PreparedStatement ps = conn.prepareStatement(sql)) {
+            ps.setLong(1, id);
+            try (ResultSet rs = ps.executeQuery()) {
+                if (rs.next()) {
+                    UserBean u = new UserBean();
+                    u.setId(rs.getLong("id_utente"));
+                    u.setNome(rs.getString("nome"));
+                    u.setCognome(rs.getString("cognome"));
+                    u.setEmail(rs.getString("email"));
+                    u.setPassword(rs.getString("password"));
+                    u.setTipologia(UserBean.Role.valueOf(rs.getString("tipologia")));
+                    u.setDataDiNascita(rs.getDate("data_nascita").toLocalDate());
+                    return u;
+                }
+            }
+        }
+        return null;
     }
 
 }

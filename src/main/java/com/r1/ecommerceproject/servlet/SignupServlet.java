@@ -1,7 +1,7 @@
 package com.r1.ecommerceproject.servlet;
 
 import com.r1.ecommerceproject.dao.UserDao;
-import com.r1.ecommerceproject.dao.UserDaoImpl;
+import com.r1.ecommerceproject.dao.impl.UserDaoImpl;
 import com.r1.ecommerceproject.model.UserBean;
 import com.r1.ecommerceproject.utils.Security;
 
@@ -81,13 +81,8 @@ public class SignupServlet extends HttpServlet {
                     throw new ServletException("Registrazione fallita: ID utente non valorizzato.");
                 }
 
-                // Salva l'utente in sessione
-                com.r1.ecommerceproject.utils.UserSession userSession = new com.r1.ecommerceproject.utils.UserSession(request.getSession());
-                userSession.setUser(userId);
-                userSession.setFirstName((user.getNome()));
-
                 request.getSession().setAttribute("flashMessage", "Registrazione avvenuta con successo.");
-                response.sendRedirect(request.getContextPath() + "/catalog");
+                response.sendRedirect(request.getContextPath() + "/login");
             }
 
         } catch (SQLException e) {

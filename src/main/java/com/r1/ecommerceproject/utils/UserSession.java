@@ -1,10 +1,12 @@
 package com.r1.ecommerceproject.utils;
 
 import com.r1.ecommerceproject.dao.ProductDao;
-import com.r1.ecommerceproject.dao.ProductDaoImpl;
+import com.r1.ecommerceproject.dao.impl.ProductDaoImpl;
 import com.r1.ecommerceproject.model.ProductBean;
 
 import javax.servlet.http.HttpSession;
+import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.sql.SQLException;
 import java.util.Collection;
 import java.util.HashMap;
@@ -96,13 +98,19 @@ public class UserSession {
 
     public void computeTotal() {
         ProductDao model = new ProductDaoImpl();
-        double total = 0.0;
+        BigDecimal total = BigDecimal.ZERO;
 
         if (session.getAttribute(SESSION_CART_ATTRIBUTE) != null) {
             HashMap<Long, Integer> cart = getCart();
             for (Long productId : cart.keySet()) {
                 try {
-                    total += model.doRetrieveById(productId).getPrezzo() * cart.get(productId);
+                    total = total
+                            .add(model.doRetrieveById(productId)
+                                            .getPrezzo()
+                                            .multiply(BigDecimal.valueOf(cart.get(productId)))
+                            )
+                            .setScale(2, RoundingMode.HALF_UP);
+
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
@@ -111,12 +119,12 @@ public class UserSession {
         this.setCartTotal(total);
     }
 
-    public void setCartTotal(double total) {
+    public void setCartTotal(BigDecimal total) {
         session.setAttribute(SESSION_CART_TOTAL_ATTRIBUTE, total);
     }
 
-    public double getCartTotal() {
-        return session.getAttribute(SESSION_CART_TOTAL_ATTRIBUTE) != null ? (double) session.getAttribute(SESSION_CART_TOTAL_ATTRIBUTE) : 0;
+    public BigDecimal getCartTotal() {
+        return session.getAttribute(SESSION_CART_TOTAL_ATTRIBUTE) != null ? (BigDecimal) session.getAttribute(SESSION_CART_TOTAL_ATTRIBUTE) : BigDecimal.ZERO;
     }
 
 

@@ -1,0 +1,38 @@
+html, body {
+    height: 100%;
+    margin: 0;
+}
+body {
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+}
+.content {
+    flex: 1;
+    margin-top: 60px;      /* spazio per header fisso (adatta se diverso) */
+    padding-bottom: 80px;  /* spazio per footer fisso (adatta se diverso) */
+}
+header, .footer-main {
+    flex-shrink: 0;
+}
+header {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    z-index: 1000;
+}
+.footer-main {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+}
+
+.favorites-container .empty {
+    width: 100%;            /* occupa tutta la larghezza */
+    text-align: center;     /* centra orizzontalmente */
+    font-size: 1.5rem;      /* aumenta la dimensione del font */
+    color: #555;            /* colore leggermente grigio (opzionale) */
+    margin: 40px 0;         /* spazio sopra e sotto */
+}

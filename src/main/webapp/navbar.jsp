@@ -12,12 +12,10 @@
 
 <header>
     <nav class="navbar">
-        <!-- Sinistra: Logo -->
         <div class="navbar-left">
             <img src="assets/img/Logo.png" alt="Logo">
         </div>
 
-        <!-- Centro: Sezioni cliccabili -->
         <div class="navbar-center">
             <a href="index.jsp">Home</a>
             <a href="catalog.jsp">Novità</a>
@@ -25,7 +23,6 @@
             <a href="contact.jsp">Donna</a>
         </div>
 
-        <!-- Destra: Form di ricerca e icone outline -->
 
         <div class="navbar-right">
             <!--

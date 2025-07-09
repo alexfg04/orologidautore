@@ -14,5 +14,5 @@ public interface UserDao {
     public boolean userExist(String email)throws SQLException;
     public UserBean doRetrieveByEmail(String email) throws SQLException;
     List<UserBean> getAllUsers() throws SQLException;
-
+    UserBean doRetrieveById(long id) throws SQLException;
 }

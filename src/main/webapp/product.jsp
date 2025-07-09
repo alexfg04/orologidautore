@@ -1,6 +1,12 @@
 <%@ page import="com.r1.ecommerceproject.model.ProductBean" %>
 <%@ page contentType="text/html; charset=UTF-8" %>
 <%
+    UserSession sessioneUtente = new UserSession(request.getSession());
+    if (!sessioneUtente.isLoggedIn()) {
+        response.sendRedirect(request.getContextPath() + "/login.jsp");
+        return;
+    }
+
     ProductBean product = (ProductBean) request.getAttribute("product");
     if (product == null) {
         response.sendRedirect(request.getContextPath() + "/catalog");
@@ -114,17 +120,21 @@
                 <button type="submit" class="add-to-cart-button">Aggiungi al Carrello</button>
             </form>
 
-            <form action="<%= request.getContextPath() %>/favorite" method="post" class="product-form">
-                <input type="hidden" name="product_id" value="<%= product.getCodiceProdotto() %>">
+            <form id="favForm"  action="${pageContext.request.contextPath}/favorite"  method="post" class="product-form">
+                <input type="hidden" name="productId" value="<%= product.getCodiceProdotto() %>">
                 <button type="submit" class="add-to-favorites-button">♡ Aggiungi ai Preferiti</button>
             </form>
+
         </div>
     </div>
 </div>
 <script src="https://unpkg.com/lucide@latest"></script>
-<script src="assets/js/toast.js"></script>
+<script src="${pageContext.request.contextPath}/assets/js/toast.js"></script>
+<script src="${pageContext.request.contextPath}/assets/js/product-script.js"></script>
+
 <script>
     lucide.createIcons();
 </script>
+
 </body>
 </html>
