@@ -1,22 +1,17 @@
 <%@ page contentType="text/html; charset=UTF-8" language="java" %>
 <%@ page import="java.util.*, com.r1.ecommerceproject.model.ProductBean" %>
+<%@ page import="java.math.BigDecimal" %>
 
 <%
     // Simulazione prodotto
-    ProductBean prodottoFinto = new ProductBean();
-    prodottoFinto.setNome("Rolex Submariner");
-    prodottoFinto.setPrezzo(8999.99);
-    prodottoFinto.setCodiceProdotto(1);
-
-    HashMap<ProductBean, Integer> cartItems = new HashMap<>();
-    cartItems.put(prodottoFinto, 1);
-
-    double totalPrice = 0.0;
-    for (ProductBean p : cartItems.keySet()) {
-        totalPrice += p.getPrezzo() * cartItems.get(p);
+    String orderNumber = (String)request.getAttribute("orderNumber");
+    if(orderNumber == null) {
+        response.sendError(HttpServletResponse.SC_BAD_REQUEST, "Order ID non valido");
+        return;
     }
 
-    String orderId = "ORD" + System.currentTimeMillis();
+    String amountAttribute = (String) request.getAttribute("amount");
+    BigDecimal amount = new BigDecimal(amountAttribute);
 %>
 
 <!DOCTYPE html>
@@ -73,25 +68,11 @@
             margin-bottom: 20px;
             color: #2c3e50;
         }
-
-        .product-row {
-            border-bottom: 1px solid #eee;
-            padding: 10px 0;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-        }
-
-        .product-row p {
-            margin: 0;
-            font-size: 16px;
-        }
-
         .total-section {
             margin-top: 20px;
             font-size: 18px;
             font-weight: bold;
-            text-align: right;
+            text-align: center;
             color: #2c3e50;
         }
 
@@ -136,47 +117,7 @@
     </style>
 </head>
 <body>
-
-<!-- NAVBAR SIMULATA -->
-<header>
-    <nav class="navbar">
-        <div class="navbar-left">
-            <img src="${pageContext.request.contextPath}/assets/img/Logo.png" alt="Logo">
-        </div>
-
-        <div class="navbar-center">
-            <a href="index.jsp">Home</a>
-            <a href="catalog.jsp">Novità</a>
-            <a href="about.jsp">Uomo</a>
-            <a href="contact.jsp">Donna</a>
-        </div>
-
-        <div class="navbar-right">
-            <div class="user-dropdown">
-        <span class="user-name">
-          JD
-          <i data-lucide="chevron-down"></i>
-        </span>
-                <ul class="dropdown-menu">
-                    <li><a href="orders.jsp">I miei ordini</a></li>
-                    <li><a href="account.jsp">Account</a></li>
-                    <li><a href="${pageContext.request.contextPath}/logout">Logout</a></li>
-                </ul>
-            </div>
-
-            <a href="favorites.jsp">
-                <i data-lucide="heart" class="icon"></i>
-                <span class="badge favorites-badge" data-count="0"></span>
-            </a>
-
-            <a href="cart.jsp" class="icon-with-badge">
-                <i data-lucide="shopping-cart" class="icon"></i>
-                <span class="badge cart-badge" data-count="1">1</span>
-            </a>
-        </div>
-    </nav>
-</header>
-
+<%@ include file="navbar.jsp" %>
 <!-- CONTENUTO PRINCIPALE -->
 <div class="container">
     <div class="verified-box">
@@ -185,20 +126,11 @@
         </svg>
     </div>
 
-    <p class="order-id">Numero ordine: <%= orderId %></p>
+    <p class="order-id">Numero ordine: <%= orderNumber %></p>
 
     <div class="order-summary">
-        <h2>Riepilogo ordine</h2>
-
-        <% for (ProductBean p : cartItems.keySet()) { %>
-        <div class="product-row">
-            <p><strong><%= p.getNome() %></strong> x <%= cartItems.get(p) %></p>
-            <p>€ <%= String.format("%.2f", p.getPrezzo() * cartItems.get(p)) %></p>
-        </div>
-        <% } %>
-
         <div class="total-section">
-            Totale pagato: € <%= String.format("%.2f", totalPrice) %>
+            Totale pagato: € <%= String.format("%.2f", amount) %>
         </div>
     </div>
 

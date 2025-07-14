@@ -1,12 +1,6 @@
 <%@ page import="com.r1.ecommerceproject.model.ProductBean" %>
 <%@ page contentType="text/html; charset=UTF-8" %>
 <%
-    UserSession sessioneUtente = new UserSession(request.getSession());
-    if (!sessioneUtente.isLoggedIn()) {
-        response.sendRedirect(request.getContextPath() + "/login.jsp");
-        return;
-    }
-
     ProductBean product = (ProductBean) request.getAttribute("product");
     if (product == null) {
         response.sendRedirect(request.getContextPath() + "/catalog");

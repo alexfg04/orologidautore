@@ -10,7 +10,7 @@
     String lastName = userSession.getLastName();
 %>
 
-<header>
+<header class="navbar-wrapper">
     <nav class="navbar">
         <div class="navbar-left">
             <img src="assets/img/Logo.png" alt="Logo">
@@ -74,3 +74,4 @@
         </div>
     </nav>
 </header>
+<div class="navbar-offset"></div>

@@ -3,13 +3,14 @@
 @import url("layout.css");
 
 /* Header */
-header {
+.navbar-wrapper {
     width: 100%;
     background-color: #00695C;
     box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
-    position: relative;
     top: 0;
     z-index: 1000;
+    transition: transform 0.3s, opacity 0.3s;
+    position: relative;
 }
 
 /* Navbar */
@@ -23,6 +24,12 @@ header {
     align-items: center;
     width: 100%;
     overflow: visible;
+}
+
+.navbar-wrapper.hide {
+    transform: translateY(-100%);
+    opacity: 0;
+    pointer-events: none;
 }
 
 
@@ -171,4 +178,8 @@ header {
 .user-dropdown:hover .dropdown-menu {
     visibility: visible;
     opacity: 1;
+}
+
+.navbar-wrapper.fixed {
+    position: fixed;
 }

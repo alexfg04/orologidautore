@@ -10,6 +10,7 @@ import java.util.Collection;
 
 public interface OrderDao extends BaseDao<OrderBean, String> {
     OrderBean doRetrieveById(String orderNumber) throws SQLException;
+    void doDelete(Long id) throws SQLException;
     void doDelete(String orderNumber) throws SQLException;
     Collection<OrderBean> doRetrieveAll(String orderBy) throws SQLException;
     Collection<OrderBean> doRetrieveAllOrdersByUserId(long userId) throws SQLException;
@@ -19,4 +20,5 @@ public interface OrderDao extends BaseDao<OrderBean, String> {
     Collection<ProductBean> doRetrieveAllProductsInOrder(String orderNumber) throws SQLException;
     AddressBean doRetrieveAddress(String orderId) throws SQLException;
     void savePayment(PaymentBean payment, Long orderId) throws SQLException;
+    String getOrderNumber(Long orderId) throws SQLException;
 }

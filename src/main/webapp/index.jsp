@@ -1,11 +1,4 @@
 <%@ page contentType="text/html; charset=UTF-8" %>
-<%
-    UserSession sessioneUtente = new UserSession(request.getSession());
-    if (!sessioneUtente.isLoggedIn()) {
-        response.sendRedirect(request.getContextPath() + "/login.jsp");
-        return;
-    }
-%>
 <!DOCTYPE html>
 <html>
 <head>
@@ -16,24 +9,24 @@
     <link rel="stylesheet" href="${pageContext.request.contextPath}/assets/css/marche.css">
     <link rel="stylesheet" href="${pageContext.request.contextPath}/assets/css/PreviewFooter.css">
     <link rel="stylesheet" href="${pageContext.request.contextPath}/assets/css/footer.css">
-
+    <link rel="stylesheet" href="${pageContext.request.contextPath}/assets/css/IndexProduct.css">
 </head>
 <body>
 <%@ include file="navbar.jsp" %>
-
 <div class="container">
     <img src="assets/img/header_image.jpg" alt="Immagine" class="image">
     <div class="text-overlay">Compra un orologio di qualità!</div>
     <a href="${pageContext.request.contextPath}/catalog"><button class="button">Acquista ora ➟</button></a>
 </div>
-<script src="https://unpkg.com/lucide@latest"></script>
-<script>
-    lucide.createIcons();
-</script>
-<jsp:include page="IndexProduct.jsp" />
+<%@ include file="IndexProduct.jsp" %>
 <%@ include file="marche.jsp" %>
 <%@ include file="body.jsp" %>
 <%@ include file="previewFooter.jsp" %>
 <%@ include file="footer.jsp" %>
+<script src="https://unpkg.com/lucide@latest"></script>
+<script src="assets/js/navbar.js"></script>
+<script>
+    lucide.createIcons();
+</script>
 </body>
 </html>

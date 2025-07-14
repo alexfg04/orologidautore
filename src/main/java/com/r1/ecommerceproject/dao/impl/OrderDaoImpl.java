@@ -87,11 +87,11 @@ public class OrderDaoImpl implements OrderDao {
     }
 
     @Override
-    public void doDelete(String orderNumber) throws SQLException {
-        String sql = "DELETE FROM " + ORDER_TABLE + " WHERE numero_ordine = ?";
+    public void doDelete(Long id) throws SQLException {
+        String sql = "DELETE FROM " + ORDER_TABLE + " WHERE id = ?";
         try (Connection conn = DataSourceConnectionPool.getConnection();
              PreparedStatement stmt = conn.prepareStatement(sql)) {
-            stmt.setString(1, orderNumber);
+            stmt.setLong(1, id);
             stmt.executeUpdate();
         }
     }
@@ -180,6 +180,16 @@ public class OrderDaoImpl implements OrderDao {
     }
 
     @Override
+    public void doDelete(String orderNumber) throws SQLException {
+        String sql = "DELETE FROM " + ORDER_TABLE + " WHERE numero_ordine = ?";
+        try (Connection conn = DataSourceConnectionPool.getConnection();
+             PreparedStatement stmt = conn.prepareStatement(sql)) {
+            stmt.setString(1, orderNumber);
+            stmt.executeUpdate();
+        }
+    }
+
+    @Override
     public void doUpdate(OrderBean entity, long addressId, long userId) throws SQLException {
         String updateSql =
                 "UPDATE " + ORDER_TABLE + " SET " +
@@ -228,44 +238,6 @@ public class OrderDaoImpl implements OrderDao {
         return orders;
     }
 
-    /*@Override
-    public Collection<ProductBean> doRetrieveAllProductsInOrder(String orderId) throws SQLException {
-        String query =
-                "SELECT p.*, " +
-                        "po.quantita, " +
-                        "po.prezzo_unitario " +
-                        "po.iva_percentuale"+
-                        "FROM Prodotti_Ordine po " +
-                        "JOIN Prodotto p ON po.codice_prodotto = p.codice_prodotto " +
-                        "JOIN " + ORDER_TABLE + " o ON o.id = po.id_ordine " +
-                        "WHERE o.numero_ordine = ?";
-        Collection<ProductBean> products = new ArrayList<>();
-        try (Connection connection = DataSourceConnectionPool.getConnection();
-             PreparedStatement preparedStatement = connection.prepareStatement(query)) {
-            preparedStatement.setString(1, orderId);
-            try (ResultSet rs = preparedStatement.executeQuery()) {
-                while (rs.next()) {
-                    ProductBean product = new ProductBean();
-                    product.setCodiceProdotto(rs.getInt("codice_prodotto"));
-                    product.setNome(rs.getString("nome"));
-                    product.setPrezzo(rs.getBigDecimal("prezzo"));
-                    product.setStato(ProductBean.Stato.valueOf(rs.getString("stato")));
-                    product.setCategoria(rs.getString("categoria"));
-                    product.setTaglia(rs.getString("taglia"));
-                    product.setMarca(rs.getString("marca"));
-                    product.setModello(rs.getString("modello"));
-                    product.setDescrizione(rs.getString("descrizione"));
-                    product.setImmagine(rs.getString("image_url"));
-                    product.setQuantity(rs.getInt("quantita"));
-                    product.setPrezzoUnitario(rs.getBigDecimal("prezzo_unitario"));
-                    product.setIvaPercentuale(rs.getBigDecimal("iva_percentuale"));
-                    products.add(product);
-                }
-            }
-        }
-        return products;
-    }*/
-
     @Override
     public AddressBean doRetrieveAddress(String orderId) throws SQLException {
         AddressBean address = null;
@@ -304,5 +276,21 @@ public class OrderDaoImpl implements OrderDao {
             ps.setString(5, payment.getCurrency());
             ps.executeUpdate();
         }
+    }
+
+    @Override
+    public String getOrderNumber(Long orderId) throws SQLException {
+        String query = "SELECT numero_ordine FROM Ordine WHERE id = ?";
+        String orderNumber = null;
+        try (Connection conn = DataSourceConnectionPool.getConnection();
+             PreparedStatement ps = conn.prepareStatement(query)) {
+            ps.setLong(1, orderId);
+            try (ResultSet rs = ps.executeQuery()) {
+                if (rs.next()) {
+                    orderNumber = rs.getString("numero_ordine");
+                }
+            }
+        }
+        return orderNumber;
     }
 }

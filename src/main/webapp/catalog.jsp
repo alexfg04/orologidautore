@@ -6,13 +6,6 @@
 <%@ page import="static com.r1.ecommerceproject.utils.Utils.isChecked" %>
 <%@ page contentType="text/html; charset=UTF-8" language="java" %>
 <%
-    UserSession sessioneUtente = new UserSession(request.getSession());
-    if (!sessioneUtente.isLoggedIn()) {
-        response.sendRedirect(request.getContextPath() + "/login.jsp");
-        return;
-    }
-
-
     // filtri
     String[] types = request.getParameterValues("tipo");
     String[] colors = request.getParameterValues("colore");
@@ -55,30 +48,8 @@
         <h2>Filtro</h2>
         <form id="filter-form" action="${pageContext.request.contextPath}/catalog" method="get">
             <div class="filter-group">
-                <h3>Tipo</h3>
-                <label>
-                    <input type="checkbox" name="tipo"
-                              value="Classico" <%= isChecked(types, "Classico") ? "checked" : "" %>>
-                    <span class="checkmark"></span>
-                    Classico
-                </label>
-                <label>
-                    <input type="checkbox" name="tipo"
-                              value="Estivo" <%= isChecked(types, "Estivo") ? "checked" : "" %>>
-                    <span class="checkmark"></span>
-                    Estivo
-                </label>
-                <label>
-                    <input type="checkbox" name="tipo"
-                              value="Digitale" <%= isChecked(types, "Digitale") ? "checked" : "" %>>
-                    <span class="checkmark"></span>
-                    Digitale
-                </label>
-            </div>
-
-            <div class="filter-group">
                 <div class="price-slider-header">
-                    <div class="price-slider-title">Prezzo massimo</div>
+                    <div class="price-slider-title">Budget</div>
                     <div class="price-value">€<span
                             id="price-display"><%= priceParam == null ? "0" : priceParam %></span></div>
                 </div>
@@ -92,7 +63,6 @@
                     <span>€0</span>
                     <span>€1000</span>
                 </div>
-                <input type="hidden" name="sort" id="sort-input" value="${param.sort}">
             </div>
 
             <div class="filter-group">
@@ -116,28 +86,60 @@
                     Bianco
                 </label>
             </div>
-
             <div class="filter-group">
-                <h3>Taglia</h3>
+                <h3>Materiale</h3>
                 <label>
-                    <input type="checkbox" name="taglia"
-                              value="One Size" <%= isChecked(sizes, "One Size") ? "checked" : "" %>>
+                    <input type="checkbox" name="materiale"
+                           value="Accaio" <%= isChecked(colors, "Acciaio") ? "checked" : "" %>>
                     <span class="checkmark"></span>
-                    One Size
+                    Acciaio
                 </label>
                 <label>
-                    <input type="checkbox" name="taglia"
-                              value="31 mm" <%= isChecked(sizes, "31 mm") ? "checked" : "" %>>
+                    <input type="checkbox" name="materiale"
+                           value="Pelle Italiana" <%= isChecked(colors, "Pelle Italiana") ? "checked" : "" %>>
                     <span class="checkmark"></span>
-                    31 mm
+                    Pelle Italiana
                 </label>
                 <label>
-                    <input type="checkbox" name="taglia"
-                              value="41 mm" <%= isChecked(sizes, "41 mm") ? "checked" : "" %>>
+                    <input type="checkbox" name="materiale"
+                           value="Resina e Carbonio" <%= isChecked(colors, "Resina e Carbonio") ? "checked" : "" %>>
                     <span class="checkmark"></span>
-                    41 mm
+                    Resina e Carbonio
                 </label>
             </div>
+            <div class="filter-group">
+                <h3>Brands</h3>
+                <label>
+                    <input type="checkbox" name="taglia"
+                           value="Tommy Hilfiger" <%= isChecked(sizes, "Tommy Hilfiger") ? "checked" : "" %>>
+                    <span class="checkmark"></span>
+                    Tommy Hilfiger
+                </label>
+                <label>
+                    <input type="checkbox" name="brand"
+                           value="Casio" <%= isChecked(sizes, "Casio") ? "checked" : "" %>>
+                    <span class="checkmark"></span>
+                    Casio
+                </label>
+                <label>
+                    <input type="checkbox" name="brand"
+                           value="Versace" <%= isChecked(sizes, "Versace") ? "checked" : "" %>>
+                    <span class="checkmark"></span>
+                    Versace
+                </label>
+                <label>
+                    <input type="checkbox" name="brand"
+                           value="Tissot" <%= isChecked(sizes, "Tissot") ? "checked" : "" %>>
+                    <span class="checkmark"></span>
+                    Tissot
+                </label>
+            </div>
+            <% if(request.getParameter("sort") != null) { %>
+            <input type="hidden" name="sort" id="sort-input" value="${param.sort}">
+            <% } %>
+            <% if(request.getParameter("category") != null) { %>
+            <input type="hidden" name="category" value="${param.category}">
+            <% } %>
         </form>
     </aside>
 

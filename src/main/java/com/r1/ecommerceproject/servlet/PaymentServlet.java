@@ -61,11 +61,13 @@ public class PaymentServlet extends HttpServlet {
                 UserSession userSession = new UserSession(req.getSession(false));
                 userSession.clearCart();
 
-                // risposta temporanea, CAMBIARE
-                resp.getWriter().println("Pagamento avvenuto con successo.");
+                String orderNumber = orderDao.getOrderNumber(orderId);
+                req.setAttribute("orderNumber", orderNumber);
+                req.setAttribute("amount", amount);
+                req.getRequestDispatcher("/checkout_success.jsp").forward(req, resp);
 
             } else {
-                resp.getWriter().println("Pagamento annullato o in errore.");
+                resp.sendRedirect(req.getContextPath() + "checkout_failure.jsp");
             }
 
         } catch (Exception e) {
