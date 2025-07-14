@@ -1,538 +1,598 @@
-<%@ page contentType="text/html; charset=UTF-8" %>
-<%@ page import="com.r1.ecommerceproject.model.ProductBean" %>
-<%@ page import="com.r1.ecommerceproject.model.AddressBean" %>
-<%@ page import="com.r1.ecommerceproject.model.UserBean" %>
-<%@ page import="com.r1.ecommerceproject.utils.UserSession" %>
-<%@ page import="java.util.HashMap, java.util.Map, java.util.List" %>
-<%@ page import="java.math.RoundingMode" %>
-<%@ page import="java.math.BigDecimal" %>
-
+<%@ page contentType="text/html; charset=UTF-8" language="java" %>
+<%@ page import="java.util.*, java.math.*, com.r1.ecommerceproject.model.ProductBean" %>
 
 <%
-    // Assicurati che l'utente sia loggato
-    UserSession sessioneUtente = new UserSession(request.getSession());
-    if (!sessioneUtente.isLoggedIn()) {
-        response.sendRedirect(request.getContextPath() + "/login.jsp");
-        return;
-    }
+    String nomeUtente = "Mario Rossi";
+    String email = "mario.rossi@email.com";
+    String telefono = "+39 345 678 9012";
+    String indirizzo = "Via Milano 12, Roma";
+    String metodoPagamento = "Mastercard **** 3456";
 
-    // Recupera la HashMap con ProductBean come chiavi dalla request scope
-    HashMap<ProductBean, Integer> cartItems =
-            (HashMap<ProductBean, Integer>) request.getAttribute("cartItems");
+    ProductBean prodottoFinto = new ProductBean();
+    prodottoFinto.setNome("Rolex Submariner");
+    prodottoFinto.setPrezzo(new BigDecimal("8999.99"));
+    prodottoFinto.setCodiceProdotto(1);
+    String imgPath = "assets/img/orologi/rolex_submariner.jpg";
 
-    // Recupera il totale calcolato dalla servlet
-    BigDecimal totalPriceObject = (BigDecimal) request.getAttribute("totalPrice");
-    BigDecimal total = (totalPriceObject != null) ? totalPriceObject : BigDecimal.ZERO;
+    HashMap<ProductBean, Integer> cartItems = new HashMap<>();
+    cartItems.put(prodottoFinto, 1);
 
-    // Recupera l'indirizzo predefinito e la lista di indirizzi dalla request
-    AddressBean defaultShippingAddress = (AddressBean) request.getAttribute("defaultShippingAddress");
-    List<AddressBean> userAddresses = (List<AddressBean>) request.getAttribute("userAddresses");
-
-    // Recupera l'utente corrente per nome/email
-    UserBean currentUser = (UserBean) request.getSession().getAttribute("currentUser");
-    String userName = (currentUser != null) ? currentUser.getNome() + " " + currentUser.getCognome() : "N/D";
-    String userEmail = (currentUser != null) ? currentUser.getEmail() : "N/D";
-
-    // Assicurati che il numero di telefono sia recuperato correttamente dall'UserBean
-    // Questo è un placeholder, dovrai assicurarti che UserBean abbia un metodo getTelefono()
-    //String userPhone = (currentUser != null && currentUser.getTelefono() != null && !currentUser.getTelefono().isEmpty()) ? currentUser.getTelefono() : "N/D";
-
-    // Verifica se il carrello è null o vuoto.
-    if (cartItems == null || cartItems.isEmpty()) {
-        response.sendRedirect(request.getContextPath() + "/cart");
-        return;
+    BigDecimal totalPrice = BigDecimal.ZERO;
+    for (ProductBean p : cartItems.keySet()) {
+        totalPrice = totalPrice.add(p.getPrezzo().multiply(BigDecimal.valueOf(cartItems.get(p))));
     }
 %>
 
 <!DOCTYPE html>
-<html>
+<html lang="it">
 <head>
-    <title>Riepilogo Ordine e Pagamento</title>
-    <link rel="stylesheet" href="${pageContext.request.contextPath}/assets/css/checkout.css">
-    <link rel="stylesheet" href="${pageContext.request.contextPath}/assets/css/navbar.css">
+    <meta charset="UTF-8">
+    <title>Completamento Ordine</title>
     <link rel="stylesheet" href="${pageContext.request.contextPath}/assets/css/footer.css">
-    <script src="https://unpkg.com/lucide@latest"></script>
+    <link rel="stylesheet" href="${pageContext.request.contextPath}/assets/css/navbar.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <style>
-        /* Stili per il modal/form di modifica indirizzo (rimangono uguali) */
-        .address-modal-overlay {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background-color: rgba(0, 0, 0, 0.6);
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            z-index: 1000;
-            visibility: hidden;
-            opacity: 0;
-            transition: visibility 0s, opacity 0.3s ease;
+        :root {
+            --primary-color: #16a085;
+            --primary-dark: #138d75;
+            --success-color: #27ae60;
+            --success-dark: #229954;
+            --text-primary: #1f2937;
+            --text-secondary: #6b7280;
+            --bg-primary: #f9fafb;
+            --bg-card: #ffffff;
+            --border-color: #e5e7eb;
+            --shadow-light: 0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px 0 rgba(0, 0, 0, 0.06);
+            --shadow-medium: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+            --shadow-large: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+            --gradient-primary: linear-gradient(135deg, #16a085 0%, #138d75 100%);
+            --gradient-success: linear-gradient(135deg, #27ae60 0%, #229954 100%);
         }
 
-        .address-modal-overlay.active {
-            visibility: visible;
-            opacity: 1;
-        }
-
-        .address-modal-content {
-            background-color: var(--white);
-            padding: 30px;
-            border-radius: 8px;
-            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
-            width: 90%;
-            max-width: 600px;
-            position: relative;
-            transform: translateY(-20px);
-            transition: transform 0.3s ease;
-        }
-
-        .address-modal-overlay.active .address-modal-content {
-            transform: translateY(0);
-        }
-
-        .address-modal-content h2 {
-            margin-top: 0;
-            color: var(--black);
-            border-bottom: 1px solid var(--border-color);
-            padding-bottom: 15px;
-            margin-bottom: 20px;
-        }
-
-        .address-modal-content .form-group {
-            margin-bottom: 15px;
-        }
-
-        .address-modal-content .form-group label {
-            display: block;
-            margin-bottom: 8px;
-            font-weight: bold;
-            color: var(--text-color);
-            font-size: 15px;
-        }
-
-        .address-modal-content .form-group input[type="text"],
-        .address-modal-content .form-group select {
-            width: calc(100% - 22px);
-            padding: 10px;
-            border: 1px solid var(--border-color);
-            border-radius: 5px;
-            font-size: 16px;
+        * {
             box-sizing: border-box;
         }
 
-        .address-modal-actions {
-            display: flex;
-            justify-content: flex-end;
-            gap: 10px;
-            margin-top: 25px;
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+            background: var(--bg-primary);
+            margin: 0;
+            padding: 0;
+            color: var(--text-primary);
+            line-height: 1.6;
         }
 
-        .address-modal-actions button {
-            padding: 10px 20px;
-            border-radius: 5px;
-            cursor: pointer;
-            font-size: 16px;
+        .checkout-header {
+            background: var(--gradient-primary);
+            color: white;
+            padding: 3rem 0;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
         }
 
-        .address-modal-actions .btn-cancel {
-            background-color: #ccc;
-            color: var(--black);
-            border: none;
-        }
-
-        .address-modal-actions .btn-save {
-            background-color: var(--primary-green);
-            color: var(--white);
-            border: none;
-        }
-
-        .address-modal-actions .btn-cancel:hover {
-            background-color: #bbb;
-        }
-
-        .address-modal-actions .btn-save:hover {
-            background-color: #2a6f47;
-        }
-
-        .close-button {
+        .checkout-header::before {
+            content: '';
             position: absolute;
-            top: 15px;
-            right: 15px;
-            background: none;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1000 100" fill="rgba(255,255,255,0.1)"><polygon points="0,0 1000,0 1000,100"/></svg>');
+            background-size: 100% 100%;
+        }
+
+        .checkout-header h1 {
+            font-size: 2.5rem;
+            font-weight: 700;
+            margin: 0;
+            text-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            position: relative;
+            z-index: 1;
+        }
+
+        .checkout-header p {
+            font-size: 1.1rem;
+            margin: 0.5rem 0 0 0;
+            opacity: 0.9;
+            position: relative;
+            z-index: 1;
+        }
+
+        .progress-bar {
+            background: white;
+            padding: 1rem 0;
+            box-shadow: var(--shadow-light);
+        }
+
+        .progress-container {
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 0 2rem;
+        }
+
+        .progress-steps {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            position: relative;
+        }
+
+        .progress-steps::before {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 0;
+            right: 0;
+            height: 2px;
+            background: var(--border-color);
+            z-index: 1;
+        }
+
+        .progress-steps::after {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 0;
+            width: 100%;
+            height: 2px;
+            background: var(--primary-color);
+            z-index: 2;
+            transform: translateY(-50%);
+        }
+
+        .progress-step {
+            background: var(--primary-color);
+            color: white;
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 600;
+            font-size: 0.9rem;
+            position: relative;
+            z-index: 3;
+            box-shadow: var(--shadow-medium);
+        }
+
+        .container {
+            display: grid;
+            grid-template-columns: 1fr 400px;
+            gap: 2rem;
+            max-width: 1200px;
+            margin: 2rem auto;
+            padding: 0 2rem;
+        }
+
+        .col-left, .col-right {
+            background: var(--bg-card);
+            border-radius: 16px;
+            box-shadow: var(--shadow-light);
+            overflow: hidden;
+            transition: all 0.3s ease;
+        }
+
+        .col-left:hover, .col-right:hover {
+            box-shadow: var(--shadow-large);
+            transform: translateY(-2px);
+        }
+
+        .section {
+            padding: 2rem;
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        .section:last-child {
+            border-bottom: none;
+        }
+
+        .section-header {
+            display: flex;
+            align-items: center;
+            margin-bottom: 1.5rem;
+        }
+
+        .section-icon {
+            width: 24px;
+            height: 24px;
+            margin-right: 0.75rem;
+            color: var(--primary-color);
+        }
+
+        .section h3 {
+            margin: 0;
+            font-size: 1.25rem;
+            font-weight: 600;
+            color: var(--text-primary);
+        }
+
+        .info-grid {
+            display: grid;
+            gap: 0.75rem;
+        }
+
+        .info-item {
+            display: flex;
+            align-items: center;
+            padding: 0.75rem;
+            background: #f8fafc;
+            border-radius: 8px;
+            border-left: 4px solid var(--primary-color);
+        }
+
+        .info-item .label {
+            font-weight: 500;
+            color: var(--text-secondary);
+            min-width: 80px;
+        }
+
+        .info-item .value {
+            color: var(--text-primary);
+            font-weight: 500;
+        }
+
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            background: var(--gradient-primary);
+            color: white;
+            padding: 0.75rem 1.5rem;
+            font-size: 0.9rem;
+            font-weight: 500;
             border: none;
-            font-size: 24px;
+            border-radius: 8px;
+            text-decoration: none;
             cursor: pointer;
-            color: var(--black);
+            box-shadow: var(--shadow-medium);
+            transition: all 0.3s ease;
+            margin-top: 1rem;
+        }
+
+        .btn:hover {
+            transform: translateY(-2px);
+            box-shadow: var(--shadow-large);
+        }
+
+        .btn svg {
+            width: 16px;
+            height: 16px;
+            margin-left: 0.5rem;
+        }
+
+        .product-row {
+            display: flex;
+            align-items: center;
+            padding: 1.5rem;
+            border-bottom: 1px solid var(--border-color);
+            transition: background-color 0.3s ease;
+        }
+
+        .product-row:hover {
+            background: #f8fafc;
+        }
+
+        .product-row:last-child {
+            border-bottom: none;
+        }
+
+        .product-image {
+            width: 80px;
+            height: 80px;
+            object-fit: cover;
+            border-radius: 12px;
+            margin-right: 1rem;
+            box-shadow: var(--shadow-medium);
+        }
+
+        .product-info {
+            flex: 1;
+        }
+
+        .product-name {
+            font-size: 1.1rem;
+            font-weight: 600;
+            color: var(--text-primary);
+            margin: 0 0 0.5rem 0;
+        }
+
+        .product-details {
+            color: var(--text-secondary);
+            font-size: 0.9rem;
+            margin: 0.25rem 0;
+        }
+
+        .product-price {
+            font-size: 1.1rem;
+            font-weight: 700;
+            color: var(--primary-color);
+            margin-top: 0.5rem;
+        }
+
+        .order-summary {
+            background: #f8fafc;
+            padding: 1.5rem;
+            border-radius: 12px;
+            margin-top: 1rem;
+        }
+
+        .summary-row {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 0.75rem;
+            font-size: 0.9rem;
+        }
+
+        .summary-row.total {
+            font-size: 1.2rem;
+            font-weight: 700;
+            color: var(--success-color);
+            border-top: 2px solid var(--border-color);
+            padding-top: 0.75rem;
+            margin-top: 1rem;
+        }
+
+        .checkout-button {
+            background: var(--gradient-success);
+            color: white;
+            padding: 1rem 2rem;
+            font-size: 1.1rem;
+            font-weight: 600;
+            border: none;
+            border-radius: 12px;
+            cursor: pointer;
+            width: 100%;
+            box-shadow: var(--shadow-medium);
+            transition: all 0.3s ease;
+            margin-top: 1.5rem;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .checkout-button:hover {
+            transform: translateY(-2px);
+            box-shadow: var(--shadow-large);
+        }
+
+        .checkout-button::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
+            transition: left 0.5s;
+        }
+
+        .checkout-button:hover::before {
+            left: 100%;
+        }
+
+        .secure-badge {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-top: 1rem;
+            font-size: 0.85rem;
+            color: var(--text-secondary);
+        }
+
+        .secure-badge svg {
+            width: 16px;
+            height: 16px;
+            margin-right: 0.5rem;
+            color: var(--success-color);
+        }
+
+        @media (max-width: 1024px) {
+            .container {
+                grid-template-columns: 1fr;
+                gap: 1.5rem;
+            }
+
+            .col-right {
+                order: -1;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .checkout-header h1 {
+                font-size: 2rem;
+            }
+
+            .container {
+                margin: 1rem auto;
+                padding: 0 1rem;
+            }
+
+            .section {
+                padding: 1.5rem;
+            }
+
+            .product-row {
+                flex-direction: column;
+                align-items: flex-start;
+                text-align: left;
+            }
+
+            .product-image {
+                margin-bottom: 1rem;
+                margin-right: 0;
+            }
+
+            .progress-steps {
+                flex-wrap: wrap;
+                gap: 1rem;
+            }
+        }
+
+        /* Animazioni */
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .col-left, .col-right {
+            animation: fadeInUp 0.6s ease-out;
+        }
+
+        .col-right {
+            animation-delay: 0.1s;
         }
     </style>
 </head>
 <body>
+
 <%@ include file="navbar.jsp" %>
 
-<div class="checkout-container">
-    <%-- COLONNA SINISTRA: Indirizzo di Spedizione e Metodo di Pagamento --%>
-    <div class="shipping-payment-section">
-        <h2>Indirizzo di Spedizione</h2>
-        <div class="info-box">
-            <h3>Indirizzo Postale <button class="button-modify" id="modifyAddressBtn">MODIFICA</button></h3>
-            <div id="currentAddressDisplay">
-                <% if (defaultShippingAddress != null) { %>
-                <p class="address-detail"><strong id="displayUserName"><%= userName %></strong></p>
-                <p class="address-detail" id="displayVia"><%= defaultShippingAddress.getVia() %></p>
-                <p class="address-detail" id="displayCittaCap"><%= defaultShippingAddress.getCitta() %>, <%= defaultShippingAddress.getCap() %></p>
-                <p class="address-detail">Italia</p>
-                <p class="contact-detail" id="displayUserPhone">Telefono: </p>
-                <p class="contact-detail" id="displayUserEmail">Email: <%= userEmail %></p>
-                <% } else { %>
-                <p id="noAddressMessage">Nessun indirizzo di spedizione predefinito trovato.</p>
-                <button class="button-modify" id="addAddressBtn">AGGIUNGI INDIRIZZO</button>
-                <% } %>
+<div class="checkout-header">
+    <h1>Completamento Ordine</h1>
+    <p>Controlla i tuoi dati e conferma l'acquisto</p>
+</div>
+
+<div class="progress-bar">
+    <div class="progress-container">
+        <div class="progress-steps">
+            <div class="progress-step">1</div>
+            <div class="progress-step">2</div>
+            <div class="progress-step">3</div>
+        </div>
+    </div>
+</div>
+
+<div class="container">
+    <!-- Colonna Sinistra -->
+    <div class="col-left">
+        <div class="section">
+            <div class="section-header">
+                <svg class="section-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"></path>
+                </svg>
+                <h3>Dati dell'utente</h3>
+            </div>
+            <div class="info-grid">
+                <div class="info-item">
+                    <span class="label">Nome:</span>
+                    <span class="value"><%= nomeUtente %></span>
+                </div>
+                <div class="info-item">
+                    <span class="label">Email:</span>
+                    <span class="value"><%= email %></span>
+                </div>
+                <div class="info-item">
+                    <span class="label">Telefono:</span>
+                    <span class="value"><%= telefono %></span>
+                </div>
             </div>
         </div>
 
-        <%-- Sezione per selezionare un altro indirizzo (se ce ne sono più di uno) --%>
-        <%-- La logica per aggiornare questa select dinamicamente sarà più complessa via AJAX,
-             quindi per ora la lasciamo come era, e un ricaricamento pagina la aggiornerà. --%>
-        <% if (userAddresses != null) { %>
-        <div class="info-box">
-            <h3>Seleziona un altro indirizzo</h3>
-            <label for="selectedAddress"></label>
-            <select name="selectedAddress" id="selectedAddress" class="form-control">
-                <% for (AddressBean addr : userAddresses) { %>
-                <option value="<%= addr.getId() %>"
-                        <%= (defaultShippingAddress != null && addr.getId() == defaultShippingAddress.getId()) ? "selected" : "" %>>
-                    <%= addr.getVia() %>, <%= addr.getCitta() %>, <%= addr.getCap() %> (<%= addr.getTipologia().name().toLowerCase() %>)
-                </option>
-                <% } %>
-            </select>
-            <button class="button-modify" id="changeSelectedAddressBtn">IMPOSTA</button>
-        </div>
-        <% } %>
-
-
-        <h2>Opzioni di Spedizione</h2>
-        <div class="info-box">
-            <h3>Spedizione Standard Gratuita</h3>
-            <p>Consegna entro 3-5 giorni lavorativi.</p>
+        <div class="section">
+            <div class="section-header">
+                <svg class="section-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"></path>
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"></path>
+                </svg>
+                <h3>Indirizzo di Consegna</h3>
+            </div>
+            <div class="info-item">
+                <span class="value"><%= indirizzo %></span>
+            </div>
+            <a href="modificaIndirizzo.jsp" class="btn">
+                Modifica indirizzo
+                <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"></path>
+                </svg>
+            </a>
         </div>
 
-        <h2>Metodo di Pagamento</h2>
-        <div class="info-box">
-            <h3>Metodo di Pagamento Predefinito <button class="button-modify">MODIFICA</button></h3>
-            <p>Pagamento sicuro con Carta di Credito (o il metodo che hai).</p>
+        <div class="section">
+            <div class="section-header">
+                <svg class="section-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 10h18M7 15h1m4 0h1m-7 4h12a3 3 0 003-3V8a3 3 0 00-3-3H6a3 3 0 00-3 3v8a3 3 0 003 3z"></path>
+                </svg>
+                <h3>Metodo di Pagamento</h3>
+            </div>
+            <div class="info-item">
+                <span class="value"><%= metodoPagamento %></span>
+            </div>
+            <a href="modificaPagamento.jsp" class="btn">
+                Modifica pagamento
+                <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"></path>
+                </svg>
+            </a>
         </div>
-
-        <form action="${pageContext.request.contextPath}/processOrder" method="post">
-            <input type="hidden" name="addressId" value="<%= (defaultShippingAddress != null) ? defaultShippingAddress.getId() : "" %>" id="finalShippingAddressId">
-            <input type="hidden" name="total" value="<%= total.add(BigDecimal.valueOf(6.50)) %>">
-            <label for="note"></label>
-            <textarea name="note" id="note" placeholder="Note per il tuo ordine (facoltativo)"></textarea>
-            <button type="submit" class="confirm-button">Conferma e Paga</button>
-        </form>
     </div>
 
-    <%-- COLONNA DESTRA: Riepilogo Ordine (Prodotti e Totale) --%>
-    <div class="order-summary-section">
-        <h2><%= cartItems.size() %> Prodott<%= cartItems.size() == 1 ? "o" : "i" %></h2>
-        <div class="order-items">
+    <!-- Colonna Destra -->
+    <div class="col-right">
+        <div class="section">
+            <div class="section-header">
+                <svg class="section-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z"></path>
+                </svg>
+                <h3>Riepilogo Ordine</h3>
+            </div>
+
             <% for (ProductBean p : cartItems.keySet()) { %>
-            <% int qty = cartItems.get(p); %>
-            <div class="order-item">
-                <img src="<%= p.getImmagine() %>" alt="Immagine di <%= p.getNome() %>">
-                <div class="item-details">
-                    <h3><%= p.getNome() %></h3>
-                    <p><%= p.getDescrizione() %></p>
-                    <p class="price">€ <%= String.format("%.2f", p.getPrezzo()) %></p>
-                    <p>Qtà: <%= qty %></p>
-                    <p class="subtotal">Subtotale: € <%= String.format("%.2f", p.getPrezzo().multiply(BigDecimal.valueOf(qty))
-                            .setScale(2, RoundingMode.HALF_UP)) %></p>
+            <div class="product-row">
+                <img src="${pageContext.request.contextPath}/<%= imgPath %>" alt="<%= p.getNome() %>" class="product-image">
+                <div class="product-info">
+                    <h4 class="product-name"><%= p.getNome() %></h4>
+                    <p class="product-details">Quantità: <%= cartItems.get(p) %></p>
+                    <p class="product-details">Codice: #<%= p.getCodiceProdotto() %></p>
+                    <p class="product-price">€ <%= String.format("%.2f", p.getPrezzo().multiply(BigDecimal.valueOf(cartItems.get(p)))) %></p>
                 </div>
             </div>
             <% } %>
-        </div>
 
-        <div class="order-total">
-            <p>Subtotale: € <%= String.format("%.2f", total) %></p>
-            <p>Spedizione: € <%= String.format("%.2f", 6.50) %></p>
-            <h3>TOTALE: <strong>€ <%= String.format("%.2f", total.add(BigDecimal.valueOf(6.50))) %></strong></h3>
+            <div class="order-summary">
+                <div class="summary-row">
+                    <span>Subtotale</span>
+                    <span>€ <%= String.format("%.2f", totalPrice) %></span>
+                </div>
+                <div class="summary-row">
+                    <span>Spedizione</span>
+                    <span>Gratuita</span>
+                </div>
+                <div class="summary-row">
+                    <span>IVA (22%)</span>
+                    <span>€ <%= String.format("%.2f", totalPrice.multiply(new BigDecimal("0.22"))) %></span>
+                </div>
+                <div class="summary-row total">
+                    <span>Totale</span>
+                    <span>€ <%= String.format("%.2f", totalPrice.multiply(new BigDecimal("1.22"))) %></span>
+                </div>
+            </div>
+
+            <form action="checkout_success.jsp" method="post">
+                <button type="submit" class="checkout-button">
+                    Conferma Ordine
+                </button>
+            </form>
+
+            <div class="secure-badge">
+                <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"></path>
+                </svg>
+                Pagamento sicuro e protetto
+            </div>
         </div>
     </div>
 </div>
 
-<%-- MODAL/FORM PER L'AGGIUNTA/MODIFICA INDIRIZZO --%>
-<div class="address-modal-overlay" id="addressModal">
-    <div class="address-modal-content">
-        <button class="close-button" id="closeModalBtn">&times;</button>
-        <h2 id="modalTitle">Modifica Indirizzo</h2>
-        <%-- L'ACTION del form punta alla servlet /address --%>
-        <form id="addressForm" action="${pageContext.request.contextPath}/address" method="post">
-            <input type="hidden" name="action" id="addressFormAction" value="update">
-            <input type="hidden" name="addressId" id="addressId">
+<%@ include file="footer.jsp" %>
 
-            <div class="form-group">
-                <label for="via">Via:</label>
-                <input type="text" id="via" name="via" required>
-            </div>
-            <div class="form-group">
-                <label for="citta">Città:</label>
-                <input type="text" id="citta" name="citta" required>
-            </div>
-            <div class="form-group">
-                <label for="cap">CAP:</label>
-                <input type="text" id="cap" name="cap" required pattern="[0-9]{5}" title="Il CAP deve essere di 5 cifre numeriche.">
-            </div>
-            <div class="form-group">
-                <label for="tipologia">Tipologia:</label>
-                <select id="tipologia" name="tipologia" required>
-                    <option value="spedizione">Spedizione</option>
-                    <option value="fatturazione">Fatturazione</option>
-                    <option value="entrambi">Entrambi</option>
-                </select>
-            </div>
-            <div class="address-modal-actions">
-                <button type="button" class="btn-cancel" id="cancelAddressBtn">Annulla</button>
-                <button type="submit" class="btn-save">Salva Indirizzo</button>
-            </div>
-        </form>
-
-        <%-- Sezione per la gestione degli indirizzi esistenti (solo per MODIFICA) --%>
-        <% if (userAddresses != null && !userAddresses.isEmpty()) { %>
-        <hr style="margin: 25px 0;">
-        <h3>I tuoi indirizzi esistenti:</h3>
-        <ul style="list-style: none; padding: 0;" id="existingAddressesList">
-            <% for (AddressBean addr : userAddresses) { %>
-            <li data-id="<%= addr.getId() %>" style="display: flex; justify-content: space-between; align-items: center; padding: 8px 0; border-bottom: 1px dashed #eee;">
-                <span><%= addr.getVia() %>, <%= addr.getCitta() %>, <%= addr.getCap() %> (<%= addr.getTipologia().name().toLowerCase() %>)</span>
-                <div>
-                    <button type="button" class="button-modify edit-address-btn" data-id="<%= addr.getId() %>"
-                            data-via="<%= addr.getVia() %>"
-                            data-citta="<%= addr.getCitta() %>"
-                            data-cap="<%= addr.getCap() %>"
-                            data-tipologia="<%= addr.getTipologia().name().toLowerCase() %>">Modifica</button>
-                </div>
-            </li>
-            <% } %>
-        </ul>
-        <button type="button" class="button-modify" id="addNewAddressBtn" style="margin-top: 15px;">Aggiungi Nuovo Indirizzo</button>
-        <% } %>
-    </div>
-</div>
-
-
-<script>
-    lucide.createIcons();
-
-    const addressModal = document.getElementById('addressModal');
-    const closeModalBtn = document.getElementById('closeModalBtn');
-    const modifyAddressBtn = document.getElementById('modifyAddressBtn');
-    const addAddressBtn = document.getElementById('addAddressBtn'); // Pulsante "Aggiungi Indirizzo" quando non ce n'è uno predefinito
-    const cancelAddressBtn = document.getElementById('cancelAddressBtn');
-    const addressForm = document.getElementById('addressForm');
-    const modalTitle = document.getElementById('modalTitle');
-    const addressFormAction = document.getElementById('addressFormAction');
-    const addressIdInput = document.getElementById('addressId');
-    const viaInput = document.getElementById('via');
-    const cittaInput = document.getElementById('citta');
-    const capInput = document.getElementById('cap');
-    const tipologiaSelect = document.getElementById('tipologia');
-    const addNewAddressBtn = document.getElementById('addNewAddressBtn'); // Pulsante "Aggiungi Nuovo Indirizzo" dentro il modale
-
-    // Elementi per la visualizzazione dell'indirizzo predefinito
-    const currentAddressDisplay = document.getElementById('currentAddressDisplay');
-    const noAddressMessage = document.getElementById('noAddressMessage');
-    const displayUserName = document.getElementById('displayUserName');
-    const displayVia = document.getElementById('displayVia');
-    const displayCittaCap = document.getElementById('displayCittaCap');
-    const displayUserPhone = document.getElementById('displayUserPhone');
-    const displayUserEmail = document.getElementById('displayUserEmail');
-
-    // Elementi per la sezione "Seleziona un altro indirizzo"
-    const selectedAddressSelect = document.getElementById('selectedAddress');
-    const changeSelectedAddressBtn = document.getElementById('changeSelectedAddressBtn');
-    const finalShippingAddressId = document.getElementById('finalShippingAddressId');
-    const existingAddressesList = document.getElementById('existingAddressesList'); // Lista degli indirizzi esistenti nel modale
-
-    // Dati dell'utente correnti (per aggiornare la visualizzazione)
-    const currentUserName = '<%= userName %>';
-    const currentUserEmail = '<%= userEmail %>';
-
-
-    // Funzione per aprire il modale
-    function openAddressModal(isNew = false, addressData = {}) {
-        addressModal.classList.add('active');
-        if (isNew) {
-            modalTitle.textContent = 'Aggiungi Nuovo Indirizzo';
-            addressFormAction.value = 'save';
-            addressIdInput.value = '';
-            addressForm.reset();
-        } else {
-            modalTitle.textContent = 'Modifica Indirizzo';
-            addressFormAction.value = 'update';
-            addressIdInput.value = addressData.id || '';
-            viaInput.value = addressData.via || '';
-            cittaInput.value = addressData.citta || '';
-            capInput.value = addressData.cap || '';
-            tipologiaSelect.value = addressData.tipologia || 'spedizione';
-        }
-    }
-
-    // Funzione per chiudere il modale
-    function closeAddressModal() {
-        addressModal.classList.remove('active');
-    }
-
-    // Event listeners per aprire il modale
-    if (modifyAddressBtn) {
-        modifyAddressBtn.addEventListener('click', () => {
-            const currentAddress = {
-                id: '<%= defaultShippingAddress != null ? defaultShippingAddress.getId() : "" %>',
-                via: '<%= defaultShippingAddress != null ? defaultShippingAddress.getVia() : "" %>',
-                citta: '<%= defaultShippingAddress != null ? defaultShippingAddress.getCitta() : "" %>',
-                cap: '<%= defaultShippingAddress != null ? defaultShippingAddress.getCap() : "" %>',
-                tipologia: '<%= defaultShippingAddress != null ? defaultShippingAddress.getTipologia().name().toLowerCase() : "" %>'
-            };
-            openAddressModal(false, currentAddress);
-        });
-    }
-
-    if (addAddressBtn) { // Pulsante AGGIUNGI INDIRIZZO quando non c'è un predefinito
-        addAddressBtn.addEventListener('click', () => {
-            openAddressModal(true);
-        });
-    }
-
-    if (addNewAddressBtn) { // Pulsante AGGIUNGI NUOVO INDIRIZZO dentro il modale
-        addNewAddressBtn.addEventListener('click', () => {
-            openAddressModal(true);
-        });
-    }
-
-    // Listener per i pulsanti "Modifica" degli indirizzi esistenti nel modale
-    document.querySelectorAll('.edit-address-btn').forEach(button => {
-        button.addEventListener('click', (event) => {
-            const data = event.target.dataset;
-            openAddressModal(false, data);
-        });
-    });
-
-    // Event listeners per chiudere il modale
-    closeModalBtn.addEventListener('click', closeAddressModal);
-    cancelAddressBtn.addEventListener('click', closeAddressModal);
-    addressModal.addEventListener('click', (event) => {
-        if (event.target === addressModal) {
-            closeAddressModal();
-        }
-    });
-
-    // --- Gestione AJAX della sottomissione del form indirizzo ---
-    addressForm.addEventListener('submit', async (event) => {
-        event.preventDefault(); // Previene il ricaricamento della pagina
-
-        const formData = new FormData(addressForm);
-        try {
-            const response = await fetch("address", {
-                method: 'POST',
-                body: new URLSearchParams(formData)
-            });
-
-            if (response.ok) {
-                // Il servlet dovrebbe rispondere con l'AddressBean salvato/aggiornato in formato JSON
-                const updatedAddress = await response.json();
-                alert('Indirizzo salvato con successo!');
-                closeAddressModal();
-
-                // Aggiorna la visualizzazione dell'indirizzo di spedizione principale
-                updateDisplayedAddress(updatedAddress);
-
-                // Re-renderizza la lista degli indirizzi esistenti nel modale e la select
-                // (Per ora ricarichiamo la pagina per la select, ma si potrebbe fare AJAX)
-                // Se si vuole un aggiornamento completo della lista degli indirizzi (nel modale) e della select,
-                // l'approccio più semplice senza riscrivere molta logica lato client è ricaricare la pagina
-                // o fare una nuova chiamata AJAX per recuperare *tutti* gli indirizzi dell'utente
-                // e ricostruire la lista/select.
-                // Per un aggiornamento dinamico completo, il servlet dovrebbe restituire anche
-                // la lista aggiornata di tutti gli indirizzi, non solo quello modificato.
-                // Per questo esempio, ci concentriamo sull'aggiornamento dell'indirizzo predefinito.
-                // Un semplice ricaricamento della pagina (come fallback per la lista nel modale e la select) è comunque efficace.
-                // window.location.reload(); // Ricarica per aggiornare lista indirizzi esistenti e select
-            } else {
-                const errorText = await response.text();
-                alert('Errore durante il salvataggio dell\'indirizzo: ' + errorText);
-            }
-        } catch (error) {
-            console.error('Errore nella richiesta AJAX:', error);
-            alert('Si è verificato un errore di rete. Riprova più tardi.');
-        }
-    });
-
-    // Funzione per aggiornare l'indirizzo visualizzato sulla pagina
-    function updateDisplayedAddress(address) {
-        if (noAddressMessage) { // Se c'era il messaggio "Nessun indirizzo..." lo rimuoviamo
-            noAddressMessage.style.display = 'none';
-        }
-        if (addAddressBtn) { // Nascondi il pulsante "Aggiungi indirizzo" iniziale
-            addAddressBtn.style.display = 'none';
-        }
-
-        // Assicurati che gli elementi esistano prima di aggiornarli
-        if (!displayUserName) {
-            // Se gli elementi non esistono (es. la pagina è stata caricata senza defaultAddress),
-            // dobbiamo crearli dinamicamente o ricaricare la pagina.
-            // Ricaricare la pagina dopo un salvataggio è l'approccio più robusto per ora,
-            // specialmente se la lista degli indirizzi e la select devono essere aggiornate.
-            window.location.reload();
-            return;
-        }
-
-        displayUserName.textContent = currentUserName; // Il nome utente rimane lo stesso
-        displayVia.textContent = address.via;
-        displayCittaCap.textContent = address.citta + ', ' + address.cap;
-        displayUserPhone.textContent =  "Telefono " + address.phone;
-        displayUserEmail.textContent = "Email " + address.email;
-
-        // Aggiorna anche l'ID nascosto per il form di conferma ordine
-        finalShippingAddressId.value = address.id;
-    }
-
-
-    // Per il pulsante "CAMBIA" indirizzo selezionato nella sezione "Seleziona un altro indirizzo"
-    if (changeSelectedAddressBtn) {
-        changeSelectedAddressBtn.addEventListener('click', async () => {
-            const selectedId = selectedAddressSelect.value;
-            console.log('Cambiato indirizzo selezionato:', selectedId);
-            finalShippingAddressId.value = selectedId;
-
-            try {
-                // Invia una richiesta al servlet per impostare questo indirizzo come predefinito
-                // e/o per recuperare i suoi dettagli per l'aggiornamento dinamico della pagina.
-                // Questo presuppone che la tua AddressServlet abbia un'azione 'set_default' o simile
-                // che restituisca l'indirizzo appena impostato come JSON.
-                const params = new URLSearchParams();
-                params.append('action', 'setDefault');
-                params.append('addressId', selectedId);
-                const response = await fetch("address", {
-                    method: 'POST',
-                    body: params
-                });
-
-                if (response.ok) {
-                    const defaultAddr = await response.json();
-                    console.log(defaultAddr);
-                    updateDisplayedAddress(defaultAddr); // Aggiorna la visualizzazione principale
-                    alert('Indirizzo di spedizione predefinito aggiornato.');
-                } else {
-                    const errorText = await response.text();
-                    alert('Errore durante il cambio dell\'indirizzo predefinito: ' + errorText);
-                }
-            } catch (error) {
-                console.error('Errore nella richiesta AJAX per cambio indirizzo:', error);
-                alert('Si è verificato un errore di rete. Riprova più tardi.');
-            }
-        });
-    }
-
-</script>
+<script src="https://unpkg.com/lucide@latest"></script>
+<script>lucide.createIcons();</script>
 
 </body>
 </html>
