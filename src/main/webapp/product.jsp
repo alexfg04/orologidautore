@@ -88,23 +88,28 @@
             </h1>
             <p class="price">€ <%= String.format("%.2f", product.getPrezzo()) %>
             </p>
-            <p class="description"><%= product.getDescrizione() %>
-            </p>
-
-            <ul class="extra-info">
-                <li><strong>Marca:</strong> <%= product.getMarca() %>
-                </li>
-                <li><strong>Modello:</strong> <%= product.getModello() %>
-                </li>
-                <li><strong>Categoria:</strong> <%= product.getCategoria() %>
-                </li>
-                <li><strong>Taglia:</strong> <%= product.getTaglia() %>
-                </li>
-                <li><strong>Materiale:</strong> <%= product.getMateriale() %>
-                </li>
-            </ul>
             <br>
-
+            <div class="tabs">
+                <button class="tab-link active" data-tab="desc">Descrizione</button>
+                <button class="tab-link" data-tab="specs">Specifiche</button>
+            </div>
+            <div class="tab-content" id="desc">
+                <p><%= product.getDescrizione() %></p>
+            </div>
+            <div class="tab-content" id="specs">
+                <ul>
+                    <li><strong>Marca:</strong> <%= product.getMarca() %>
+                    </li>
+                    <li><strong>Modello:</strong> <%= product.getModello() %>
+                    </li>
+                    <li><strong>Categoria:</strong> <%= product.getCategoria() %>
+                    </li>
+                    <li><strong>Taglia:</strong> <%= product.getTaglia() %>
+                    </li>
+                    <li><strong>Materiale:</strong> <%= product.getMateriale() %>
+                    </li>
+                </ul>
+            </div>
             <form action="<%= request.getContextPath() %>/cart" method="post" class="product-form">
                 <input type="hidden" name="product_id" value="<%= product.getCodiceProdotto() %>">
                 <div class="form-group">
@@ -118,7 +123,6 @@
                 <input type="hidden" name="productId" value="<%= product.getCodiceProdotto() %>">
                 <button type="submit" class="add-to-favorites-button">♡ Aggiungi ai Preferiti</button>
             </form>
-
         </div>
     </div>
 </div>
@@ -129,6 +133,16 @@
 <script>
     lucide.createIcons();
 </script>
-
+<script>
+    // Tab switching
+    document.querySelectorAll('.tab-link').forEach(btn => {
+        btn.addEventListener('click', () => {
+            document.querySelectorAll('.tab-link').forEach(b => b.classList.remove('active'));
+            document.querySelectorAll('.tab-content').forEach(c => c.style.display = 'none');
+            btn.classList.add('active');
+            document.getElementById(btn.getAttribute('data-tab')).style.display = 'block';
+        });
+    });
+</script>
 </body>
 </html>
