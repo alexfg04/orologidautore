@@ -82,7 +82,7 @@ public class SignupServlet extends HttpServlet {
                 }
 
                 request.getSession().setAttribute("flashMessage", "Registrazione avvenuta con successo.");
-                response.sendRedirect(request.getContextPath() + "/login");
+                response.sendRedirect(request.getContextPath() + "/login.jsp");
             }
 
         } catch (SQLException e) {
