@@ -249,7 +249,8 @@
             <div class="custom-select-wrapper">
                 <label for="shippingAddress" class="custom-select-label">Seleziona un indirizzo di spedizione</label>
                 <div class="custom-select">
-                    <select id="shippingAddress" name="selectedAddress" required>
+                    <label for="selectedAddress"></label>
+                    <select id="selectedAddress" name="selectedAddress" required>
                         <option value="" disabled selected>-- Scegli un indirizzo --</option>
                         <% for (AddressBean addr : userAddresses) { %>
                         <option value="<%= addr.getId() %>"
@@ -358,24 +359,20 @@
         <% if (userAddresses != null && !userAddresses.isEmpty()) { %>
         <hr style="margin: 25px 0;">
         <h3>I tuoi indirizzi esistenti:</h3>
-        <div class="custom-select-wrapper">
-            <label for="selectedAddress" class="custom-select-label">Seleziona un indirizzo di spedizione</label>
-            <div class="custom-select">
-                <select id="selectedAddress" name="selectedAddress" required>
-                    <option value="" disabled selected>-- Scegli un indirizzo --</option>
-                    <% for (AddressBean addr : userAddresses) { %>
-                    <option value="<%= addr.getId() %>"
-                            <%= (defaultShippingAddress != null && addr.getId() == defaultShippingAddress.getId()) ? "selected" : "" %>>
-                        <%= addr.getVia() %>, <%= addr.getCitta() %> (<%= addr.getCap() %>) - <%= addr.getTipologia().name().toLowerCase() %>
-                    </option>
-                    <% } %>
-                </select>
-                <!-- Freccia personalizzata -->
-                <svg class="select-arrow" viewBox="0 0 10 6" xmlns="http://www.w3.org/2000/svg">
-                    <path d="M0 0l5 6 5-6H0z" />
-                </svg>
-            </div>
-        </div>
+        <ul style="list-style: none; padding: 0;" id="existingAddressesList">
+            <% for (AddressBean addr : userAddresses) { %>
+            <li data-id="<%= addr.getId() %>" style="display: flex; justify-content: space-between; align-items: center; padding: 8px 0; border-bottom: 1px dashed #eee;">
+                <span><%= addr.getVia() %>, <%= addr.getCitta() %>, <%= addr.getCap() %> (<%= addr.getTipologia().name().toLowerCase() %>)</span>
+                <div>
+                    <button type="button" class="button-modify edit-address-btn" data-id="<%= addr.getId() %>"
+                            data-via="<%= addr.getVia() %>"
+                            data-citta="<%= addr.getCitta() %>"
+                            data-cap="<%= addr.getCap() %>"
+                            data-tipologia="<%= addr.getTipologia().name().toLowerCase() %>">Modifica</button>
+                </div>
+            </li>
+            <% } %>
+        </ul>
         <button type="button" class="button-modify" id="addNewAddressBtn" style="margin-top: 15px;">Aggiungi Nuovo Indirizzo</button>
         <% } %>
     </div>
@@ -558,7 +555,7 @@
     }
 
 
-    // Per il pulsante "CAMBIA" indirizzo selezionato nella sezione "Seleziona un altro indirizzo"
+    // Per il pulsante "IMPOSTA" indirizzo selezionato nella sezione "Seleziona un altro indirizzo"
     if (changeSelectedAddressBtn) {
         changeSelectedAddressBtn.addEventListener('click', async () => {
             const selectedId = selectedAddressSelect.value;
