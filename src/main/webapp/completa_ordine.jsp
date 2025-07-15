@@ -170,11 +170,13 @@
             max-width: 400px;
             margin-bottom: 1rem;
             position: relative;
+            font-family: Arial, sans-serif;
         }
 
         .custom-select-label {
             display: block;
             margin-bottom: 0.5rem;
+            font-size: 0.95rem;
             font-weight: 600;
             color: #333;
         }
@@ -184,8 +186,6 @@
         }
 
         .custom-select select {
-            -webkit-appearance: none;
-            -moz-appearance: none;
             appearance: none;
             width: 100%;
             padding: 12px 40px 12px 16px;
@@ -194,12 +194,14 @@
             border: 1px solid #ccc;
             border-radius: 8px;
             background-color: #fff;
-            transition: border-color 0.2s;
+            transition: border-color 0.2s ease;
+            cursor: pointer;
         }
 
         .custom-select select:focus {
             outline: none;
             border-color: #0056b3;
+            box-shadow: 0 0 0 2px rgba(0, 86, 179, 0.2);
         }
 
         .custom-select svg.select-arrow {
@@ -211,23 +213,6 @@
             pointer-events: none;
             fill: #666;
             transform: translateY(-50%);
-        }
-
-        .btn-solid {
-            display: inline-block;
-            padding: 10px 20px;
-            font-size: 0.95rem;
-            font-weight: 600;
-            color: #fff;
-            background-color: #0056b3;
-            border: none;
-            border-radius: 6px;
-            cursor: pointer;
-            transition: background-color 0.2s;
-        }
-
-        .btn-solid:hover {
-            background-color: #004494;
         }
     </style>
 </head>
@@ -373,20 +358,24 @@
         <% if (userAddresses != null && !userAddresses.isEmpty()) { %>
         <hr style="margin: 25px 0;">
         <h3>I tuoi indirizzi esistenti:</h3>
-        <ul style="list-style: none; padding: 0;" id="existingAddressesList">
-            <% for (AddressBean addr : userAddresses) { %>
-            <li data-id="<%= addr.getId() %>" style="display: flex; justify-content: space-between; align-items: center; padding: 8px 0; border-bottom: 1px dashed #eee;">
-                <span><%= addr.getVia() %>, <%= addr.getCitta() %>, <%= addr.getCap() %> (<%= addr.getTipologia().name().toLowerCase() %>)</span>
-                <div>
-                    <button type="button" class="button-modify edit-address-btn" data-id="<%= addr.getId() %>"
-                            data-via="<%= addr.getVia() %>"
-                            data-citta="<%= addr.getCitta() %>"
-                            data-cap="<%= addr.getCap() %>"
-                            data-tipologia="<%= addr.getTipologia().name().toLowerCase() %>">Modifica</button>
-                </div>
-            </li>
-            <% } %>
-        </ul>
+        <div class="custom-select-wrapper">
+            <label for="selectedAddress" class="custom-select-label">Seleziona un indirizzo di spedizione</label>
+            <div class="custom-select">
+                <select id="selectedAddress" name="selectedAddress" required>
+                    <option value="" disabled selected>-- Scegli un indirizzo --</option>
+                    <% for (AddressBean addr : userAddresses) { %>
+                    <option value="<%= addr.getId() %>"
+                            <%= (defaultShippingAddress != null && addr.getId() == defaultShippingAddress.getId()) ? "selected" : "" %>>
+                        <%= addr.getVia() %>, <%= addr.getCitta() %> (<%= addr.getCap() %>) - <%= addr.getTipologia().name().toLowerCase() %>
+                    </option>
+                    <% } %>
+                </select>
+                <!-- Freccia personalizzata -->
+                <svg class="select-arrow" viewBox="0 0 10 6" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M0 0l5 6 5-6H0z" />
+                </svg>
+            </div>
+        </div>
         <button type="button" class="button-modify" id="addNewAddressBtn" style="margin-top: 15px;">Aggiungi Nuovo Indirizzo</button>
         <% } %>
     </div>
