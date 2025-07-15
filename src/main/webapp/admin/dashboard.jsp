@@ -159,16 +159,9 @@
 
     <section id="table3" class="table-section">
         <h3>Tabella 3 - Ordini</h3>
-        <table>
-            <thead>
-            <tr><th>ID Ordine</th><th>Cliente</th><th>Data</th><th>Totale</th></tr>
-            </thead>
-            <tbody>
-            <tr><td>5001</td><td>Mario Rossi</td><td>2025-06-15</td><td>200€</td></tr>
-            <tr><td>5002</td><td>Luisa Bianchi</td><td>2025-06-16</td><td>150€</td></tr>
-            </tbody>
-        </table>
+        <div id="dashboard-orders"></div>
     </section>
+
 
     <section id="tableProdotti" class="table-section">
         <h3>Tabella Prodotti</h3>
@@ -285,6 +278,10 @@
         if(id === "tableProdotti"){
             loadProductList();
         }
+        if(id === "table3"){
+            loadOrderList();
+        }
+
     }
 
 
@@ -442,6 +439,39 @@
                 }
             }
         };
+        xhr.send();
+    }
+    let ordiniCaricati = false;
+    function loadOrderList() {
+        if (ordiniCaricati) return;
+        ordiniCaricati = true;
+
+        console.log("✅ [JS] Inizio chiamata AJAX a /ordini");
+
+        var xhr = new XMLHttpRequest();
+        xhr.open("GET", "${pageContext.request.contextPath}/ordini", true);
+
+        xhr.onreadystatechange = function () {
+            if (xhr.readyState === 4) {
+                if (xhr.status === 200) {
+                    try {
+                        var parser = new DOMParser();
+                        var doc = parser.parseFromString(xhr.responseText, "text/html");
+                        var tabella = doc.querySelector("table"); // Cerca la tabella nella JSP
+                        if (tabella) {
+                            document.getElementById("dashboard-orders").innerHTML = tabella.outerHTML;
+                        } else {
+                            document.getElementById("dashboard-orders").innerHTML = "<p>Nessun ordine disponibile.</p>";
+                        }
+                    } catch (e) {
+                        document.getElementById("dashboard-orders").innerHTML = "<p>Errore nel parsing della risposta.</p>";
+                    }
+                } else {
+                    document.getElementById("dashboard-orders").innerHTML = "<p>Errore server: codice " + xhr.status + "</p>";
+                }
+            }
+        };
+
         xhr.send();
     }
 
