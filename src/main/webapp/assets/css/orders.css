@@ -1,8 +1,7 @@
 /* Titolo fisso in alto a sinistra */
 .page-title {
-    position: fixed;
-    top: 80px;           /* regola in base all’altezza del tuo navbar */
-    left: 20px;
+    text-align: center;
+    margin-top: 2rem;
     font-size: 1.8rem;
     font-weight: bold;
     color: #000;
@@ -12,7 +11,7 @@
 
 /* Spazio sopra gli ordini per non sovrapporsi al titolo */
 .orders-wrapper {
-    margin-top: 140px;   /* regola in base al tuo navbar + titolo */
+    margin-top: 3rem;   /* regola in base al tuo navbar + titolo */
     display: flex;
     flex-direction: column;
     align-items: center;

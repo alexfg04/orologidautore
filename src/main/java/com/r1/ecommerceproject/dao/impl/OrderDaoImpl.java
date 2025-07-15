@@ -60,7 +60,7 @@ public class OrderDaoImpl implements OrderDao {
     }
 
     @Override
-    public Collection<ProductBean> doRetrieveAllProductsInOrder(String orderId) throws SQLException {
+    public Collection<ProductBean> doRetrieveAllProductsInOrder(String orderNumber) throws SQLException {
         String sql =
                 "SELECT p.*, po.quantita, po.prezzo_unitario, po.iva_percentuale " +
                         "FROM Prodotti_Ordine po " +
@@ -70,13 +70,14 @@ public class OrderDaoImpl implements OrderDao {
         Collection<ProductBean> list = new ArrayList<>();
         try (Connection c = DataSourceConnectionPool.getConnection();
              PreparedStatement ps = c.prepareStatement(sql)) {
-            ps.setString(1, orderId);
+            ps.setString(1, orderNumber);
             try (ResultSet rs = ps.executeQuery()) {
                 while (rs.next()) {
                     ProductBean p = new ProductBean();
                     // popola i campi base...
                     p.setNome(rs.getString("nome"));
                     p.setQuantity(rs.getInt("quantita"));
+                    p.setImmagine(rs.getString("image_url"));
                     p.setPrezzoUnitario(rs.getBigDecimal("prezzo_unitario"));
                     p.setIvaPercentuale(rs.getBigDecimal("iva_percentuale"));
                     list.add(p);

@@ -5,6 +5,7 @@
 <%@ page import="com.r1.ecommerceproject.dao.OrderDao" %>
 <%@ page import="com.r1.ecommerceproject.dao.impl.OrderDaoImpl" %>
 <%@ page import="com.r1.ecommerceproject.utils.UserSession" %>
+<%@ page import="java.sql.SQLException" %>
 <%@ page contentType="text/html; charset=UTF-8" language="java" %>
 <%
     // Controllo login
@@ -17,7 +18,12 @@
 
     // Carico tutti gli ordini dell'utente
     OrderDao orderDao = new OrderDaoImpl();
-    Collection<OrderBean> orders = orderDao.doRetrieveAllOrdersByUserId(userId);
+    Collection<OrderBean> orders;
+    try {
+        orders = orderDao.doRetrieveAllOrdersByUserId(userId);
+    } catch (SQLException e) {
+        throw new RuntimeException(e);
+    }
 %>
 <!DOCTYPE html>
 <html lang="it">
@@ -45,8 +51,6 @@
     <div class="no-orders">Non hai effettuato ancora nessun ordine.</div>
 </div>
 <%@ include file="footer.jsp" %>
-</body>
-</html>
 <%
         return;
     }
@@ -55,8 +59,15 @@
 <!-- Wrapper che allinea verticalmente tutte le order-card -->
 <div class="orders-wrapper">
     <% for (OrderBean order : orders) {
-        AddressBean addr = orderDao.doRetrieveAddress(order.getNumeroOrdine());
-        Collection<ProductBean> prods = orderDao.doRetrieveAllProductsInOrder(order.getNumeroOrdine());
+        AddressBean addr;
+        Collection<ProductBean> prods;
+        try {
+            addr = orderDao.doRetrieveAddress(order.getNumeroOrdine());
+            prods = orderDao.doRetrieveAllProductsInOrder(order.getNumeroOrdine());
+            System.out.println(prods);
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
     %>
     <div class="order-card">
         <div class="order-info">
