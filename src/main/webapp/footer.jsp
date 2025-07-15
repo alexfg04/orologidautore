@@ -9,10 +9,9 @@
     <div class="footer-section">
       <h3>Customer Services</h3>
       <ul>
-        <li><a href="#">FAQs</a></li>
-        <li><a href="#">Delivery</a></li>
-        <li><a href="#">Returns</a></li>
-        <li><a href="#">Contact</a></li>
+        <li><a href="FAQs.jsp">FAQs</a></li>
+        <li><a href="FAQs.jsp#spedizioni">Delivery</a></li>
+        <li><a href="FAQs.jsp#general">Contact</a></li>
       </ul>
     </div>
 
@@ -20,9 +19,8 @@
     <div class="footer-section">
       <h3>Shopping Online</h3>
       <ul>
-        <li><a href="#">My Account</a></li>
-        <li><a href="#">Wishlist</a></li>
-        <li><a href="#">Privacy and Cookies</a></li>
+        <li><a href="FAQs.jsp#account">My Account</a></li>
+        <li><a href="FAQs.jsp#politiche">Site Polcies</a></li>
       </ul>
     </div>
 
@@ -30,10 +28,10 @@
     <div class="footer-section">
       <h3>About Us</h3>
       <ul>
-        <li><a href="#">Carriere</a></li>
-        <li><a href="#">Promotion Terms</a></li>
-        <li><a href="#">Terms and Conditions</a></li>
-        <li><a href="#">Sitemap</a></li>
+        <li><a href="FAQs.jsp#about">Carriere</a></li>
+        <li><a href="FAQs.jsp#about">Promotion Terms</a></li>
+        <li><a href="FAQs.jsp#about">Terms and Conditions</a></li>
+        <li><a href="FAQs.jsp#about">Sitemap</a></li>
       </ul>
     </div>
   </div>

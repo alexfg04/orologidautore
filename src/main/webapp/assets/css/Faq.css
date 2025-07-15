@@ -1,0 +1,141 @@
+body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+    background: #f4f4f4;
+    min-width: 1200px;
+    overflow: hidden;
+}
+
+.faq-container {
+    display: flex;
+    width: 1200px;
+    height: 700px;
+    margin: 30px auto;
+    background: #fff;
+    border-radius: 6px;
+    box-shadow: 0 0 8px rgba(0,0,0,0.1);
+    overflow: hidden;
+}
+
+.faq-sidebar {
+    width: 250px;
+    border-right: 1px solid #ddd;
+    background: #f9f9f9;
+    overflow-y: auto;
+    height: 100%;
+}
+
+.faq-sidebar ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.faq-sidebar li {
+    padding: 15px 20px;
+    cursor: pointer;
+    border-bottom: 1px solid #ddd;
+    transition: background-color 0.3s ease;
+}
+
+.faq-sidebar li:hover {
+    background-color: #e0f7fa;
+}
+
+.faq-sidebar li.active {
+    background-color: #00796b;
+    color: white;
+    font-weight: bold;
+}
+
+.faq-content {
+    flex: 1;
+    padding: 25px 30px;
+    overflow-y: auto;
+    overflow-x: hidden;
+    height: 100%;
+}
+
+.faq-section {
+    display: none;
+}
+
+.faq-section.active {
+    display: block;
+}
+
+.faq-question {
+    font-weight: bold;
+    color: #004d40;
+    padding: 12px 15px;
+    background-color: #e0f2f1;
+    margin: 10px 0 0 0;
+    border-radius: 4px;
+    cursor: pointer;
+    position: relative;
+    user-select: none;
+    transition: background-color 0.3s ease;
+}
+
+.faq-question:hover {
+    background-color: #b2dfdb;
+}
+
+.faq-question::after {
+    content: '+';
+    position: absolute;
+    right: 20px;
+    font-size: 20px;
+    top: 50%;
+    transform: translateY(-50%);
+    transition: transform 0.3s ease;
+}
+
+.faq-question.active::after {
+    content: '-';
+}
+
+.faq-answer {
+    max-height: 0;
+    overflow: hidden;
+    transition: max-height 0.35s ease;
+    background: #fafafa;
+    padding: 0 15px;
+    border-left: 3px solid #00796b;
+    border-radius: 0 4px 4px 0;
+    color: #333;
+    line-height: 1.5;
+}
+
+.faq-answer.open {
+    padding: 15px;
+    max-height: 500px;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+    body {
+        min-width: auto;
+        overflow: auto;
+    }
+
+    .faq-container {
+        flex-direction: column;
+        width: 100%;
+        height: auto;
+        margin: 10px;
+    }
+
+    .faq-sidebar {
+        width: 100%;
+        height: auto;
+        border-right: none;
+        border-bottom: 1px solid #ddd;
+    }
+
+    .faq-content {
+        padding: 15px;
+        height: auto;
+    }
+}
