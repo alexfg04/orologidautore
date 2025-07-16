@@ -10,6 +10,7 @@
     <table>
         <thead>
         <tr>
+            <th>Id</th>
             <th>Numero Ordine</th>
             <th>Data Ordine</th>
             <th>Data Arrivo</th>
@@ -19,10 +20,12 @@
         </thead>
         <tbody>
         <% for (OrderBean ordine : ordini) { %>
+        <% System.out.println(ordine.getIdOrder()); %>
         <tr>
+            <td><%= ordine.getIdOrder() %></td>
             <td><%= ordine.getNumeroOrdine() %></td>
             <td><%= ordine.getDataOrdine() %></td>
-            <td><%= ordine.getDataOrdine() %></td> <%-- Sostituisci se hai getDataArrivo() --%>
+            <td><%= ordine.getDataOrdine() %></td>
             <td><%= ordine.getTotale() %></td>
             <td><button>Info</button></td>
         </tr>

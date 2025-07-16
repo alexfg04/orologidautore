@@ -5,7 +5,7 @@ import java.sql.Timestamp;
 import java.util.Collection;
 
 public class OrderBean {
-
+    private Integer idOrder;
     private String numeroOrdine;
     private String note;
     private Timestamp dataOrdine;
@@ -19,6 +19,8 @@ public class OrderBean {
     private Collection<ProductBean> prodotti;
 
     // getter/setter esistenti...
+
+    public Integer getIdOrder() {return idOrder;}
     public String getNumeroOrdine() { return numeroOrdine; }
     public void setNumeroOrdine(String numeroOrdine) { this.numeroOrdine = numeroOrdine; }
     public String getNote() { return note; }
