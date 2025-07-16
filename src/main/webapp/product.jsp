@@ -14,6 +14,32 @@
     <link rel="stylesheet" href="${pageContext.request.contextPath}/assets/css/product-detail.css">
 </head>
 <style>
+    .star-rating {
+        font-size: 2rem;
+        unicode-bidi: bidi-override;
+        direction: ltr; /* normale */
+        display: inline-flex;
+        flex-direction: row-reverse; /* *importante* per fare il trucco */
+    }
+
+    .star-rating input[type="radio"] {
+        display: none;
+    }
+
+    .star-rating label {
+        color: #ccc;
+        cursor: pointer;
+        user-select: none;
+        transition: color 0.2s ease-in-out;
+    }
+
+    /* Coloro la stella selezionata e tutte quelle "precedenti" usando flex-row-reverse + ~ */
+    .star-rating input[type="radio"]:checked ~ label,
+    .star-rating label:hover,
+    .star-rating label:hover ~ label {
+        color: #f5b301;
+    }
+
     /* Quadrato semplice con notifiche */
     .error-notification {
         width: 350px;
@@ -119,12 +145,55 @@
                 <button type="submit" class="add-to-cart-button">Aggiungi al Carrello</button>
             </form>
 
+            <%
+                // Recupera l'id utente dalla sessione
+                Object userIdObj = session.getAttribute("userId");
+
+                if (userIdObj == null) {
+            %>
+            <p>Devi essere <a href="<%= request.getContextPath() + "/login.jsp" %>">loggato</a> per lasciare una recensione.</p>
+            <%
+            } else {
+            %>
+            <!-- Form recensione visibile SOLO se l'utente è loggato -->
+            <form action="<%= request.getContextPath() %>/submitReview" method="post" class="review-form">
+                <input type="hidden" name="codiceProdotto" value="<%= product.getCodiceProdotto() %>">
+
+                <label for="valutazione">Valutazione:</label>
+                <div class="star-rating">
+                    <input type="radio" id="star5" name="valutazione" value="5" required />
+                    <label for="star5" title="5 stelle">★</label>
+
+                    <input type="radio" id="star4" name="valutazione" value="4" />
+                    <label for="star4" title="4 stelle">★</label>
+
+                    <input type="radio" id="star3" name="valutazione" value="3" />
+                    <label for="star3" title="3 stelle">★</label>
+
+                    <input type="radio" id="star2" name="valutazione" value="2" />
+                    <label for="star2" title="2 stelle">★</label>
+
+                    <input type="radio" id="star1" name="valutazione" value="1" />
+                    <label for="star1" title="1 stella">★</label>
+                </div>
+
+                <label for="commento">Commento:</label>
+                <textarea id="commento" name="commento" rows="4" cols="50" required></textarea>
+
+                <button type="submit">Invia Recensione</button>
+            </form>
+            <%
+                }
+            %>
+
             <form id="favForm"  action="${pageContext.request.contextPath}/favorite"  method="post" class="product-form">
                 <input type="hidden" name="productId" value="<%= product.getCodiceProdotto() %>">
                 <button type="submit" class="add-to-favorites-button">♡ Aggiungi ai Preferiti</button>
             </form>
         </div>
     </div>
+
+
 </div>
 <script src="https://unpkg.com/lucide@latest"></script>
 <script src="${pageContext.request.contextPath}/assets/js/toast.js"></script>
