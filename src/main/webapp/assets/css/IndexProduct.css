@@ -37,8 +37,8 @@
 }
 
 .card img {
-    width: 100%;
-    height: 210px;
+    width: 90%;
+    height: 260px;
     object-fit: cover;
 }
 

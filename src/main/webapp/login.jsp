@@ -112,6 +112,7 @@
                 <h1>Ciao, Boss!</h1>
                 <p>Per rimanere in contatto con noi accedi con i tuoi dati personali</p>
                 <button class="ghost" id="signUp">Crea</button>
+                <button onclick="location.href='index.jsp'">Vai alla Home</button>
             </div>
         </div>
     </div>

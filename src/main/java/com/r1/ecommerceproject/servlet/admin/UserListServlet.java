@@ -46,11 +46,13 @@ public class UserListServlet extends HttpServlet {
             for (int i = 0; i < users.size(); i++) {
                 UserBean user = users.get(i);
                 json.append("{")
+                        .append("\"id\":").append(user.getId()).append(",")
                         .append("\"nome\":\"").append(escapeJson(user.getNome())).append("\",")
                         .append("\"cognome\":\"").append(escapeJson(user.getCognome())).append("\",")
                         .append("\"email\":\"").append(escapeJson(user.getEmail())).append("\",")
                         .append("\"tipologia\":\"").append(user.getTipologia()).append("\"")
                         .append("}");
+
 
                 if (i < users.size() - 1) json.append(",");
             }

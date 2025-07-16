@@ -8,6 +8,8 @@
     <title>Dashboard con Tabella Utenti AJAX</title>
     <link rel="stylesheet" href="${pageContext.request.contextPath}/admin/css/style.css"/>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" />
+
+
     <style>
         /* Container form */
         #tableAddProduct form {
@@ -158,7 +160,6 @@
     </section>
 
     <section id="table3" class="table-section">
-        <h3>Tabella 3 - Ordini</h3>
         <div id="dashboard-orders"></div>
     </section>
 
@@ -337,22 +338,22 @@
                             var end = start + utentiPerPagina;
                             var paginaUtenti = utenti.slice(start, end);
 
-                            var html = "<table><thead><tr><th>Nome</th><th>Cognome</th><th>Email</th><th>Ruolo</th><th>Info</th></tr></thead><tbody>";
+                            var html = "<table><thead><tr><th>ID Utente</th><th>Nome</th><th>Cognome</th><th>Email</th><th>Ruolo</th><th>Info</th></tr></thead><tbody>";
+
 
                             paginaUtenti.forEach(function(user) {
                                 html += "<tr>" +
+                                    "<td>" + user.id + "</td>" +
                                     "<td>" + user.nome + "</td>" +
                                     "<td>" + user.cognome + "</td>" +
                                     "<td>" + user.email + "</td>" +
                                     "<td>" + user.tipologia + "</td>" +
                                     "<td>" +
-                                    "<form method='post' action='/ecommerce_project_war_exploded/admin/userInfo'>" +
-                                    "<input type='hidden' name='email' value='" + user.email + "' />" +
-                                    "<button type='submit'>Info</button>" +
-                                    "</form>" +
+                                    "<button onclick=\"vaiAllaPaginaOrdini('" + user.email + "')\">Info</button>" +
                                     "</td>" +
                                     "</tr>";
                             });
+
 
                             html += "</tbody></table>";
 
