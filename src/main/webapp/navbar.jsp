@@ -18,9 +18,9 @@
 
         <div class="navbar-center">
             <a href="index.jsp">Home</a>
-            <a href="catalog.jsp">Novità</a>
-            <a href="about.jsp">Uomo</a>
-            <a href="contact.jsp">Donna</a>
+            <a href="${pageContext.request.contextPath}/catalog">Catalogo</a>
+            <a href="${pageContext.request.contextPath}/catalog?gender=uomo">Uomo</a>
+            <a href="${pageContext.request.contextPath}/catalog?gender=donna">Donna</a>
         </div>
 
 

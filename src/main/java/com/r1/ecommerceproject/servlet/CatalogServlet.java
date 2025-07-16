@@ -3,6 +3,9 @@ package com.r1.ecommerceproject.servlet;
 import com.r1.ecommerceproject.dao.ProductDao;
 import com.r1.ecommerceproject.dao.impl.ProductDaoImpl;
 import com.r1.ecommerceproject.model.ProductBean;
+import com.r1.ecommerceproject.utils.GenderFilter;
+import com.r1.ecommerceproject.utils.GenericFilter;
+import com.r1.ecommerceproject.utils.PriceMaxFilter;
 import com.r1.ecommerceproject.utils.ProductFilter;
 
 import javax.servlet.ServletException;
@@ -11,8 +14,9 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.math.BigDecimal;
 import java.sql.SQLException;
-import java.util.Collection;
+import java.util.*;
 
 @WebServlet("/catalog")
 public class CatalogServlet extends HttpServlet {
@@ -21,9 +25,10 @@ public class CatalogServlet extends HttpServlet {
 
     public void doGet(HttpServletRequest req, HttpServletResponse res) throws ServletException, IOException {
         // 1. Leggi parametri
-        String[] types = req.getParameterValues("tipo");
-        String[] colors = req.getParameterValues("colore");
-        String[] sizes = req.getParameterValues("taglia");
+        String[] typesParam = req.getParameterValues("tipo");
+        String[] brandsParam = req.getParameterValues("brand");
+        String[] materialsParam = req.getParameterValues("materiale");
+        String genderParam = req.getParameter("gender");
         String priceParam = req.getParameter("prezzo");
         String sort = req.getParameter("sort");
         String pageParam = req.getParameter("page");
@@ -35,34 +40,32 @@ public class CatalogServlet extends HttpServlet {
         } else {
             page = parseIntOr(req.getParameter("page"));
         }
+        List<String> types     = typesParam     != null ? Arrays.asList(typesParam)     : Collections.emptyList();
+        List<String> brands    = brandsParam   != null ? Arrays.asList(brandsParam)    : Collections.emptyList();
+        List<String> materials = materialsParam != null ? Arrays.asList(materialsParam) : Collections.emptyList();
 
-        // Creazione dell'istanza della classe Filtro
-        ProductFilter filter = new ProductFilter();
+        // Inizializzazione del Builder con i filtri
+        ProductFilter.Builder basedFilter = new ProductFilter.Builder()
+                .addFilter(new GenericFilter(types, "tipo"))
+                .addFilter(new GenericFilter(brands,"marca"))
+                .addFilter(new GenericFilter(materials, "materiale"))
+                .addFilter(new PriceMaxFilter(new BigDecimal(priceParam == null ? "0" : priceParam)))
+                .addFilter(new GenderFilter(genderParam));
 
-        // Imposta i filtri in base a ciò che riceve la servlet
-        if (types != null) {
-            filter.setTypes(types);
-        }
-        if (colors != null) {
-            filter.setColors(colors);
-        }
-        if (sizes != null) {
-            filter.setSizes(sizes);
-        }
-        if (priceParam != null && !priceParam.isEmpty()) {
-            double maxPrice = Double.parseDouble(priceParam);
-            if(maxPrice > 0) {
-                filter.setPriceMax(maxPrice);
-            }
-        }
-        if (sort != null && !sort.trim().isEmpty()) {
-            filter.setOrderBy(sort);
-        }
+        // Filtro senza limit e offset
+        ProductFilter filter = basedFilter.build();
+
+        // Filtro completo
+        ProductFilter pagedFilter = basedFilter
+                .orderBy(sort)
+                .limit(PAGE_SIZE)
+                .offset(PAGE_SIZE * (page - 1))
+                .build();
 
         // Recupera i prodotti divisi in pagine
         try {
             // Il metodo doRetrievePageableProducts restuisce i prodotti filtrati
-            Collection<ProductBean>products = model.doRetrievePageableProducts(page, PAGE_SIZE, filter);
+            Collection<ProductBean>products = model.doRetrievePageableProducts(pagedFilter);
 
             // Il metodo doCountProducts il numero totale di prodotti
             int prCount = model.doCountProducts(filter);
@@ -73,7 +76,7 @@ public class CatalogServlet extends HttpServlet {
             req.setAttribute("totalPages", totalPages);
             req.setAttribute("products", products);
         } catch (SQLException e) {
-            res.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR, "Error retrieving products" + e.getMessage() );
+            res.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR, "Error retrieving products: " + e.getMessage());
             return;
         }
 

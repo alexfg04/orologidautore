@@ -92,7 +92,7 @@ public class ProductMgmtServlet extends HttpServlet {
 
                 ProductBean bean = new ProductBean();
                 bean.setMateriale(materiale);
-                bean.setCategoria(categoria);
+                bean.setGenere(categoria);
                 bean.setTaglia(taglia);
                 bean.setMarca(marca);
                 bean.setPrezzo(prezzo);

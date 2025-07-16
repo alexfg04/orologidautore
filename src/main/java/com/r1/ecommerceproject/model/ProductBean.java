@@ -12,7 +12,7 @@ public class ProductBean implements Serializable {
 	
 	int codiceProdotto;
 	String materiale;
-	String categoria;
+	String genere;
 	String taglia;
 	String marca;
 	BigDecimal prezzo;
@@ -57,12 +57,12 @@ public class ProductBean implements Serializable {
 		this.materiale = materiale;
 	}
 
-	public String getCategoria() {
-		return categoria;
+	public String getGenere() {
+		return genere;
 	}
 
-	public void setCategoria(String categoria) {
-		this.categoria = categoria;
+	public void setGenere(String genere) {
+		this.genere = genere;
 	}
 
 	public String getTaglia() {
@@ -184,7 +184,7 @@ public class ProductBean implements Serializable {
         return "Prodotto{" +
                 "codiceProdotto=" + codiceProdotto +
                 ", materiale='" + materiale + '\'' +
-                ", categoria='" + categoria + '\'' +
+                ", categoria='" + genere + '\'' +
                 ", taglia='" + taglia + '\'' +
                 ", marca='" + marca + '\'' +
                 ", prezzo=" + prezzo +
@@ -205,7 +205,7 @@ public class ProductBean implements Serializable {
 		return getCodiceProdotto() == that.getCodiceProdotto()
 				&& getPrezzo().compareTo(that.getPrezzo()) == 0
 				&& Objects.equals(getMateriale(), that.getMateriale())
-				&& Objects.equals(getCategoria(), that.getCategoria())
+				&& Objects.equals(getGenere(), that.getGenere())
 				&& Objects.equals(getTaglia(), that.getTaglia())
 				&& Objects.equals(getMarca(), that.getMarca())
 				&& getStato() == that.getStato()
@@ -218,6 +218,6 @@ public class ProductBean implements Serializable {
 
 	@Override
 	public int hashCode() {
-		return Objects.hash(getCodiceProdotto(), getMateriale(), getCategoria(), getTaglia(), getMarca(), getPrezzo(), getStato(), getModello(), getDescrizione(), getNome(), getImmagine());
+		return Objects.hash(getCodiceProdotto(), getMateriale(), getGenere(), getTaglia(), getMarca(), getPrezzo(), getStato(), getModello(), getDescrizione(), getNome(), getImmagine());
 	}
 }

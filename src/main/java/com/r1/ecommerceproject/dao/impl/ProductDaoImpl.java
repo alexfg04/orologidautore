@@ -36,7 +36,7 @@ public class ProductDaoImpl implements ProductDao {
             preparedStatement.setBigDecimal(3, product.getPrezzo());
             preparedStatement.setString(4, product.getModello());
             preparedStatement.setString(5, product.getMarca());
-            preparedStatement.setString(6, product.getCategoria());
+            preparedStatement.setString(6, product.getGenere());
             preparedStatement.setString(7, product.getTaglia());
             preparedStatement.setString(8, product.getMateriale());
             preparedStatement.setString(9, product.getImmagine());
@@ -68,7 +68,7 @@ public class ProductDaoImpl implements ProductDao {
         bean = new ProductBean();
         bean.setCodiceProdotto(rs.getInt("codice_prodotto"));
         bean.setMateriale(rs.getString("materiale"));
-        bean.setCategoria(rs.getString("categoria"));
+        bean.setGenere(rs.getString("gender"));
         bean.setTaglia(rs.getString("taglia"));
         bean.setMarca(rs.getString("marca"));
         bean.setPrezzo(rs.getBigDecimal("prezzo"));
@@ -137,12 +137,11 @@ public class ProductDaoImpl implements ProductDao {
         return products;
     }
     @Override
-    public synchronized Collection<ProductBean> doRetrievePageableProducts(int page, int pageSize, ProductFilter filter) throws SQLException {
-        List<Object> parameters = filter.getParameterValues();
-        String conditions = filter.getQueryCondition();
+    public synchronized Collection<ProductBean> doRetrievePageableProducts(ProductFilter filter) throws SQLException {
+        String conditions = filter.toSql();
+        List<Object> parameters = filter.getParameters();
 
-        String query = "SELECT * FROM " + TABLE_NAME + " " + conditions + " LIMIT ? OFFSET ?";
-
+        String query = "SELECT * FROM " + TABLE_NAME + conditions;
         Collection<ProductBean> products = new LinkedList<>();
 
         try (Connection connection = DataSourceConnectionPool.getConnection();
@@ -152,9 +151,6 @@ public class ProductDaoImpl implements ProductDao {
             for (Object o : parameters) {
                 preparedStatement.setObject(idx++, o);
             }
-            // imposta l'offset e il numero di elementi da ritornare per pagina
-            preparedStatement.setInt(idx++, pageSize);
-            preparedStatement.setInt(idx, (page - 1) * pageSize);
 
             try (ResultSet rs = preparedStatement.executeQuery()) {
                 while (rs.next()) {
@@ -245,10 +241,10 @@ public class ProductDaoImpl implements ProductDao {
 
     @Override
     public int doCountProducts(ProductFilter filter) throws SQLException {
-        List<Object> parameters = filter.getParameterValues();
-        String conditions = filter.getQueryCondition();
+        String conditions = filter.toSql();
+        List<Object> parameters = filter.getParameters();
 
-        String query = "SELECT COUNT(*) FROM " + TABLE_NAME + " " + conditions;
+        String query = "SELECT COUNT(*) FROM " + TABLE_NAME + conditions;
         int count = 0;
         try (Connection connection = DataSourceConnectionPool.getConnection();
              PreparedStatement preparedStatement = connection.prepareStatement(query)) {

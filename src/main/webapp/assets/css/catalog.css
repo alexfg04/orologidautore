@@ -10,25 +10,18 @@ body {
 
 .container {
     display: flex;
-    min-height: 100vh;
 }
 
 /* Sidebar */
 .sidebar {
     width: 250px;
-    height: 100vh;
+    height: 859px;
     padding: 20px;
-    border-right: 1px solid #ddd;
+    border: 1px solid #ddd;
     background: #f9f9f9;
-    overflow-y: auto
-}
-
-.sidebar {
-    scrollbar-width: none;  /* Firefox */
-    -ms-overflow-style: none;  /* IE 10+ */
-}
-.sidebar::-webkit-scrollbar {
-    display: none;          /* Chrome, Safari */
+    border-radius: 12px;
+    margin-top: 16px;
+    margin-left: 16px;
 }
 
 .sidebar h2 {
@@ -191,8 +184,7 @@ input[type=range]:active::-moz-range-thumb {
 .main-content {
     flex: 1;
     padding: 20px;
-    overflow-y: auto;
-    height: 100vh;
+    height: 100%;
 }
 /* Stile container tab */
 .sorting-tabs {

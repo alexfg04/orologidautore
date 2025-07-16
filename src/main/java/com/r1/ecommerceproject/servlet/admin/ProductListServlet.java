@@ -54,7 +54,7 @@ public class ProductListServlet extends HttpServlet {
                         .append("\"codiceProdotto\":").append(p.getCodiceProdotto()).append(",") // <--- qui
                         .append("\"nome\":\"").append(escapeJson(p.getNome())).append("\",")
                         .append("\"marca\":\"").append(escapeJson(p.getMarca())).append("\",")
-                        .append("\"categoria\":\"").append(escapeJson(p.getCategoria())).append("\",")
+                        .append("\"categoria\":\"").append(escapeJson(p.getGenere())).append("\",")
                         .append("\"taglia\":\"").append(escapeJson(p.getTaglia())).append("\",")
                         .append("\"prezzo\":").append(p.getPrezzo()).append(",")
                         .append("\"modello\":\"").append(escapeJson(p.getModello())).append("\",")

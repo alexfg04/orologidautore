@@ -1,121 +1,91 @@
 package com.r1.ecommerceproject.utils;
 
+import com.r1.ecommerceproject.utils.SqlFilter;
+
 import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.List;
 import java.util.LinkedHashMap;
+import java.util.List;
 import java.util.Map;
 
 public class ProductFilter {
-    private String[] types;
-    private String[] colors;
-    private String[] sizes;
-    private Double priceMax;
-    private String orderBy;
+    private final List<SqlFilter> filters;
+    List<Object> params = new ArrayList<>();
+    private final String orderByClause;
+    private final Integer limit;
+    private final Integer offset;
 
-    // Whitelist per i campi di ordinamento validi e le direzioni
-    private static final Map<String, String> ALLOWED_ORDER_BY_FIELDS = new LinkedHashMap<>();
-    static {
-        ALLOWED_ORDER_BY_FIELDS.put("prezzo_asc", "prezzo ASC");
-        ALLOWED_ORDER_BY_FIELDS.put("prezzo_desc", "prezzo DESC");
-        // Aggiungere altri campi/direzioni consentiti se necessario
-        ALLOWED_ORDER_BY_FIELDS.put("nome_asc", "nome ASC");
+    private ProductFilter(Builder b) {
+        this.filters       = List.copyOf(b.filters);
+        this.orderByClause = b.orderByKey != null
+                ? Builder.ALLOWED_ORDER_BY.get(b.orderByKey)
+                : null;
+        this.limit  = b.limit;
+        this.offset = b.offset;
     }
 
-    public void setOrderBy(String orderBy) {
-        // Valida e imposta l'orderBy solo se è nella whitelist
-        if (orderBy != null && ALLOWED_ORDER_BY_FIELDS.containsKey(orderBy.toLowerCase())) {
-            this.orderBy = ALLOWED_ORDER_BY_FIELDS.get(orderBy.toLowerCase());
-        } else {
-            this.orderBy = null;
+    public String toSql() {
+        StringBuilder sb = new StringBuilder();
+        boolean whereExists = false;
+
+        params.clear();
+
+        for (SqlFilter f : filters) {
+            whereExists = f.apply(sb, whereExists, params);
         }
+        if (orderByClause != null) {
+            sb.append(" ORDER BY ").append(orderByClause);
+        }
+        if (limit != null) {
+            sb.append(" LIMIT ").append(limit);
+            if (offset != null) {
+                sb.append(" OFFSET ").append(offset);
+            }
+        }
+        return sb.toString();
     }
 
-    public void setTypes(String[] types) {
-        this.types = (types != null) ? Arrays.copyOf(types, types.length) : null;
+    public List<Object> getParameters() {
+        return params;
     }
 
-    public void setColors(String[] colors) {
-        this.colors = (colors != null) ? Arrays.copyOf(colors, colors.length) : null;
+    @Override
+    public String toString() {
+        return "SQL: " + toSql() + "\nParams: " + getParameters();
     }
 
-    public void setSizes(String[] sizes) {
-        this.sizes = (sizes != null) ? Arrays.copyOf(sizes, sizes.length) : null;
-    }
+    public static class Builder {
+        private final List<SqlFilter> filters = new ArrayList<>();
+        private String orderByKey;
+        private Integer limit;
+        private Integer offset;
 
-    public void setPriceMax(Double priceMax) {
-        this.priceMax = priceMax;
-    }
-
-    /**
-     * Restituisce una lista di oggetti parametro nell'ordine in cui devono essere impostati
-     * nel PreparedStatement.
-     * @return Lista di valori per i filtri.
-     */
-    public List<Object> getParameterValues() {
-        List<Object> values = new ArrayList<>();
-        if (types != null && types.length > 0) {
-            Collections.addAll(values, types);
-        }
-        if (colors != null && colors.length > 0) {
-            Collections.addAll(values, colors);
-        }
-        if (sizes != null && sizes.length > 0) {
-            Collections.addAll(values, sizes);
-        }
-        if (priceMax != null && priceMax > 0) {
-            values.add(priceMax);
-        }
-        return values;
-    }
-
-    /**
-     * Costruisce la parte WHERE e ORDER BY della query SQL basata sui filtri impostati.
-     * @return Stringa contenente le clausole SQL.
-     */
-    public String getQueryCondition() {
-        StringBuilder queryBuilder = new StringBuilder();
-        boolean hasWhereClause = false;
-
-        if (types != null && types.length > 0) {
-            appendWhereOrAnd(queryBuilder, hasWhereClause);
-            hasWhereClause = true;
-            queryBuilder.append("categoria IN (")
-                    .append(String.join(",", Collections.nCopies(types.length, "?")))
-                    .append(") ");
-        }
-        if (colors != null && colors.length > 0) {
-            appendWhereOrAnd(queryBuilder, hasWhereClause);
-            hasWhereClause = true;
-            queryBuilder.append("colore IN (")
-                    .append(String.join(",", Collections.nCopies(colors.length, "?")))
-                    .append(") ");
-        }
-        if (sizes != null && sizes.length > 0) {
-            appendWhereOrAnd(queryBuilder, hasWhereClause);
-            hasWhereClause = true;
-            queryBuilder.append("taglia IN (")
-                    .append(String.join(",", Collections.nCopies(sizes.length, "?")))
-                    .append(") ");
-        }
-        if (priceMax != null && priceMax > 0) {
-            appendWhereOrAnd(queryBuilder, hasWhereClause);
-            hasWhereClause = true;
-            queryBuilder.append("prezzo <= ? ");
+        static final Map<String, String> ALLOWED_ORDER_BY = new LinkedHashMap<>();
+        static {
+            ALLOWED_ORDER_BY.put("prezzo_asc",  "prezzo ASC");
+            ALLOWED_ORDER_BY.put("prezzo_desc", "prezzo DESC");
+            ALLOWED_ORDER_BY.put("nome_asc",    "nome ASC");
+            ALLOWED_ORDER_BY.put("nome_desc",   "nome DESC");
         }
 
-        if (orderBy != null && !orderBy.isEmpty()) {
-            queryBuilder.append("ORDER BY ").append(orderBy); // orderBy è già validato
+        public Builder addFilter(SqlFilter filter) {
+            if (filter != null) filters.add(filter);
+            return this;
         }
-        return queryBuilder.toString();
-    }
-
-    private void appendWhereOrAnd(StringBuilder sb, boolean hasWhereAlready) {
-        if (!hasWhereAlready) {
-            sb.append(" WHERE ");
-        } else {
-            sb.append(" AND ");
+        public Builder orderBy(String key) {
+            this.orderByKey = key!=null && ALLOWED_ORDER_BY.containsKey(key.toLowerCase())
+                    ? key.toLowerCase() : null;
+            return this;
+        }
+        public Builder limit(int l) {
+            this.limit = l > 0 ? l : null;
+            return this;
+        }
+        public Builder offset(int o) {
+            this.offset = o >= 0 ? o : null;
+            return this;
+        }
+        public ProductFilter build() {
+            return new ProductFilter(this);
         }
     }
 }

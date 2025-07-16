@@ -1,23 +1,22 @@
-const slider = document.getElementById('price-range');
+const priceRange = document.getElementById('price-range');
 const output = document.getElementById('price-display');
 const filterForm = document.getElementById('filter-form');
 
 
 function updateSlider() {
-    const val = slider.value;
+    const val = priceRange.value;
     output.textContent = `${val}`;
-    const percent = (val - slider.min) / (slider.max - slider.min) * 100;
-    slider.style.setProperty('--value', percent + '%');
+    const percent = (val - priceRange.min) / (priceRange.max - priceRange.min) * 100;
+    priceRange.style.setProperty('--value', percent + '%');
 }
 
-slider.addEventListener('input', updateSlider);
+priceRange.addEventListener('input', updateSlider);
 // Inizializza
 updateSlider();
 
-slider.addEventListener('change', function () {
-    if (slider.value === '0') {
-        // Disabilita l'input così non viene inviato nel form
-        slider.disabled = true;
+priceRange.addEventListener('change', function () {
+    if (priceRange && priceRange.value === "0") {
+        priceRange.disabled = true;
     }
     filterForm.submit();
 })
@@ -25,6 +24,9 @@ slider.addEventListener('change', function () {
 // Aggiungi event listener a tutti i checkbox per invio automatico
 document.querySelectorAll('input[type="checkbox"]').forEach(checkbox => {
     checkbox.addEventListener('change', function () {
+        if (priceRange && priceRange.value === "0") {
+            priceRange.disabled = true;
+        }
         filterForm.submit();
     });
 });
@@ -33,13 +35,20 @@ document.querySelectorAll('.sorting-tabs button').forEach(button => {
     button.addEventListener('click', function () {
         // Ottieni il valore di ordinamento dal data-attribute
         const sortValue = this.getAttribute('data-sort');
-        const priceRange = document.getElementById('price-range');
 
         // Se il prezzo è zero, disabilita l'input così non verrà inviato
         if (priceRange && priceRange.value === "0") {
             priceRange.disabled = true;
         }
 
+        // create sort-input element in DOM
+        if (!document.getElementById('sort-input')) {
+            const sortInput = document.createElement('input');
+            sortInput.setAttribute('type', 'hidden');
+            sortInput.setAttribute('name', 'sort');
+            sortInput.setAttribute('id', 'sort-input');
+            filterForm.appendChild(sortInput);
+        }
         // Imposta il valore nell'input nascosto
         document.getElementById('sort-input').value = sortValue;
 
