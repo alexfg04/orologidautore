@@ -1,10 +1,12 @@
 package com.r1.ecommerceproject.model;
 
 import java.math.BigDecimal;
+import java.math.BigInteger;
 import java.sql.Timestamp;
 import java.util.Collection;
 
 public class OrderBean {
+
     private Integer idOrder;
     private String numeroOrdine;
     private String note;
@@ -21,6 +23,7 @@ public class OrderBean {
     // getter/setter esistenti...
 
     public Integer getIdOrder() {return idOrder;}
+    public void setIdOrder(Integer idOrder) {this.idOrder = idOrder;}
     public String getNumeroOrdine() { return numeroOrdine; }
     public void setNumeroOrdine(String numeroOrdine) { this.numeroOrdine = numeroOrdine; }
     public String getNote() { return note; }

@@ -27,7 +27,7 @@
             <td><%= ordine.getDataOrdine() %></td>
             <td><%= ordine.getDataOrdine() %></td>
             <td><%= ordine.getTotale() %></td>
-            <td><button>Info</button></td>
+            <button onclick=mostraProdottiOrdine(<%= ordine.getIdOrder() %>)>Vedi Prodotti</button>
         </tr>
         <% } %>
         </tbody>

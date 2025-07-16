@@ -185,6 +185,7 @@ public class UserDaoImpl implements UserDao {
 
             while (rs.next()) {
                 UserBean user = new UserBean();
+                user.setId(rs.getLong("id_utente"));
                 user.setNome(rs.getString("nome"));
                 user.setCognome(rs.getString("cognome"));
                 user.setEmail(rs.getString("email"));

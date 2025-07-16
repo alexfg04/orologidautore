@@ -117,6 +117,7 @@ public class OrderDaoImpl implements OrderDao {
              ResultSet rs = stmt.executeQuery()) {
             while (rs.next()) {
                 OrderBean order = new OrderBean();
+                order.setIdOrder(rs.getInt("id"));
                 order.setNumeroOrdine(rs.getString("numero_ordine"));
                 order.setNote(rs.getString("note"));
                 order.setDataOrdine(rs.getTimestamp("data_ordine"));
@@ -294,4 +295,5 @@ public class OrderDaoImpl implements OrderDao {
         }
         return orderNumber;
     }
+
 }
