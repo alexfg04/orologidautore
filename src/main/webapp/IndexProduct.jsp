@@ -5,7 +5,7 @@
         <img src="https://www.watchshop.com/images/products/75729103_l.jpg" alt="Orologio 1">
         <div class="container-text">
             <h3>Orologio Classico</h3>
-            <p>Elegante orologio da polso in pelle</    p>
+            <p>Elegante orologio da polso in pelle</p>
         </div>
     </a>
 
