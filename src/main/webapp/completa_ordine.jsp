@@ -275,13 +275,6 @@
             <h3>Spedizione Standard Gratuita</h3>
             <p>Consegna entro 3-5 giorni lavorativi.</p>
         </div>
-
-        <h2>Metodo di Pagamento</h2>
-        <div class="info-box">
-            <h3>Metodo di Pagamento Predefinito <button class="button-modify">MODIFICA</button></h3>
-            <p>Pagamento sicuro con Carta di Credito (o il metodo che hai).</p>
-        </div>
-
         <form action="${pageContext.request.contextPath}/processOrder" method="post">
             <input type="hidden" name="addressId" value="<%= (defaultShippingAddress != null) ? defaultShippingAddress.getId() : "" %>" id="finalShippingAddressId">
             <input type="hidden" name="total" value="<%= total.add(BigDecimal.valueOf(6.50)) %>">

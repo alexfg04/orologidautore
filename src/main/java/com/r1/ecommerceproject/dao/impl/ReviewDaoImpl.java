@@ -13,8 +13,8 @@ public class ReviewDaoImpl implements ReviewDao {
     private static final String TABLE_NAME = "Recensione";
 
     @Override
-    public boolean insertReview(ReviewBean review) throws SQLException {
-        String sql = "INSERT INTO " + TABLE_NAME + " (commento, autore, valutazione, codice_prodotto, created_at) VALUES (?, ?, ?, ?, ?)";
+    public boolean insertReview(ReviewBean review, long idUtente) throws SQLException {
+        String sql = "INSERT INTO " + TABLE_NAME + " (commento, autore, valutazione, id_utente, codice_prodotto) VALUES (?, ?, ?, ?, ?)";
 
         try (Connection conn = DataSourceConnectionPool.getConnection();
              PreparedStatement ps = conn.prepareStatement(sql)) {
@@ -22,8 +22,8 @@ public class ReviewDaoImpl implements ReviewDao {
             ps.setString(1, review.getCommento());
             ps.setString(2, review.getAutore());
             ps.setInt(3, review.getValutazione());
-            ps.setLong(4, review.getCodiceProdotto());
-            ps.setTimestamp(5, Timestamp.valueOf(review.getCreatedAt()));
+            ps.setLong(4, idUtente);
+            ps.setLong(5, review.getCodiceProdotto());
 
             return ps.executeUpdate() > 0;
         }

@@ -6,6 +6,7 @@ import com.r1.ecommerceproject.dao.impl.ReviewDaoImpl;
 import com.r1.ecommerceproject.dao.impl.UserDaoImpl;
 import com.r1.ecommerceproject.model.ReviewBean;
 import com.r1.ecommerceproject.model.UserBean;
+import com.r1.ecommerceproject.utils.UserSession;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -70,9 +71,9 @@ public class SubmitReviewServlet extends HttpServlet {
         review.setCreatedAt(LocalDateTime.now());
 
         try {
-            boolean saved = reviewDao.insertReview(review);
+            boolean saved = reviewDao.insertReview(review, new UserSession(request.getSession(false)).getUserId());
             if (saved) {
-                response.sendRedirect(request.getContextPath() + "/productDetail?codiceProdotto=" + codiceProdotto);
+                response.sendRedirect(request.getContextPath() + "/product?id=" + codiceProdotto);
             } else {
                 response.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR, "Errore nel salvataggio recensione");
             }

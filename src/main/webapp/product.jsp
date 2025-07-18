@@ -112,8 +112,21 @@
         <div class="detail-info">
             <h1><%= product.getNome() %>
             </h1>
-            <p class="price">€ <%= String.format("%.2f", product.getPrezzo()) %>
-            </p>
+            <p class="price">€ <%= String.format("%.2f", product.getPrezzo()) %></p>
+            <h2>Taglia</h2>
+            <p class="one-size-box">ONE SIZE</p>
+            <form action="<%= request.getContextPath() %>/cart" method="post" class="product-form">
+                <input type="hidden" name="product_id" value="<%= product.getCodiceProdotto() %>">
+                <div class="form-group">
+                    <label for="quantity">Quantità:</label>
+                    <input type="number" id="quantity" name="quantity" min="1" value="1">
+                </div>
+                <button type="submit" class="add-to-cart-button">Aggiungi al Carrello</button>
+            </form>
+            <form id="favForm"  action="${pageContext.request.contextPath}/favorite"  method="post" class="product-form">
+                <input type="hidden" name="productId" value="<%= product.getCodiceProdotto() %>">
+                <button type="submit" class="add-to-favorites-button">♡ Aggiungi ai Preferiti</button>
+            </form>
             <br>
             <div class="tabs">
                 <button class="tab-link active" data-tab="desc">Descrizione</button>
@@ -128,7 +141,7 @@
                     </li>
                     <li><strong>Modello:</strong> <%= product.getModello() %>
                     </li>
-                    <li><strong>Categoria:</strong> <%= product.getCategoria() %>
+                    <li><strong>Genere:</strong> <%= product.getGenere() %>
                     </li>
                     <li><strong>Taglia:</strong> <%= product.getTaglia() %>
                     </li>
@@ -136,14 +149,6 @@
                     </li>
                 </ul>
             </div>
-            <form action="<%= request.getContextPath() %>/cart" method="post" class="product-form">
-                <input type="hidden" name="product_id" value="<%= product.getCodiceProdotto() %>">
-                <div class="form-group">
-                    <label for="quantity">Quantità:</label>
-                    <input type="number" id="quantity" name="quantity" min="1" value="1">
-                </div>
-                <button type="submit" class="add-to-cart-button">Aggiungi al Carrello</button>
-            </form>
 
             <%
                 // Recupera l'id utente dalla sessione
@@ -180,16 +185,11 @@
                 <label for="commento">Commento:</label>
                 <textarea id="commento" name="commento" rows="4" cols="50" required></textarea>
 
-                <button type="submit">Invia Recensione</button>
+                <button type="submit" class="submit-button">Invia Recensione</button>
             </form>
             <%
                 }
             %>
-
-            <form id="favForm"  action="${pageContext.request.contextPath}/favorite"  method="post" class="product-form">
-                <input type="hidden" name="productId" value="<%= product.getCodiceProdotto() %>">
-                <button type="submit" class="add-to-favorites-button">♡ Aggiungi ai Preferiti</button>
-            </form>
         </div>
     </div>
 

@@ -9,12 +9,6 @@
 <%@ page import="java.util.*, com.r1.ecommerceproject.model.ProductBean" %>
 <%@ page import="java.math.BigDecimal" %>
 <%
-
-    UserSession sessioneUtente = new UserSession(request.getSession());
-    if (!sessioneUtente.isLoggedIn()) {
-        response.sendRedirect(request.getContextPath() + "/login.jsp");
-        return;
-    }
     HashMap<ProductBean, Integer> cartItems = (HashMap<ProductBean, Integer>) request.getAttribute("cart");
 
     if (cartItems == null) {

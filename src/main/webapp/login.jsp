@@ -109,7 +109,7 @@
                 <button class="ghost" id="signIn">Accedi</button>
             </div>
             <div class="overlay-panel overlay-right">
-                <h1>Ciao, Boss!</h1>
+                <h1>Ciao, Utente!</h1>
                 <p>Per rimanere in contatto con noi accedi con i tuoi dati personali</p>
                 <button class="ghost" id="signUp">Crea</button>
                 <button onclick="location.href='index.jsp'">Vai alla Home</button>

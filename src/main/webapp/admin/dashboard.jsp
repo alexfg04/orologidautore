@@ -93,9 +93,9 @@
 
 <nav class="sidebar" id="sidebar">
     <h2>Menu</h2>
-    <a href="#" class="active" onclick="showTable('table1', this)">Tabella 1</a>
-    <a href="#" onclick="showTable('table2', this)">Tabella 2</a>
-    <a href="#" onclick="showTable('table3', this)">Tabella 3</a>
+    <a href="#" class="active" onclick="showTable('table1', this)">Resoconto</a>
+    <a href="#" onclick="showTable('table2', this)">Gestione Utenti</a>
+    <a href="#" onclick="showTable('table3', this)">Ordini</a>
     <a href="#" onclick="showTable('tableProdotti', this)">Prodotti</a>
     <a href="#" onclick="showTable('tableAddProduct', this)">Aggiungi Prodotto</a>
 
