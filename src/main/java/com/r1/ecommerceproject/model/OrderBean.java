@@ -22,6 +22,15 @@ public class OrderBean {
 
     // getter/setter esistenti...
 
+    private int idIndirizzo;
+
+    public int getIdIndirizzo() {
+        return idIndirizzo;
+    }
+
+    public void setIdIndirizzo(int idIndirizzo) {
+        this.idIndirizzo = idIndirizzo;
+    }
     public Integer getIdOrder() {return idOrder;}
     public void setIdOrder(Integer idOrder) {this.idOrder = idOrder;}
     public String getNumeroOrdine() { return numeroOrdine; }

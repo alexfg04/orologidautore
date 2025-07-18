@@ -295,5 +295,31 @@ public class OrderDaoImpl implements OrderDao {
         }
         return orderNumber;
     }
+    @Override
+    public List<OrderBean> getOrdiniByUtenteId(int idUtente) throws SQLException {
+        List<OrderBean> ordini = new ArrayList<>();
+
+        try (Connection con = DataSourceConnectionPool.getConnection();
+             PreparedStatement ps = con.prepareStatement("SELECT * FROM ordine WHERE id_utente = ? ORDER BY data_ordine DESC")) {
+            ps.setInt(1, idUtente);
+            try (ResultSet rs = ps.executeQuery()) {
+                while (rs.next()) {
+                    OrderBean ordine = new OrderBean();
+                    ordine.setIdOrder((int) rs.getLong("id"));
+                    ordine.setNumeroOrdine(rs.getString("numero_ordine"));
+                    ordine.setDataOrdine(rs.getTimestamp("data_ordine"));
+                    ordine.setDataArrivo(rs.getTimestamp("data_arrivo"));
+                    ordine.setNote(rs.getString("note"));
+                    ordine.setTotale(rs.getBigDecimal("totale_ordine"));
+                    ordine.setUserId(rs.getInt("id_utente"));
+                    ordine.setIdIndirizzo(rs.getInt("id_indirizzo"));
+                    ordini.add(ordine);
+                }
+            }
+        }
+
+        return ordini;
+    }
+
 
 }

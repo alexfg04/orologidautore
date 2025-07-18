@@ -7,6 +7,7 @@ import com.r1.ecommerceproject.model.ProductBean;
 
 import java.sql.SQLException;
 import java.util.Collection;
+import java.util.List;
 
 public interface OrderDao extends BaseDao<OrderBean, String> {
     OrderBean doRetrieveById(String orderNumber) throws SQLException;
@@ -21,4 +22,6 @@ public interface OrderDao extends BaseDao<OrderBean, String> {
     AddressBean doRetrieveAddress(String orderId) throws SQLException;
     void savePayment(PaymentBean payment, Long orderId) throws SQLException;
     String getOrderNumber(Long orderId) throws SQLException;
+    List<OrderBean> getOrdiniByUtenteId(int idUtente) throws SQLException;
+
 }

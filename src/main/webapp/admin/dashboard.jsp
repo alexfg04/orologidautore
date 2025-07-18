@@ -349,7 +349,7 @@
                                     "<td>" + user.email + "</td>" +
                                     "<td>" + user.tipologia + "</td>" +
                                     "<td>" +
-                                    "<button onclick=\"vaiAllaPaginaOrdini('" + user.email + "')\">Info</button>" +
+                                    "<button onclick=\"vaiAllaPaginaOrdini(" + user.id + ")\">Info</button>" +
                                     "</td>" +
                                     "</tr>";
                             });
@@ -399,6 +399,7 @@
 
         var xhr = new XMLHttpRequest();
         xhr.open("GET", "${pageContext.request.contextPath}/admin/products", true);
+        var contextPath = "${pageContext.request.contextPath}";
 
         xhr.onreadystatechange = function() {
             if (xhr.readyState === 4) {
@@ -407,7 +408,7 @@
                         var prodotti = JSON.parse(xhr.responseText);
 
                         var html = "<table><thead><tr>" +
-                            "<th>Nome</th><th>Marca</th><th>Categoria</th><th>Prezzo</th><th>Modello</th>" +
+                            "<th>Nome</th><th>Marca</th><th>Genere</th><th>Prezzo</th><th>Modello</th>" +
                             "<th>Descrizione</th><th>Taglia</th><th>Materiale</th><th>Immagine</th><th>Azione</th>" +
                             "</tr></thead><tbody>";
 
@@ -424,8 +425,9 @@
                                 "<td>" + prodotto.materiale + "</td>" +
                                 "<td><img src='" + prodotto.image_url + "' alt='immagine prodotto' style='max-width:50px; max-height:50px;'/></td>" +
                                 "<td>" +
-                                "<a href='gestione?action=delete&product_id=" + prodotto.codiceProdotto + "'>Elimina</a>" +
+                                "<a href='" + contextPath + "/gestioneDettagliProdotto?codiceProdotto=" + prodotto.codiceProdotto + "'>Modifica</a>" +
                                 "</td>"
+
                             "</tr>";
                         });
 
@@ -442,6 +444,10 @@
         };
         xhr.send();
     }
+    function vaiAllaPaginaOrdini(idUtente) {
+        window.location.href = '${pageContext.request.contextPath}/admin/ordiniUtente?idUtente=' + idUtente;
+    }
+
     let ordiniCaricati = false;
     function loadOrderList() {
         if (ordiniCaricati) return;
