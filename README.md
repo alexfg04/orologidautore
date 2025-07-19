@@ -18,4 +18,4 @@ Progetto E-Commerce per il corso di Tecnologie e Software per il Web presso l'un
 - [ ] Sostituire sistema di registrazione con Ajax per ritornare messaggi di errori (come utente già esistente)
 - [ ] Cambiare urgentemente css alla pagina preferiti
 - [ ] Aggiungere avviso di conferma su tutte le operazione di cancellazione
-- [ ] Servlet per la gestione delle recenzioni
+- [ ] Servlet per la gestione delle recensioni
