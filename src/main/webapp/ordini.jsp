@@ -15,7 +15,6 @@
             <th>Data Ordine</th>
             <th>Data Arrivo</th>
             <th>Totale (€)</th>
-            <th>Info</th>
         </tr>
         </thead>
         <tbody>

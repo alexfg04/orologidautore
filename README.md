@@ -11,10 +11,11 @@ Progetto E-Commerce per il corso di Tecnologie e Software per il Web presso l'un
 
 ## Area Admin
 - [ ] Modificare/rimuovere prodotti
-- [ ] Ricerca ordini per utente e linea temporale
-- [ ] Rendere funzionante il grafico
+- [X] Ricerca ordini per utente e linea temporale
+- [X] Rendere funzionante il grafico
 
 ## Altre Modifiche
 - [ ] Sostituire sistema di registrazione con Ajax per ritornare messaggi di errori (come utente già esistente)
 - [ ] Cambiare urgentemente css alla pagina preferiti
 - [ ] Aggiungere avviso di conferma su tutte le operazione di cancellazione
+- [ ] Servlet per la gestione delle recenzioni

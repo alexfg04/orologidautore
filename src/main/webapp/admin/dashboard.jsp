@@ -11,6 +11,42 @@
 
 
     <style>
+        #filtro-date-container {
+            display: flex;
+            flex-wrap: wrap;
+            align-items: center;
+            gap: 10px;
+            padding: 10px;
+            background-color: #f0f4f8;
+            border-radius: 8px;
+            margin-bottom: 20px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+
+        #filtro-date-container label {
+            font-weight: 500;
+            color: #333;
+        }
+
+        #filtro-date-container input[type="date"],
+        #filtro-date-container button {
+            padding: 6px 10px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            font-size: 14px;
+        }
+
+        #filtro-date-container button {
+            background-color: #004d40;
+            color: white;
+            cursor: pointer;
+            transition: background-color 0.2s ease-in-out;
+        }
+
+        #filtro-date-container button:hover {
+            background-color: #00332c;
+        }
+
         /* Container form */
         #tableAddProduct form {
             max-width: 600px;
@@ -110,7 +146,6 @@
             <img src="${pageContext.request.contextPath}/admin/Admin_IMG/logon.png" alt="Logo" />
         </div>
         <div class="user-header">
-            <img src="https://i.pravatar.cc/40?img=5" alt="Avatar" class="avatar" />
             <span class="user-name">${UtenteLoggato}</span>
             <div class="dropdown">
                 <button onclick="toggleDropdown(this)">Menu &#x25BC;</button>
@@ -158,8 +193,21 @@
     </section>
 
     <section id="table3" class="table-section">
+
+        <div id="filtro-date-container">
+            <label for="start-date">Da:</label>
+            <input type="date" id="start-date">
+
+            <label for="end-date">A:</label>
+            <input type="date" id="end-date">
+
+            <button onclick="filtraOrdini()">Filtra</button>
+        </div>
+
         <div id="dashboard-orders"></div>
+
     </section>
+
 
 
     <section id="tableProdotti" class="table-section">
@@ -456,6 +504,7 @@
     }
 
     let ordiniCaricati = false;
+
     function loadOrderList() {
         if (ordiniCaricati) return;
         ordiniCaricati = true;
@@ -467,21 +516,26 @@
 
         xhr.onreadystatechange = function () {
             if (xhr.readyState === 4) {
+                const container = document.getElementById("dashboard-orders");
+
                 if (xhr.status === 200) {
                     try {
                         var parser = new DOMParser();
                         var doc = parser.parseFromString(xhr.responseText, "text/html");
-                        var tabella = doc.querySelector("table"); // Cerca la tabella nella JSP
+                        var tabella = doc.querySelector("table");
+
                         if (tabella) {
-                            document.getElementById("dashboard-orders").innerHTML = tabella.outerHTML;
+                            container.innerHTML = ""; // svuota prima di inserire
+                            container.appendChild(tabella);
                         } else {
-                            document.getElementById("dashboard-orders").innerHTML = "<p>Nessun ordine disponibile.</p>";
+                            container.innerHTML = "<p>Nessun ordine disponibile.</p>";
                         }
                     } catch (e) {
-                        document.getElementById("dashboard-orders").innerHTML = "<p>Errore nel parsing della risposta.</p>";
+                        container.innerHTML = "<p>Errore nel parsing della risposta.</p>";
+                        console.error("Errore parsing:", e);
                     }
                 } else {
-                    document.getElementById("dashboard-orders").innerHTML = "<p>Errore server: codice " + xhr.status + "</p>";
+                    container.innerHTML = "<p>Errore server: codice " + xhr.status + "</p>";
                 }
             }
         };
@@ -489,6 +543,38 @@
         xhr.send();
     }
 
+    function filtraOrdini() {
+        const startDate = document.getElementById("start-date").value;
+        const endDate = document.getElementById("end-date").value;
+
+        const rows = document.querySelectorAll("#dashboard-orders table tbody tr");
+        let visibili = 0;
+
+        rows.forEach(row => {
+            const cellDate = row.querySelector("td:nth-child(3)");
+            if (!cellDate) return;
+
+            const orderDate = cellDate.textContent.trim().substring(0, 10); // "YYYY-MM-DD"
+            let mostra = true;
+
+            if (startDate && orderDate < startDate) mostra = false;
+            if (endDate && orderDate > endDate) mostra = false;
+
+            row.style.display = mostra ? "" : "none";
+            if (mostra) visibili++;
+        });
+
+        const noResults = document.getElementById("no-results-message");
+        if (noResults) noResults.remove();
+        if (visibili === 0) {
+            const msg = document.createElement("p");
+            msg.id = "no-results-message";
+            msg.textContent = "Nessun ordine trovato nel range selezionato.";
+            msg.style.padding = "10px";
+            msg.style.fontStyle = "italic";
+            document.querySelector("#dashboard-orders").appendChild(msg);
+        }
+    }
 </script>
 
 </body>
