@@ -5,7 +5,7 @@ Progetto E-Commerce per il corso di Tecnologie e Software per il Web presso l'un
 
 ## Layout Responsive
 - [ ] Home
-- [ ] Carrello
+- [x] Carrello
 - [ ] Menu
 - [ ] Catalogo (la sidebar dei filtri)
 
