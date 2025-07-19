@@ -1,10 +1,11 @@
 .grid-container {
     display: grid;
-    grid-template-columns: repeat(4, 1fr);
+    grid-template-columns: repeat(auto-fit,minmax(220px,1fr));
     gap: 20px;
-    padding: 60px;
-    width: 85%;            /* o usa max-width: 960px; */
-    margin: 0 auto;        /* centra il contenitore */
+    padding: 40px 20px;
+    width: 90%;
+    max-width : 1200px;
+    margin: 0 auto;
     box-sizing: border-box;
 }
 
@@ -16,10 +17,25 @@
     width: 100%;           /* occupa tutto il div */
     height: auto;
     display: block;
-    margin-bottom: 20px;
+    margin-bottom: 15px;
     border-radius: 10px;
 }
 
 .grid-item p {
     font-weight: bold; /* 👈 grassetto */
+}
+
+@media screen and(max-width:768px){
+
+    .grid-container {
+
+        padding : 20px 10px;
+        gap: 16px;
+    }
+
+    .grid-item p{
+        font-size:0.95rem;
+
+    }
+
 }

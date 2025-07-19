@@ -33,43 +33,53 @@
 </div>
 <div class="container second-container">
     <table>
+        <thead>
         <tr>
             <th class="column-header">Orologi di lusso</th>
             <th class="column-header">Orologi usati</th>
             <th class="column-header">Vendi un orologio</th>
             <th class="column-header">Acquista un orologio</th>
         </tr>
+        </thead>
+        <tbody>
         <tr>
-            <td class="column-content">
+            <td class="column-content" data-label="Orologi di lusso">
                 Pochi sono in grado di resistere al fascino degli orologi di lusso.
                 Ma cosa si intende veramente per orologio di lusso?
-                    - Orologi fabbricati con materiali pregiati come oro o platino
-                    - Orologi meccanici con calibri realizzati a mano.
-                    - Marchi leggendari come Rolex, Patek Philippe, o Breitling.
+                - Orologi fabbricati con materiali pregiati come oro o platino
+                - Orologi meccanici con calibri realizzati a mano.
+                - Marchi leggendari come Rolex, Patek Philippe, o Breitling.
 
-                A prescindere dal tuo stile, su Orologi D'autore  trovi orologi di lusso per ogni tipo di budget. Trova e acquista adesso l'orologio dei tuoi sogni.
+                A prescindere dal tuo stile, su Orologi D'autore trovi orologi di lusso per ogni tipo di budget.
+                Trova e acquista adesso l'orologio dei tuoi sogni.
             </td>
-            <td class="column-content">
-                Non c'è spazio solo per i modelli nuovi di zecca. Molti apprezzano il fascino degli orologi vintage, come quelli degli anni '60 e '70.
+            <td class="column-content" data-label="Orologi usati">
+                Non c'è spazio solo per i modelli nuovi di zecca. Molti apprezzano il fascino degli orologi vintage,
+                come quelli degli anni '60 e '70.
 
-                    Orologi da collezione rari e pezzi storici.
-                   Predecessori di orologi leggendari, acquistabili a prezzi vantaggiosi.
+                - Orologi da collezione rari e pezzi storici.
+                - Predecessori di orologi leggendari, acquistabili a prezzi vantaggiosi.
 
                 Anche chi è alle prime armi può diventare esperto nel processo di acquisto di orologi vintage.
             </td>
-            <td class="column-content">
+            <td class="column-content" data-label="Vendi un orologio">
                 Ogni mese, milioni di appassionati di orologi cercano il loro prossimo modello su Orologi D'autore.
-                    Pagamento sicuro tramite conto deposito a garanzia.
-                    Spedizione sicura dopo la conferma del pagamento.
+                - Pagamento sicuro tramite conto deposito a garanzia.
+                - Spedizione sicura dopo la conferma del pagamento.
 
                 Vendi ora il tuo orologio con facilità.
             </td>
-            <td class="column-content">
-                Se hai trovato l'orologio perfetto su Orologi D'autore, non aspettare oltre! Acquista con la Protezione Acquirenti gratuita.
-                    Pagamento sicuro tramite deposito a garanzia.
-                    Protezione per l'acquirente per 14 giorni.
+            <td class="column-content" data-label="Acquista un orologio">
+                Se hai trovato l'orologio perfetto su Orologi D'autore, non aspettare oltre!
+                Acquista con la Protezione Acquirenti gratuita.
+
+                - Pagamento sicuro tramite deposito a garanzia.
+                - Protezione per l'acquirente per 14 giorni.
+
                 Assicurati che l'orologio soddisfi le tue aspettative prima di completare la transazione.
             </td>
         </tr>
+        </tbody>
     </table>
 </div>
+

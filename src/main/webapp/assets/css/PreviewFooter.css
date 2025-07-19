@@ -113,3 +113,85 @@ p {
 .second-container {
     margin: 2rem;
 }
+
+@media screen and (max-width: 768px){
+
+    .process-container{
+        display: flex;
+        flex-direction : column;
+        align-items: center;
+        gap: 25px;
+        padding : 20px 10px;
+    }
+
+    .process-step {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        text-align: center;
+        gap: 10px;
+        width: 100%;
+        max-width: 400px;
+    }
+
+    .step-number {
+        text-align: center;
+        min-width: auto;
+        font-size: 1.2em;
+        font-weight: bold;
+        color: #8fbc8f;
+    }
+
+    .step-icon {
+        margin: 10px 0;
+        width: 60px;
+        height: 60px;
+    }
+
+    .step-text {
+        font-size: 1rem;
+        line-height: 1.5;
+        padding: 0 10px;
+    }
+
+}
+
+@media screen and (max-width: 922px) {
+
+    .second-container table,
+    .second-container thead,
+    .second-container tbody,
+    .second-container th,
+    .second-container td,
+    .second-container tr {
+        display: block;
+        width: 100%;
+    }
+
+    .second-container thead {
+        display: none;
+    }
+
+    .second-container td {
+        display: block;
+        position: relative;
+        padding: 25px 20px 25px 120px;
+        font-size: 1rem;
+        margin-bottom: 25px;
+        background-color: #ffffff;
+        border-bottom: 2px solid #00695C;
+        box-sizing: border-box;
+    }
+
+    .second-container td::before {
+        content: attr(data-label);
+        position: absolute;
+        top: 25px;
+        left: 20px;
+        width: 90px;
+        font-weight: bold;
+        color: #00695C;
+        font-size: 0.95rem;
+        white-space: normal;
+    }
+}
