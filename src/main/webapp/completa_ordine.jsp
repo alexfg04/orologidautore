@@ -275,13 +275,6 @@
             <h3>Spedizione Standard Gratuita</h3>
             <p>Consegna entro 3-5 giorni lavorativi.</p>
         </div>
-        <form action="${pageContext.request.contextPath}/processOrder" method="post">
-            <input type="hidden" name="addressId" value="<%= (defaultShippingAddress != null) ? defaultShippingAddress.getId() : "" %>" id="finalShippingAddressId">
-            <input type="hidden" name="total" value="<%= total.add(BigDecimal.valueOf(6.50)) %>">
-            <label for="note"></label>
-            <textarea name="note" id="note" placeholder="Note per il tuo ordine (facoltativo)"></textarea>
-            <button type="submit" class="confirm-button">Conferma e Paga</button>
-        </form>
     </div>
 
     <%-- COLONNA DESTRA: Riepilogo Ordine (Prodotti e Totale) --%>
@@ -309,6 +302,13 @@
             <p>Spedizione: € <%= String.format("%.2f", 6.50) %></p>
             <h3>TOTALE: <strong>€ <%= String.format("%.2f", total.add(BigDecimal.valueOf(6.50))) %></strong></h3>
         </div>
+        <form action="${pageContext.request.contextPath}/processOrder" method="post">
+            <input type="hidden" name="addressId" value="<%= (defaultShippingAddress != null) ? defaultShippingAddress.getId() : "" %>" id="finalShippingAddressId">
+            <input type="hidden" name="total" value="<%= total.add(BigDecimal.valueOf(6.50)) %>">
+            <label for="note">NOTE</label>
+            <textarea name="note" id="note" placeholder="Note per il tuo ordine (facoltativo)"></textarea>
+            <button type="submit" class="confirm-button">Conferma e Paga</button>
+        </form>
     </div>
 </div>
 

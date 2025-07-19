@@ -16,11 +16,16 @@
             <img src="assets/img/Logo.png" alt="Logo">
         </div>
 
+
         <div class="navbar-center">
             <a href="index.jsp">Home</a>
             <a href="${pageContext.request.contextPath}/catalog">Catalogo</a>
             <a href="${pageContext.request.contextPath}/catalog?gender=uomo">Uomo</a>
             <a href="${pageContext.request.contextPath}/catalog?gender=donna">Donna</a>
+        </div>
+
+        <div id="mobile-menu-toggle" class="mobile-toggle">
+            <i data-lucide="menu"></i>
         </div>
 
 
@@ -71,6 +76,13 @@
                     <%=userSession.getCartSize()%>
                 </span>
             </a>
+        </div>
+
+        <div class="mobile-menu">
+            <a href="index.jsp">Home</a>
+            <a href="${pageContext.request.contextPath}/catalog">Catalogo</a>
+            <a href="${pageContext.request.contextPath}/catalog?gender=uomo">Uomo</a>
+            <a href="${pageContext.request.contextPath}/catalog?gender=donna">Donna</a>
         </div>
     </nav>
 </header>
