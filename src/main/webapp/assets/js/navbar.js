@@ -43,9 +43,11 @@
         lastScroll = currentScroll;
     }
 
-    // toggle mobile menu
+    // toggle mobile menu and manage aria-expanded
     if (mobileToggle && mobileMenu) {
         mobileToggle.addEventListener('click', () => {
+            const expanded = mobileToggle.getAttribute('aria-expanded') === 'true';
+            mobileToggle.setAttribute('aria-expanded', String(!expanded));
             mobileMenu.classList.toggle('open');
         });
     }

@@ -24,10 +24,6 @@
             <a href="${pageContext.request.contextPath}/catalog?gender=donna">Donna</a>
         </div>
 
-        <div id="mobile-menu-toggle" class="mobile-toggle">
-            <i data-lucide="menu"></i>
-        </div>
-
 
         <div class="navbar-right">
             <!--
@@ -40,7 +36,8 @@
             -->
 
             <!-- Icona registrazione/utente con dropdown -->
-            <!-- Invece di mostrare <a>…</a> solo se non loggato, mostra SEMPRE l’icona dentro <div> -->
+            <button id="mobile-menu-toggle" class="mobile-toggle" aria-expanded="false">
+            <i data-lucide="menu" class="icon"></i></button>
             <div class="user-dropdown">
                 <% if (loggedIn) { %>
                 <span class="user-name">
