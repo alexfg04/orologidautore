@@ -243,4 +243,9 @@
     .mobile-menu.open {
         display: flex;
     }
+    .navbar-left img {
+        max-height: 60%;
+        display: block;
+    }
+
 }
