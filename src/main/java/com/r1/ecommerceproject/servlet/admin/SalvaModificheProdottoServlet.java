@@ -6,82 +6,92 @@ import com.r1.ecommerceproject.model.ProductBean;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
-import javax.servlet.http.*;
+import javax.servlet.http.HttpServlet;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.io.PrintWriter;
 import java.math.BigDecimal;
 
-@WebServlet("/admin/salvaModificheProdotto")
+@WebServlet("/admin/testFormProdotto")
 public class SalvaModificheProdottoServlet extends HttpServlet {
 
-    private ProductDao productDao;
-
     @Override
-    public void init() throws ServletException {
-        System.out.println("[INIT] Inizializzazione servlet SalvaModificheProdottoServlet");
-        productDao = new ProductDaoImpl();
-    }
-    @Override
-    protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        response.sendError(HttpServletResponse.SC_METHOD_NOT_ALLOWED, "GET non supportato. Usa POST.");
-    }
+    protected void doPost(HttpServletRequest request, HttpServletResponse response)
+            throws ServletException, IOException {
+
+        request.setCharacterEncoding("UTF-8"); // Per supportare caratteri speciali
+
+        // Recupera i parametri dal form
+        String  idd = request.getParameter("id");
+        Integer id = Integer.valueOf(idd);
+        String nome = request.getParameter("nome");
+        String marca = request.getParameter("marca");
+        String categoria = request.getParameter("categoria");
+        String prezz = request.getParameter("prezzo");
+        BigDecimal prezzo = BigDecimal.valueOf(Double.parseDouble(prezz));
+        String modello = request.getParameter("modello");
+        String descrizione = request.getParameter("descrizione");
+        String taglia = request.getParameter("taglia");
+        String materiale = request.getParameter("materiale");
+
+        response.setContentType("text/html;charset=UTF-8");
+
+        PrintWriter out = response.getWriter();
+        out.println("<html><head><title>Test Parametri Form</title></head><body>");
+        out.println("<h2>Parametri ricevuti:</h2>");
+        out.println("<ul>");
+        out.println("<li>Nome: " + id + "</li>");
+        out.println("<li>Nome: " + nome + "</li>");
+        out.println("<li>Marca: " + marca + "</li>");
+        out.println("<li>Categoria: " + categoria + "</li>");
+        out.println("<li>Prezzo: " + prezzo + "</li>");
+        out.println("<li>Modello: " + modello + "</li>");
+        out.println("<li>Descrizione: " + descrizione + "</li>");
+        out.println("<li>Taglia: " + taglia + "</li>");
+        out.println("<li>Materiale: " + materiale + "</li>");
+        out.println("</ul>");
+        out.println("</body></html>");
 
 
-    @Override
-    protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        // Popola il bean
+        ProductBean prodotto = new ProductBean();
+        prodotto.setCodiceProdotto(id);
+        prodotto.setNome(nome);
+        prodotto.setMarca(marca);
+        prodotto.setGenere(categoria);
+        prodotto.setPrezzo(prezzo);
+        prodotto.setModello(modello);
+        prodotto.setDescrizione(descrizione);
+        prodotto.setTaglia(taglia);
+        prodotto.setMateriale(materiale);
+
+        // Stampa a schermo
+        PrintWriter ou = response.getWriter();
+        ou.println("<html><head><title>Bean Ricevuto</title></head><body>");
+        ou.println("<h1>Valori del ProductBean:</h1>");
+        ou.println("<ul>");
+        ou.println("<li><strong>Id:</strong> " + prodotto.getCodiceProdotto() + "</li>");
+        ou.println("<li><strong>Nome:</strong> " + prodotto.getNome() + "</li>");
+        ou.println("<li><strong>Marca:</strong> " + prodotto.getMarca() + "</li>");
+        ou.println("<li><strong>Genere (Categoria):</strong> " + prodotto.getGenere() + "</li>");
+        ou.println("<li><strong>Prezzo:</strong> " + prodotto.getPrezzo() + "</li>");
+        ou.println("<li><strong>Modello:</strong> " + prodotto.getModello() + "</li>");
+        ou.println("<li><strong>Descrizione:</strong> " + prodotto.getDescrizione() + "</li>");
+        ou.println("<li><strong>Taglia:</strong> " + prodotto.getTaglia() + "</li>");
+        ou.println("<li><strong>Materiale:</strong> " + prodotto.getMateriale() + "</li>");
+        ou.println("</ul>");
+
+        // DAO call
+        ProductDao productDao = new ProductDaoImpl();
         try {
-            System.out.println("[POST] Ricevuta richiesta POST per salvare modifiche prodotto");
-
-            long id = Long.parseLong(request.getParameter("id"));
-            String nome = request.getParameter("nome");
-            String marca = request.getParameter("marca");
-            String categoria = request.getParameter("categoria");
-            String prezzoStr = request.getParameter("prezzo");
-            String modello = request.getParameter("modello");
-            String descrizione = request.getParameter("descrizione");
-            String taglia = request.getParameter("taglia");
-            String materiale = request.getParameter("materiale");
-
-            System.out.println("[DEBUG] Parametri ricevuti:");
-            System.out.println("ID: " + id);
-            System.out.println("Nome: " + nome);
-            System.out.println("Marca: " + marca);
-            System.out.println("Categoria/Genere: " + categoria);
-            System.out.println("Prezzo (stringa): " + prezzoStr);
-            System.out.println("Modello: " + modello);
-            System.out.println("Descrizione: " + descrizione);
-            System.out.println("Taglia: " + taglia);
-            System.out.println("Materiale: " + materiale);
-
-            BigDecimal prezzo = new BigDecimal(prezzoStr);
-
-            ProductBean prodotto = productDao.doRetrieveById(id);
-            if (prodotto == null) {
-                System.out.println("[ERRORE] Prodotto con ID " + id + " non trovato.");
-                response.sendError(HttpServletResponse.SC_NOT_FOUND, "Prodotto non trovato");
-                return;
-            }
-
-            prodotto.setNome(nome);
-            prodotto.setMarca(marca);
-            prodotto.setGenere(categoria);
-            prodotto.setPrezzo(prezzo);
-            prodotto.setModello(modello);
-            prodotto.setDescrizione(descrizione);
-            prodotto.setTaglia(taglia);
-            prodotto.setMateriale(materiale);
-
-            System.out.println("[INFO] Prodotto aggiornato, ora lo salvo nel database...");
-            productDao.doUpdate(prodotto);
-
-            System.out.println("[SUCCESSO] Modifiche salvate con successo. Redirect alla dashboard.");
-            response.sendRedirect(request.getContextPath() + "/admin/dashboard.jsp");
-
+            productDao.updateProduct(prodotto);
+            out.println("<p style='color: green;'>Prodotto aggiornato correttamente nel database.</p>");
         } catch (Exception e) {
-            System.out.println("[EXCEPTION] Errore durante il salvataggio delle modifiche:");
-            e.printStackTrace();
-
-            request.setAttribute("errore", "Errore durante la modifica del prodotto: " + e.getMessage());
-            request.getRequestDispatcher("/WEB-INF/error.jsp").forward(request, response);
+            out.println("<p style='color: red;'>Errore durante l'aggiornamento: " + e.getMessage() + "</p>");
         }
+
+        out.println("</body></html>");
+
     }
 }

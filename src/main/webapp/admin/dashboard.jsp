@@ -217,7 +217,7 @@
 
     <section id="tableAddProduct" class="table-section">
         <h3>Aggiungi Nuovo Prodotto</h3>
-        <form id="formAddProduct" method="post" action="${pageContext.request.contextPath}/admin/gestione" enctype="multipart/form-data">
+        <form id="formAddProduct" method="post" action="${pageContext.request.contextPath}/admin/add-product" enctype="multipart/form-data">
             <div>
                 <label for="nome">Nome:</label>
                 <input type="text" id="nome" name="nome" required />
@@ -252,7 +252,7 @@
             </div>
             <div>
                 <label for="image">Immagine:</label>
-                <input type="file" id="image" name="image" accept="image/*" required />
+                <input type="file" id="image" name="image" accept="image/*" />
             </div>
             <div>
                 <button type="submit">Aggiungi Prodotto</button>

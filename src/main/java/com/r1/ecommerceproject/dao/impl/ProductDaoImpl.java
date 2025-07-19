@@ -22,28 +22,6 @@ public class ProductDaoImpl implements ProductDao {
             // Aggiungere altre colonne consentite per l'ordinamento
     );
 
-    @Override
-    public synchronized void doSave(ProductBean product) throws SQLException {
-        String insertSQL = "INSERT INTO " + TABLE_NAME +
-                " (nome, descrizione, prezzo, modello, marca, categoria, taglia , materiale, image_url)" +
-                "VALUES ( ?, ?, ?,?, ?, ?, ?, ?, ?)";
-
-        try (Connection connection = DataSourceConnectionPool.getConnection();
-             PreparedStatement preparedStatement = connection.prepareStatement(insertSQL)) {
-
-            preparedStatement.setString(1, product.getNome());
-            preparedStatement.setString(2, product.getDescrizione());
-            preparedStatement.setBigDecimal(3, product.getPrezzo());
-            preparedStatement.setString(4, product.getModello());
-            preparedStatement.setString(5, product.getMarca());
-            preparedStatement.setString(6, product.getGenere());
-            preparedStatement.setString(7, product.getTaglia());
-            preparedStatement.setString(8, product.getMateriale());
-            preparedStatement.setString(9, product.getImmagine());
-
-            preparedStatement.executeUpdate();
-        }
-    }
 
     @Override
     public synchronized ProductBean doRetrieveById(Long id) throws SQLException {
@@ -258,13 +236,18 @@ public class ProductDaoImpl implements ProductDao {
             return count;
         }
     }
+
     @Override
-    public void doUpdate(ProductBean prodotto) {
-        String sql = "UPDATE prodotto \n" +
-                "SET nome = ?, marca = ?, genere = ?, prezzo = ?, modello = ?, descrizione = ?, taglia = ?, materiale = ?\n" +
-                "WHERE codice_prodotto = ?\n";
+    public void doUpdate(ProductBean prodotto) throws SQLException {
+        updateProduct(prodotto);
+    }
+
+    @Override
+    public void updateProduct(ProductBean prodotto) throws SQLException {
         try (Connection con = DataSourceConnectionPool.getConnection();
-             PreparedStatement ps = con.prepareStatement(sql)) {
+             PreparedStatement ps = con.prepareStatement(
+                     "UPDATE prodotto SET nome = ?, marca = ?, gender = ?, prezzo = ?, modello = ?, descrizione = ?, taglia = ?, materiale = ?, updated_at = NOW() WHERE codice_prodotto = ?")) {
+
             ps.setString(1, prodotto.getNome());
             ps.setString(2, prodotto.getMarca());
             ps.setString(3, prodotto.getGenere());
@@ -276,9 +259,30 @@ public class ProductDaoImpl implements ProductDao {
             ps.setInt(9, prodotto.getCodiceProdotto());
 
             ps.executeUpdate();
-        } catch (SQLException e) {
-            throw new RuntimeException(e);
         }
     }
+    @Override
+    public void doSave(ProductBean product) throws SQLException {
+        String sql = "INSERT INTO prodotto (nome, marca, gender, modello, descrizione, taglia, materiale, prezzo, image_url, created_at, updated_at) " +
+                "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, NOW(), NOW())";
+
+        try (Connection con = DataSourceConnectionPool.getConnection();
+             PreparedStatement ps = con.prepareStatement(sql)) {
+
+            ps.setString(1, product.getNome());
+            ps.setString(2, product.getMarca());
+            ps.setString(3, product.getGenere());
+            ps.setString(4, product.getModello());
+            ps.setString(5, product.getDescrizione());
+            ps.setString(6, product.getTaglia());
+            ps.setString(7, product.getMateriale());
+            ps.setBigDecimal(8, product.getPrezzo());
+            ps.setString(9, product.getImmagine());
+
+            ps.executeUpdate();
+        }
+    }
+
+
 
 }

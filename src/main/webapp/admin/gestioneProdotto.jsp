@@ -151,7 +151,7 @@
     <div class="section">
         <h2>🛠️ Modifica Prodotto</h2>
 
-        <form action="${pageContext.request.contextPath}/admin/salvaModificheProdottoServlet" method="post">
+        <form action="${pageContext.request.contextPath}/admin/testFormProdotto" method="post">
             <input type="hidden" name="id" value="<%= prodotto.getCodiceProdotto() %>">
 
             <label for="nome">Nome:</label>
@@ -180,8 +180,10 @@
 
             <div class="buttons">
                 <input type="submit" class="save-btn" value="💾 Salva Modifiche">
-        </form>
+            </div>
 
+        </form>
+        <div class="buttons">
         <form action="${pageContext.request.contextPath}/admin/gestione" method="get"
               onsubmit="return confirm('Sei sicuro di voler eliminare questo prodotto?');">
             <input type="hidden" name="action" value="delete">
@@ -191,7 +193,7 @@
         <form action="${pageContext.request.contextPath}/admin/dashboard.jsp" method="get">
             <input type="submit" class="home-btn" value="🏠 Torna alla Home">
         </form>
-
+        </div>
     </div>
 </div>
 

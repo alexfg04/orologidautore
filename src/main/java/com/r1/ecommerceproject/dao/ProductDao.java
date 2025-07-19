@@ -23,4 +23,6 @@ public interface ProductDao extends BaseDao<ProductBean, Long> {
     boolean removeFavorite(long userId, long productId) throws SQLException;
 
     Collection<ProductBean> doRetrieveAllFavorites(String orderBy, long Id_Utente) throws SQLException;
+    void updateProduct(ProductBean prodotto) throws SQLException;
+    void doSave(ProductBean product) throws SQLException;
 }
