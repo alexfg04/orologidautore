@@ -1,6 +1,8 @@
 (function () {
     const navbar = document.querySelector('.navbar-wrapper');
     const navH = navbar.offsetHeight;
+    const mobileToggle = document.getElementById('mobile-menu-toggle');
+    const mobileMenu = document.querySelector('.mobile-menu');
     let lastScroll = 0;
     let isFixed = false;
     let fixedOn = ''; // 'window' o 'wrapper'
@@ -39,6 +41,13 @@
         }
 
         lastScroll = currentScroll;
+    }
+
+    // toggle mobile menu
+    if (mobileToggle && mobileMenu) {
+        mobileToggle.addEventListener('click', () => {
+            mobileMenu.classList.toggle('open');
+        });
     }
 
     // listener su window
