@@ -149,3 +149,12 @@ document.querySelectorAll('.wishlist').forEach((btn) => {
         }
     });
 });
+
+// Toggle sidebar visibility on mobile
+const filterToggle = document.getElementById('filter-toggle');
+const sidebar = document.querySelector('.sidebar');
+if (filterToggle && sidebar) {
+    filterToggle.addEventListener('click', () => {
+        sidebar.classList.toggle('open');
+    });
+}

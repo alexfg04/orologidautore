@@ -15,13 +15,13 @@ body {
 /* Sidebar */
 .sidebar {
     width: 250px;
-    height: 859px;
     padding: 20px;
     border: 1px solid #ddd;
     background: #f9f9f9;
     border-radius: 12px;
     margin-top: 16px;
     margin-left: 16px;
+    align-self: flex-start;
 }
 
 .sidebar h2 {
@@ -398,3 +398,74 @@ input[type=range]:active::-moz-range-thumb {
 
 /* Colori per il tipo di messaggio */
 .error-notification.danger { background-color: #009688;}
+
+/* Toggle button for mobile filters */
+.filter-toggle {
+    display: none;
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    width: 48px;
+    height: 48px;
+    border-radius: 50%;
+    background: #00c48c;
+    color: white;
+    border: none;
+    box-shadow: 0 2px 6px rgba(0,0,0,0.3);
+    z-index: 1000;
+    cursor: pointer;
+    align-items: center;
+    justify-content: center;
+}
+.filter-toggle .lucide {
+    width: 24px;
+    height: 24px;
+}
+
+/* Responsive styles */
+@media (max-width: 992px) {
+    .container {
+        flex-direction: column;
+    }
+    .sidebar {
+        width: 100%;
+        margin: 16px;
+    }
+    .product-grid {
+        grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+    }
+}
+
+@media (max-width: 600px) {
+    .sorting-tabs {
+        flex-wrap: wrap;
+        justify-content: center;
+    }
+    .sorting-tabs button {
+        flex: 1 1 30%;
+    }
+    .filter-toggle {
+        display: flex;
+    }
+    .sidebar {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 80%;
+        max-width: 300px;
+        max-height: 90vh;
+        overflow-y: auto;
+        margin: 0;
+        padding: 16px;
+        border-radius: 0 12px 12px 0;
+        transform: translateX(-100%);
+        transition: transform 0.3s ease;
+        z-index: 1001;
+    }
+    .sidebar.open {
+        transform: translateX(0);
+    }
+    .product-grid {
+        grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+    }
+}
