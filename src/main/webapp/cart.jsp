@@ -8,6 +8,7 @@
 <%@ page contentType="text/html; charset=UTF-8" %>
 <%@ page import="java.util.*, com.r1.ecommerceproject.model.ProductBean" %>
 <%@ page import="java.math.BigDecimal" %>
+<%@ page import="java.math.RoundingMode" %>
 <%
     HashMap<ProductBean, Integer> cartItems = (HashMap<ProductBean, Integer>) request.getAttribute("cart");
 
@@ -15,12 +16,21 @@
         response.sendRedirect("./cart");
         return;
     }
+
+    // Definisco l'aliquota IVA del 22%
+    final BigDecimal VAT_RATE = new BigDecimal("0.22");
+    // Totale netto già calcolato dalla sessione
+    BigDecimal totalNet = new UserSession(session).getCartTotal();
+    // Totale lordo = netto * (1 + VAT_RATE)
+    BigDecimal totalGross = totalNet.multiply(BigDecimal.ONE.add(VAT_RATE))
+            .setScale(2, RoundingMode.HALF_UP);
 %>
 
 <!DOCTYPE html>
 <html>
 <head>
     <title>Carrello</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="stylesheet" href="${pageContext.request.contextPath}/assets/css/cart.css">
     <link rel="stylesheet" href="${pageContext.request.contextPath}/assets/css/footer.css">
     <script src="https://unpkg.com/lucide@latest"></script>
@@ -49,7 +59,8 @@
 <div class="cart-container">
     <div class="container product-container">
         <h2 style="display: flex; justify-content: space-between; align-items: center;">
-            Carrello
+            Carrello (<%= cartItems.size() %> articoli)
+
         </h2>
 
         <div class="cart">
@@ -65,7 +76,7 @@
                     </p>
                 </div>
                 <div class="quantity-control">
-                    <label for="quantity_<%= p.getCodiceProdotto() %>">Quantità:</label>
+                    <label for="quantity_<%= p.getCodiceProdotto() %>"></label>
                     <input type="number" id="quantity_<%= p.getCodiceProdotto() %>"
                            class="quantity-input" min="1" value="<%= cartItems.get(p) %>"
                            data-product-id="<%= p.getCodiceProdotto() %>">
@@ -82,14 +93,36 @@
     </div>
     <div class="container checkout">
         <h1>Totale: </h1>
-        <div class="total">
-            <p><strong>€ <%= String.format("%.2f", totalPrice) %>
-            </strong></p>
+        <table class="total-summary">
+            <tr>
+                <td>Totale netto:</td>
+                <td class="amount">€ <%= totalNet.setScale(2, RoundingMode.HALF_UP) %></td>
+            </tr>
+            <tr>
+                <td>IVA (22%):</td>
+                <td class="amount">
+                    € <%= totalNet.multiply(VAT_RATE).setScale(2, RoundingMode.HALF_UP) %>
+                </td>
+            </tr>
+            <tr class="grand-total">
+                <td><strong>Totale lordo:</strong></td>
+                <td class="amount"><strong>€ <%= totalGross %></strong></td>
+            </tr>
+        </table>
+        <form action="${pageContext.request.contextPath}/checkout" method="post">
+            <button type="submit" class="button">Acquista ➟</button>
+        </form>
+        <div class="payment-methods">
+            <p>Modalità di pagamento disponibili:</p>
+            <div class="payment-logos">
+                <div class="payment-logo">
+                    <img src="${pageContext.request.contextPath}/assets/img/logo-paypal.png"
+                         alt="PayPal">
+                </div>
+                <!-- Se in futuro vorrai aggiungere altre modalità, duplica questo blocco -->
+            </div>
         </div>
-            <form action="${pageContext.request.contextPath}/checkout" method="post">
-                <button type="submit" class="button">Acquista ➟</button>
-            </form>
-        </div>
+    </div>
     <% } %>
 </div>
 <script>
