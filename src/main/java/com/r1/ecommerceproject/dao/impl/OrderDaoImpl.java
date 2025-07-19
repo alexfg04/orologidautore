@@ -320,6 +320,19 @@ public class OrderDaoImpl implements OrderDao {
 
         return ordini;
     }
-
+    @Override
+    public int countOrdersByMonth(int mese) throws SQLException {
+        String sql = "SELECT COUNT(*) FROM ordine WHERE MONTH(data_ordine) = ?";
+        try (Connection con = DataSourceConnectionPool.getConnection();
+             PreparedStatement ps = con.prepareStatement(sql)) {
+            ps.setInt(1, mese);
+            try (ResultSet rs = ps.executeQuery()) {
+                if (rs.next()) {
+                    return rs.getInt(1);
+                }
+            }
+        }
+        return 0;
+    }
 
 }

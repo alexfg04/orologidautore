@@ -5,7 +5,7 @@
 <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <title>Dashboard con Tabella Utenti AJAX</title>
+    <title>Dashboard</title>
     <link rel="stylesheet" href="${pageContext.request.contextPath}/admin/css/style.css"/>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" />
 
@@ -115,8 +115,6 @@
             <div class="dropdown">
                 <button onclick="toggleDropdown(this)">Menu &#x25BC;</button>
                 <div class="dropdown-menu">
-                    <a href="#">Profilo</a>
-                    <a href="#">Impostazioni</a>
                     <form action="${pageContext.request.contextPath}/logout" method="get" style="margin:0; padding:0;">
                         <button type="submit">&nbsp;&nbsp;Log Out</button>
                     </form>
@@ -131,19 +129,19 @@
             <div class="box">
                 <h3 style="text-align: left">Vendite</h3>
                 <h1 style="text-align: left; margin-bottom: 1px;">1000</h1>
-                <p class="percent"><i class="fa fa-long-arrow-up"></i>5.674% <span>Since Last Months</span></p>
+                <p class="percent"><i class="fa fa-long-arrow-up"></i>5.674% <span>Dagli ultimi mesi</span></p>
                 <i class="fa fa-line-chart box-icon"></i>
             </div>
             <div class="box">
-                <h3 style="text-align: left">Vendite</h3>
-                <h1 style="text-align: left; margin-bottom: 1px;">1000</h1>
-                <p class="percent"><i class="fa fa-long-arrow-down"></i>12.674% <span>Since Last Months</span></p>
+                <h3 style="text-align: left">Utenti</h3>
+                <h1 style="text-align: left; margin-bottom: 1px;">450</h1>
+                <p class="percent"><i class="fa fa-long-arrow-down"></i>12.674% <span>Dagli ultimi mesi</span></p>
                 <i class="fa fa-circle-o-notch box-icon"></i>
             </div>
             <div class="box">
-                <h3 style="text-align: left">Vendite</h3>
-                <h1 style="text-align: left; margin-bottom: 1px;">1000</h1>
-                <p class="percent"><i class="fa fa-long-arrow-up"></i>5.674% <span>Since Last Months</span></p>
+                <h3 style="text-align: left">Recensioni</h3>
+                <h1 style="text-align: left; margin-bottom: 1px;">220</h1>
+                <p class="percent"><i class="fa fa-long-arrow-up"></i>5.674% <span>Dagli ultimi mesi</span></p>
                 <i class="fa fa-shopping-bag box-icon"></i>
             </div>
         </div>
@@ -218,11 +216,6 @@
 
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 <script>
-    // Chart.js
-    function getDatiMensili() {
-        return [10, 12, 9, 14, 18, 20, 25, 22, 17, 15, 13, 11]; // dati esempio
-    }
-
     const ctx = document.getElementById('myChart').getContext('2d');
 
     const myChart = new Chart(ctx, {
@@ -231,11 +224,11 @@
             labels: ['Gennaio', 'Febbraio', 'Marzo', 'Aprile', 'Maggio', 'Giugno',
                 'Luglio', 'Agosto', 'Settembre', 'Ottobre', 'Novembre', 'Dicembre'],
             datasets: [{
-                label: 'Vendite mensili',
-                data: getDatiMensili(),
+                label: 'Ordini per mese',
+                data: [], // dati caricati dinamicamente
                 backgroundColor: 'rgba(0,77,64,0.52)',
                 borderColor: 'rgb(0,77,64)',
-                borderWidth: 0
+                borderWidth: 1
             }]
         },
         options: {
@@ -248,6 +241,20 @@
             }
         }
     });
+
+    // Carica dati dinamicamente dalla servlet
+    fetch('<%= request.getContextPath() %>/admin/dati-ordini-mensili')
+        .then(response => response.json())
+        .then(data => {
+            myChart.data.datasets[0].data = data;
+            myChart.update();
+        })
+        .catch(error => {
+            console.error('Errore nel caricamento dati:', error);
+            // fallback dati esempio
+            myChart.data.datasets[0].data = [10, 12, 9, 14, 18, 20, 25, 22, 17, 15, 13, 11];
+            myChart.update();
+        });
 
     // Menu hamburger e overlay
     const sidebar = document.getElementById('sidebar');
@@ -425,7 +432,7 @@
                                 "<td>" + prodotto.materiale + "</td>" +
                                 "<td><img src='" + prodotto.image_url + "' alt='immagine prodotto' style='max-width:50px; max-height:50px;'/></td>" +
                                 "<td>" +
-                                "<a href='" + contextPath + "/gestioneDettagliProdotto?codiceProdotto=" + prodotto.codiceProdotto + "'>Modifica</a>" +
+                                "<a href='" + contextPath + "/admin/modificaProdotto?id=" + prodotto.codiceProdotto + "'>Modifica</a>" +
                                 "</td>"
 
                             "</tr>";

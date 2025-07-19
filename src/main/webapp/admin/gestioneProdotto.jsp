@@ -13,12 +13,14 @@
         body {
             margin: 0;
             font-family: 'Segoe UI', sans-serif;
-            background-color: #f4f4f4;
+            background-color: #e0f2f1;
             padding: 20px;
+            color: #004d40;
         }
 
         h2 {
             margin-top: 0;
+            color: #004d40;
         }
 
         .container {
@@ -30,10 +32,11 @@
         .section {
             flex: 1;
             min-width: 300px;
-            background: #fff;
+            background: #ffffff;
             padding: 20px;
             border-radius: 10px;
-            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+            box-shadow: 0 4px 12px rgba(0, 77, 64, 0.2);
+            border: 2px solid #004d40;
         }
 
         ul {
@@ -48,11 +51,9 @@
         img {
             max-width: 100%;
             height: auto;
-            max-height: 400px; /* Limita l'altezza massima */
-            border: 1px solid #ccc;
+            max-height: 400px;
             border-radius: 5px;
-            object-fit: contain; /* Evita deformazioni */
-            border: none;
+            object-fit: contain;
         }
 
         form {
@@ -62,7 +63,8 @@
 
         label {
             margin-top: 10px;
-            font-weight: 500;
+            font-weight: 600;
+            color: #004d40;
         }
 
         input[type="text"],
@@ -71,8 +73,10 @@
             padding: 8px;
             margin-top: 5px;
             border-radius: 6px;
-            border: 1px solid #ccc;
+            border: 1px solid #004d40;
             font-size: 15px;
+            background-color: #f1f8f6;
+            color: #004d40;
         }
 
         textarea {
@@ -97,13 +101,21 @@
         }
 
         .save-btn {
-            background-color: #2ecc71;
+            background-color: #00796b;
             color: #fff;
         }
 
+        .save-btn:hover {
+            background-color: #004d40;
+        }
+
         .delete-btn {
-            background-color: #e74c3c;
+            background-color: #d32f2f;
             color: #fff;
+        }
+
+        .delete-btn:hover {
+            background-color: #b71c1c;
         }
 
         @media screen and (max-width: 600px) {
@@ -139,7 +151,7 @@
     <div class="section">
         <h2>🛠️ Modifica Prodotto</h2>
 
-        <form action="salvaModificheProdotto" method="post">
+        <form action="${pageContext.request.contextPath}/admin/salvaModificheProdottoServlet" method="post">
             <input type="hidden" name="id" value="<%= prodotto.getCodiceProdotto() %>">
 
             <label for="nome">Nome:</label>
@@ -176,10 +188,11 @@
             <input type="hidden" name="product_id" value="<%= prodotto.getCodiceProdotto() %>">
             <input type="submit" class="delete-btn" value="🗑️ Elimina">
         </form>
+        <form action="${pageContext.request.contextPath}/admin/dashboard.jsp" method="get">
+            <input type="submit" class="home-btn" value="🏠 Torna alla Home">
+        </form>
 
     </div>
-</div>
-
 </div>
 
 </body>

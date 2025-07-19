@@ -121,8 +121,6 @@ public class ProductDaoImpl implements ProductDao {
         return products;
     }
 
-    @Override
-    public synchronized void doUpdate(ProductBean product) { }
 
     @Override
     public HashMap<ProductBean, Integer> doGetCartAsProducts(HashMap<Long, Integer> cart) throws SQLException {
@@ -260,4 +258,27 @@ public class ProductDaoImpl implements ProductDao {
             return count;
         }
     }
+    @Override
+    public void doUpdate(ProductBean prodotto) {
+        String sql = "UPDATE prodotto \n" +
+                "SET nome = ?, marca = ?, genere = ?, prezzo = ?, modello = ?, descrizione = ?, taglia = ?, materiale = ?\n" +
+                "WHERE codice_prodotto = ?\n";
+        try (Connection con = DataSourceConnectionPool.getConnection();
+             PreparedStatement ps = con.prepareStatement(sql)) {
+            ps.setString(1, prodotto.getNome());
+            ps.setString(2, prodotto.getMarca());
+            ps.setString(3, prodotto.getGenere());
+            ps.setBigDecimal(4, prodotto.getPrezzo());
+            ps.setString(5, prodotto.getModello());
+            ps.setString(6, prodotto.getDescrizione());
+            ps.setString(7, prodotto.getTaglia());
+            ps.setString(8, prodotto.getMateriale());
+            ps.setInt(9, prodotto.getCodiceProdotto());
+
+            ps.executeUpdate();
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
 }

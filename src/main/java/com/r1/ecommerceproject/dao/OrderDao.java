@@ -23,5 +23,5 @@ public interface OrderDao extends BaseDao<OrderBean, String> {
     void savePayment(PaymentBean payment, Long orderId) throws SQLException;
     String getOrderNumber(Long orderId) throws SQLException;
     List<OrderBean> getOrdiniByUtenteId(int idUtente) throws SQLException;
-
+    int countOrdersByMonth(int mese) throws SQLException;
 }
