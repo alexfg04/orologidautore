@@ -1,149 +1,116 @@
-/* ===== Modifiche per .favorites-container e .favorite-card ===== */
-
-/* Trasforma il container in una griglia responsiva */
-.favorites-container {
-    display: grid;
-    /* crea tante colonne da almeno 250px che si adattano allo spazio */
-    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-    gap: 20px;              /* spaziatura uniforme */
-    padding: 20px;          /* un po’ di respiro intorno */
+/* Reset di base */
+* {
     box-sizing: border-box;
+    margin: 0;
+    padding: 0;
 }
 
-/* Card: vincolo dimensioni e aspetto uniforme */
-.favorite-card {
+html, body {
+    height: 100%;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+/* Layout generale */
+body {
     display: flex;
     flex-direction: column;
-    border: 1px solid #eee;
-    border-radius: 6px;
-    overflow: hidden;
-    box-shadow: 0 2px 4px rgba(0,0,0,0.05);
-    background: #fff;
-    /* fissa un’altezza minima e massima per uniformità */
-    min-height: 350px;
-    max-height: 420px;
+    min-height: 100vh;
+    background-color: #f4f4f4;
 }
 
-/* Immagine: ritaglio e dimensione uniforme */
+
+/* Spazio per contenuto */
+main.content {
+    flex: 1;
+    margin-top: 60px; /* Spazio per la navbar */
+    padding: 40px 20px 100px; /* Padding extra per evitare sovrapposizione con footer */
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 100%;
+}
+
+/* Contenitore prodotti */
+.favorites-container {
+    display: grid;
+    gap: 20px;
+    width: 100%;
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 20px;
+}
+
+/* Card prodotto */
+.favorite-card {
+    background-color: #fff;
+    border-radius: 8px;
+    padding: 16px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+    transition: transform 0.2s;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+}
+
+.favorite-card:hover {
+    transform: translateY(-5px);
+}
+
 .favorite-card img {
     width: 100%;
-    /* altezza fissa con object-fit per non deformare */
-    height: 180px;
-    object-fit: cover;
-    display: block;
+    height: auto;
+    max-height: 200px;
+    object-fit: contain;
+    margin-bottom: 12px;
 }
 
-/* Info e pulsanti incolonnati in basso */
-.favorite-info {
-    padding: 12px;
-    flex: 1;               /* occupa spazio flessibile per spingere i bottoni in basso */
-    display: flex;
-    flex-direction: column;
-}
-
-.favorite-info h3 {
-    margin: 0 0 8px;
-    font-size: 1.1rem;
-    line-height: 1.2;
-}
-
-.favorite-info .price {
-    color: #00695C;
+/* Titolo prodotto */
+.favorite-card h3 {
+    font-size: 1.2rem;
     margin-bottom: 8px;
-    font-weight: bold;
 }
 
-.favorite-info .description {
-    font-size: 0.9rem;
+/* Prezzo */
+.favorite-card p {
+    font-size: 1rem;
     color: #555;
     margin-bottom: 12px;
-    flex: 1;               /* occupa tutto lo spazio rimanente */
 }
 
-/* Pulsanti sempre allineati in fondo */
-.favorite-actions {
-    display: flex;
-    border-top: 1px solid #eee;
-}
-
-.favorite-actions form {
-    flex: 1;
-    margin: 0;
-}
-
-.favorite-actions button {
-    width: 100%;
-    padding: 10px;
-    border: none;
-    background: #00695C;
+/* Pulsante rimuovi */
+.favorite-card form button {
+    padding: 8px 16px;
+    background-color: rgb(0, 77, 64);
     color: #fff;
+    border: none;
+    border-radius: 4px;
     cursor: pointer;
-    font-weight: 500;
-    transition: background 0.2s;
 }
 
-.favorite-actions button.remove {
-    background: #ff3366;
+.favorite-card form button:hover {
+    background-color: rgba(7, 159, 139, 0.8);
 }
 
-.favorite-actions button:hover {
-    opacity: 0.9;
-}
+/* Responsive */
+@media (max-width: 600px) {
+    .favorite-card {
+        padding: 12px;
+    }
 
+    .favorite-card h3 {
+        font-size: 1rem;
+    }
 
-.favorites-container {
-    width: 40%;
-    margin: 0 auto;       /* centrato orizzontalmente */
-    display: grid;
-    grid-template-columns: 1fr; /* o la griglia responsive che preferisci */
-    gap: 20px;
-    padding: 20px 0;
-    box-sizing: border-box;
-}
+    .favorite-card p {
+        font-size: 0.9rem;
+    }
+    .favorite-actions{}
+    @media (max-width: 600px) {
+        .favorites-container {
+            display: grid;
+            grid-template-columns: 1fr !important;
+        }
+    }
 
-/* 2) Main: flex container per centrare anche verticalmente quando c'è poco contenuto */
-.content {
-    display: flex;
-    flex-direction: column;
-    justify-content: center;  /* centra verticalmente */
-    align-items: center;      /* centra orizzontalmente */
-    min-height: calc(100vh - 60px - 80px); /* finestra meno header (60px) e footer (80px) */
-    box-sizing: border-box;
-}
-
-
-
-/* === Layout orizzontale per .favorite-card === */
-.favorite-card {
-    display: flex;               /* flex container */
-    flex-direction: row;         /* orizzontale */
-    border: 1px solid rgba(0,0,0,0.8);
-    border-radius: 6px;
-    overflow: hidden;
-    box-shadow: 0 2px 4px rgba(0,0,0,0.05);
-    background: #fff;
-    min-height: 200px;           /* adatta l’altezza minima */
-    max-height: none;            /* togli limite se vuoi */
-}
-
-/* Immagine a sinistra: 40% della larghezza, copre tutta l’altezza */
-.favorite-card .favorite-img {
-    width: 40%;
-    height: auto;               /* mantiene proporzioni */
-    object-fit: cover;
-    flex-shrink: 0;             /* non si restringe */
-}
-
-/* Info a destra: 60% della larghezza, layout colonna */
-.favorite-card .favorite-info {
-    width: 60%;
-    padding: 12px;
-    display: flex;
-    flex-direction: column;
-    justify-content: space-between; /* spinge prezzo e bottoni in basso */
-}
-
-/* Se vuoi che le azioni stiano in fondo */
-.favorite-card .favorite-actions {
-    margin-top: auto;
 }

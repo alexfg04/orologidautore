@@ -61,7 +61,7 @@
         %>
         <div class="favorite-card">
             <img class="favorite-img"
-                 src="<%= request.getContextPath() + "/" + prod.getImmagine() %>"
+                 src="<%= prod.getImmagine()%>"
                  alt="Immagine di <%= prod.getNome() %>">
             <div class="favorite-info">
                 <h3 class="favorite-name"><%= prod.getNome() %></h3>
