@@ -36,6 +36,7 @@
 <html lang="it">
 <head>
     <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Catalogo Prodotti</title>
     <link rel="stylesheet" href="${pageContext.request.contextPath}/assets/css/catalog.css">
     <link rel="stylesheet" href="${pageContext.request.contextPath}/assets/css/navbar.css">
@@ -43,6 +44,9 @@
 </head>
 <body>
 <%@ include file="navbar.jsp" %>
+<button id="filter-toggle" class="filter-toggle" aria-label="Mostra filtri">
+    <i data-lucide="filter"></i>
+</button>
 <div class="container">
     <!-- Sidebar filtri -->
     <aside class="sidebar">
