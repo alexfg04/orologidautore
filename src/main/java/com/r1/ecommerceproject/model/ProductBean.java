@@ -146,7 +146,14 @@ public class ProductBean implements Serializable {
 
 	/** Prezzo netto per unità (due decimali) */
 	public BigDecimal getPrezzoNetto() {
-		return this.prezzo;
+		if(prezzo == null) {
+			BigDecimal factor = BigDecimal.ONE.add(
+					ivaPercentuale.divide(BigDecimal.valueOf(100), 4, RoundingMode.HALF_UP)
+			);
+			return prezzoUnitario.divide(factor, 2, RoundingMode.HALF_UP);
+		} else {
+			return this.prezzo;
+		}
 	}
 
 	/** Subtotale netto sulla quantità */

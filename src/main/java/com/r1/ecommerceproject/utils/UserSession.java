@@ -17,8 +17,8 @@ public class UserSession {
     private final String SESSION_CART_ATTRIBUTE = "cart";
     private final String SESSION_ADMIN_ATTRIBUTE = "admin";
     private final String SESSION_USER_ID_ATTRIBUTE = "userId";
-    private final String SESSION_CART_TOTALE_NETTO_ATTRIBUTE = "cartTotal";
-    private final String SESSION_CART_TOTALE_LORDO_ATTRIBUTE = "cartTotal";
+    private final String SESSION_CART_TOTALE_NETTO_ATTRIBUTE = "cartTotalNet";
+    private final String SESSION_CART_TOTALE_LORDO_ATTRIBUTE = "cartTotalGross";
     private final HttpSession session;
     private final String FAVORITES_ATTRIBUTE = "favorites";
     private final String SESSION_FIRSTNAME_ATTRIBUTE = "firstName";

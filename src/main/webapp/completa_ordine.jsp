@@ -289,9 +289,9 @@
                 <div class="item-details">
                     <h3><%= p.getNome() %></h3>
                     <p><%= p.getDescrizione() %></p>
-                    <p class="price">€ <%= String.format("%.2f", p.getPrezzoUnitario()) %></p>
+                    <p class="price">€ <%= String.format("%.2f", p.getPrezzo()) %></p>
                     <p>Qtà: <%= qty %></p>
-                    <p class="subtotal">Subtotale: € <%= String.format("%.2f", p.getSubtotale()) %> + IVA</p>
+                    <p class="subtotal">Subtotale: € <%= String.format("%.2f", p.getSubtotale()) %> (IVA inclusa)</p>
                 </div>
             </div>
             <% } %>
