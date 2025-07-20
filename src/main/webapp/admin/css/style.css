@@ -292,6 +292,23 @@ tr:last-child td:last-child {
     border-bottom-right-radius: 10px;
 }
 
+.table-responsive {
+    width: 100%;
+    overflow-x: auto;
+}
+    /* Righe cliccabili in tabella prodotti */
+.clickable-row {
+    cursor: pointer;
+    transition: background-color 0.2s ease;
+}
+
+.modifica-link:hover {
+    background-color: #005a4f;
+}
+.clickable-row:hover {
+    background-color: #f0f0f0;
+}
+
 .dashboard-boxes {
     display: flex;
     justify-content: space-between;

@@ -463,12 +463,11 @@
 
                         var html = "<table><thead><tr>" +
                             "<th>Nome</th><th>Marca</th><th>Genere</th><th>Prezzo</th><th>Modello</th>" +
-                            "<th>Descrizione</th><th>Taglia</th><th>Materiale</th><th>Immagine</th><th>Azione</th>" +
+                            "<th>Descrizione</th><th>Taglia</th><th>Materiale</th><th>Immagine</th>" +
                             "</tr></thead><tbody>";
 
                         prodotti.forEach(function(prodotto) {
-                            html += "<tr>" +
-
+                                html += "<tr class='clickable-row' onclick='window.location.href=\"" + contextPath + "/admin/modificaProdotto?id=" + prodotto.codiceProdotto + "\"'>" +
                                 "<td>" + prodotto.nome + "</td>" +
                                 "<td>" + prodotto.marca + "</td>" +
                                 "<td>" + prodotto.categoria + "</td>" +
@@ -478,10 +477,6 @@
                                 "<td>" + prodotto.taglia + "</td>" +
                                 "<td>" + prodotto.materiale + "</td>" +
                                 "<td><img src='" + prodotto.image_url + "' alt='immagine prodotto' style='max-width:50px; max-height:50px;'/></td>" +
-                                "<td>" +
-                                "<a href='" + contextPath + "/admin/modificaProdotto?id=" + prodotto.codiceProdotto + "'>Modifica</a>" +
-                                "</td>"
-
                             "</tr>";
                         });
 
