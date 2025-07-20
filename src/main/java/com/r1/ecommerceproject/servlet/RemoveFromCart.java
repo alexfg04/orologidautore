@@ -1,6 +1,8 @@
 package com.r1.ecommerceproject.servlet;
 
 import com.r1.ecommerceproject.utils.UserSession;
+import com.google.gson.Gson;
+import com.google.gson.JsonObject;
 
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -16,10 +18,19 @@ public class RemoveFromCart extends HttpServlet {
         Long id = Long.parseLong(request.getParameter("productId"));
         UserSession userSession = new UserSession(request.getSession());
         userSession.removeProductFromCart(id);
-        // return json response with cart size
+
         int cartSize = userSession.getCart().size();
+
+        Gson gson = new Gson();
+        JsonObject json = new JsonObject();
+        json.addProperty("success", true);
+        json.addProperty("itemCount", cartSize);
+        json.addProperty("totaleNetto", userSession.getCartTotaleNetto());
+        json.addProperty("totaleLordo", userSession.getCartTotaleLordo());
+        json.addProperty("iva", userSession.getCartTotaleNetto().multiply(new java.math.BigDecimal("0.22")));
+
         response.setContentType("application/json");
-        response.getWriter().write("{\"success\": true, \"itemCount\": " + cartSize + ", \"total\": " + userSession.getCartTotaleLordo() + "}\n");
+        response.getWriter().write(gson.toJson(json));
         response.getWriter().flush();
     }
 }
