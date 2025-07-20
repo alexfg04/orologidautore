@@ -1,7 +1,7 @@
 package com.r1.ecommerceproject.servlet;
 
-import com.r1.ecommerceproject.dao.UserDao;
-import com.r1.ecommerceproject.dao.impl.UserDaoImpl;
+import com.r1.ecommerceproject.model.UserDao;
+import com.r1.ecommerceproject.model.impl.UserDaoImpl;
 import com.r1.ecommerceproject.model.UserBean;
 import com.r1.ecommerceproject.utils.Security;
 import com.r1.ecommerceproject.utils.UserSession;
@@ -49,6 +49,7 @@ public class SigninServlet extends HttpServlet {
         userSession.setUser(user.getId());
         userSession.setFirstName(user.getNome());
         userSession.setLastName(user.getCognome());
+        userSession.setEmail(user.getEmail());
         System.out.println("Session userId: " + request.getSession().getAttribute("userId"));
         /*
         Questo metodo trasferisce tutti i preferiti presenti nel database nella sessione

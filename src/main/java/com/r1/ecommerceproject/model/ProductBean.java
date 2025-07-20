@@ -87,6 +87,11 @@ public class ProductBean implements Serializable {
 
 	public void setPrezzo(BigDecimal prezzo) {
 		this.prezzo = prezzo;
+		// set prezzo unitario with iva
+		BigDecimal factor = BigDecimal.ONE.add(
+				ivaPercentuale.divide(BigDecimal.valueOf(100), 4, RoundingMode.HALF_UP)
+		);
+		this.prezzoUnitario = prezzo.multiply(factor).setScale(2, RoundingMode.HALF_UP);
 	}
 
 	public Stato getStato() {
@@ -124,6 +129,7 @@ public class ProductBean implements Serializable {
 	public BigDecimal getPrezzoUnitario() {
 		return prezzoUnitario;
 	}
+
 	public void setPrezzoUnitario(BigDecimal prezzoUnitario) {
 		this.prezzoUnitario = prezzoUnitario;
 	}
@@ -138,19 +144,9 @@ public class ProductBean implements Serializable {
 				.setScale(2, RoundingMode.HALF_UP);
 	}
 
-	/** Totale con IVA arrotondato a 2 decimali */
-	public BigDecimal getTotaleConIva() {
-		return getSubtotale()
-				.add(getIvaValore())
-				.setScale(2, RoundingMode.HALF_UP);
-	}
-
 	/** Prezzo netto per unità (due decimali) */
 	public BigDecimal getPrezzoNetto() {
-		BigDecimal factor = BigDecimal.ONE.add(
-				ivaPercentuale.divide(BigDecimal.valueOf(100), 4, RoundingMode.HALF_UP)
-		);
-		return prezzoUnitario.divide(factor, 2, RoundingMode.HALF_UP);
+		return this.prezzo;
 	}
 
 	/** Subtotale netto sulla quantità */
@@ -167,14 +163,6 @@ public class ProductBean implements Serializable {
 		return delta.multiply(BigDecimal.valueOf(quantity))
 				.setScale(2, RoundingMode.HALF_UP);
 	}
-
-	/** Totale lordo sulla riga (uguale a prezzoUnitario*quantity) */
-	public BigDecimal getTotaleLordo() {
-		return prezzoUnitario
-				.multiply(BigDecimal.valueOf(quantity))
-				.setScale(2, RoundingMode.HALF_UP);
-	}
-
 	public void setNome(String nome) {
 		this.nome = nome;
 	}

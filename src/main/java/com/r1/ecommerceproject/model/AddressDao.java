@@ -1,10 +1,7 @@
-package com.r1.ecommerceproject.dao;
-
-import com.r1.ecommerceproject.model.AddressBean;
+package com.r1.ecommerceproject.model;
 
 import java.sql.SQLException;
 import java.util.List;
-import java.util.Optional;
 
 public interface AddressDao {
 

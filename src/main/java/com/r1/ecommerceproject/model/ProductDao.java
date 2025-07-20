@@ -1,6 +1,5 @@
-package com.r1.ecommerceproject.dao;
+package com.r1.ecommerceproject.model;
 
-import com.r1.ecommerceproject.model.ProductBean;
 import com.r1.ecommerceproject.utils.ProductFilter;
 
 import java.sql.SQLException;

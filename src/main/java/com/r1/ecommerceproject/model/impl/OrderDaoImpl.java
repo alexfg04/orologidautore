@@ -1,7 +1,7 @@
-package com.r1.ecommerceproject.dao.impl;
+package com.r1.ecommerceproject.model.impl;
 
-import com.r1.ecommerceproject.dao.OrderDao;
-import com.r1.ecommerceproject.dao.UserDao;
+import com.r1.ecommerceproject.model.OrderDao;
+import com.r1.ecommerceproject.model.UserDao;
 import com.r1.ecommerceproject.model.AddressBean;
 import com.r1.ecommerceproject.model.OrderBean;
 import com.r1.ecommerceproject.model.PaymentBean;
@@ -170,7 +170,7 @@ public class OrderDaoImpl implements OrderDao {
 
             ps.setLong(1, orderId);
             ps.setLong(2, product.getCodiceProdotto());
-            ps.setBigDecimal(3, product.getPrezzo());
+            ps.setBigDecimal(3, product.getPrezzoUnitario());
             ps.setInt(4, quantity);
             ps.executeUpdate();
         }

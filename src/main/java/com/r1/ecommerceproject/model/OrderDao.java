@@ -1,9 +1,4 @@
-package com.r1.ecommerceproject.dao;
-
-import com.r1.ecommerceproject.model.AddressBean;
-import com.r1.ecommerceproject.model.OrderBean;
-import com.r1.ecommerceproject.model.PaymentBean;
-import com.r1.ecommerceproject.model.ProductBean;
+package com.r1.ecommerceproject.model;
 
 import java.sql.SQLException;
 import java.util.Collection;

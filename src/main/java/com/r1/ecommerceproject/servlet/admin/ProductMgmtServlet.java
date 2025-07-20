@@ -1,8 +1,8 @@
 package com.r1.ecommerceproject.servlet.admin;
 
-import com.r1.ecommerceproject.dao.impl.ProductDaoImpl;
+import com.r1.ecommerceproject.model.impl.ProductDaoImpl;
 import com.r1.ecommerceproject.model.ProductBean;
-import com.r1.ecommerceproject.dao.ProductDao;
+import com.r1.ecommerceproject.model.ProductDao;
 
 import java.io.File;
 import java.io.IOException;
@@ -10,7 +10,6 @@ import java.math.BigDecimal;
 import java.sql.SQLException;
 import java.util.UUID;
 
-import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.MultipartConfig;
 import javax.servlet.annotation.WebServlet;

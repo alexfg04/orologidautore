@@ -10,8 +10,8 @@
 
 <%
     // Assicurati che l'utente sia loggato
-    UserSession sessioneUtente = new UserSession(request.getSession());
-    if (!sessioneUtente.isLoggedIn()) {
+    UserSession user = new UserSession(request.getSession());
+    if (!user.isLoggedIn()) {
         response.sendRedirect(request.getContextPath() + "/login.jsp");
         return;
     }
@@ -22,16 +22,17 @@
 
     // Recupera il totale calcolato dalla servlet
     BigDecimal totalPriceObject = (BigDecimal) request.getAttribute("totalPrice");
+    BigDecimal IvaObject = (BigDecimal) request.getAttribute("iva");
     BigDecimal total = (totalPriceObject != null) ? totalPriceObject : BigDecimal.ZERO;
+    BigDecimal Iva = (IvaObject != null) ? IvaObject : BigDecimal.ZERO;
 
     // Recupera l'indirizzo predefinito e la lista di indirizzi dalla request
     AddressBean defaultShippingAddress = (AddressBean) request.getAttribute("defaultShippingAddress");
     List<AddressBean> userAddresses = (List<AddressBean>) request.getAttribute("userAddresses");
 
     // Recupera l'utente corrente per nome/email
-    UserBean currentUser = (UserBean) request.getSession().getAttribute("currentUser");
-    String userName = (currentUser != null) ? currentUser.getNome() + " " + currentUser.getCognome() : "N/D";
-    String userEmail = (currentUser != null) ? currentUser.getEmail() : "N/D";
+    String userName = user.getFirstName() + " " + user.getLastName();
+    String userEmail = user.getEmail();
 
     // Assicurati che il numero di telefono sia recuperato correttamente dall'UserBean
     // Questo è un placeholder, dovrai assicurarti che UserBean abbia un metodo getTelefono()
@@ -271,8 +272,8 @@
 
 
         <h2>Opzioni di Spedizione</h2>
-        <div class="info-box">
-            <h3>Spedizione Standard Gratuita</h3>
+        <div class="info-box" id="shippingOptions">
+            <h3>Spedizione Standard €6,50</h3>
             <p>Consegna entro 3-5 giorni lavorativi.</p>
         </div>
     </div>
@@ -288,10 +289,9 @@
                 <div class="item-details">
                     <h3><%= p.getNome() %></h3>
                     <p><%= p.getDescrizione() %></p>
-                    <p class="price">€ <%= String.format("%.2f", p.getPrezzo()) %></p>
+                    <p class="price">€ <%= String.format("%.2f", p.getPrezzoUnitario()) %></p>
                     <p>Qtà: <%= qty %></p>
-                    <p class="subtotal">Subtotale: € <%= String.format("%.2f", p.getPrezzo().multiply(BigDecimal.valueOf(qty))
-                            .setScale(2, RoundingMode.HALF_UP)) %></p>
+                    <p class="subtotal">Subtotale: € <%= String.format("%.2f", p.getSubtotale()) %> + IVA</p>
                 </div>
             </div>
             <% } %>
@@ -299,6 +299,7 @@
 
         <div class="order-total">
             <p>Subtotale: € <%= String.format("%.2f", total) %></p>
+            <p>Iva (22%): € <%= String.format("%.2f", Iva.setScale(2, RoundingMode.HALF_UP)) %> </p>
             <p>Spedizione: € <%= String.format("%.2f", 6.50) %></p>
             <h3>TOTALE: <strong>€ <%= String.format("%.2f", total.add(BigDecimal.valueOf(6.50))) %></strong></h3>
         </div>
@@ -585,6 +586,6 @@
     }
 
 </script>
-
+<script src="${pageContext.request.contextPath}/assets/js/navbar.js"></script>
 </body>
 </html>

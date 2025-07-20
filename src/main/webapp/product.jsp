@@ -113,7 +113,7 @@
         <div class="detail-info">
             <h1><%= product.getNome() %>
             </h1>
-            <p class="price">€ <%= String.format("%.2f", product.getPrezzo()) %></p>
+            <p class="price">€ <%= String.format("%.2f", product.getPrezzo()) %><span>(IVA esclusa)</span></p>
             <h2>Taglia</h2>
             <p class="one-size-box">ONE SIZE</p>
             <form action="<%= request.getContextPath() %>/cart" method="post" class="product-form">

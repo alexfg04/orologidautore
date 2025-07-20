@@ -16,10 +16,10 @@ import com.itextpdf.layout.element.Table;
 import com.itextpdf.layout.properties.HorizontalAlignment;
 import com.itextpdf.layout.properties.TextAlignment;
 import com.itextpdf.layout.properties.UnitValue;
-import com.r1.ecommerceproject.dao.OrderDao;
-import com.r1.ecommerceproject.dao.UserDao;
-import com.r1.ecommerceproject.dao.impl.OrderDaoImpl;
-import com.r1.ecommerceproject.dao.impl.UserDaoImpl;
+import com.r1.ecommerceproject.model.OrderDao;
+import com.r1.ecommerceproject.model.UserDao;
+import com.r1.ecommerceproject.model.impl.OrderDaoImpl;
+import com.r1.ecommerceproject.model.impl.UserDaoImpl;
 import com.r1.ecommerceproject.model.AddressBean;
 import com.r1.ecommerceproject.model.OrderBean;
 import com.r1.ecommerceproject.model.ProductBean;
@@ -132,7 +132,7 @@ public class ReceiptServlet extends HttpServlet {
                 BigDecimal netto    = p.getPrezzoNetto();
                 BigDecimal subNetto = p.getSubtotaleNetto();
                 BigDecimal ivaVal   = p.getIvaValore();
-                BigDecimal subLordo = p.getTotaleLordo();
+                BigDecimal subLordo = p.getSubtotale();
 
                 imponibile = imponibile.add(subNetto);
                 totaleIva  = totaleIva.add(ivaVal);

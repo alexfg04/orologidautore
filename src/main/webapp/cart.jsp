@@ -19,11 +19,13 @@
 
     // Definisco l'aliquota IVA del 22%
     final BigDecimal VAT_RATE = new BigDecimal("0.22");
+    UserSession user = new UserSession(session);
     // Totale netto già calcolato dalla sessione
-    BigDecimal totalNet = new UserSession(session).getCartTotal();
+    BigDecimal totalNet = user.getCartTotaleNetto();
+    System.out.println("totale netto: " + totalNet);
     // Totale lordo = netto * (1 + VAT_RATE)
-    BigDecimal totalGross = totalNet.multiply(BigDecimal.ONE.add(VAT_RATE))
-            .setScale(2, RoundingMode.HALF_UP);
+    BigDecimal totalGross = user.getCartTotaleLordo();
+    System.out.println("totale lordo: " + totalNet);
 %>
 
 <!DOCTYPE html>
@@ -55,7 +57,6 @@
     <p>Non hai ancora aggiunto nessun prodotto al carrello.</p>
 </div>
 <% } else { %>
-<% BigDecimal totalPrice = new UserSession(session).getCartTotal(); %>
 <div class="cart-container">
     <div class="container product-container">
         <h2 style="display: flex; justify-content: space-between; align-items: center;">

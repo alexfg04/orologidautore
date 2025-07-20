@@ -32,7 +32,7 @@ public class UpdateQuantityServlet extends HttpServlet  {
             // 2. Perform business logic
             UserSession userSession = new UserSession(httpSession);
             userSession.updateProductInCart(productId, quantity);
-            BigDecimal total = userSession.getCartTotal();
+            BigDecimal total = userSession.getCartTotaleLordo();
 
             // return json
             response.setContentType("application/json");

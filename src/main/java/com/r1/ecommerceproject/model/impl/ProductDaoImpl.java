@@ -1,6 +1,6 @@
-package com.r1.ecommerceproject.dao.impl;
+package com.r1.ecommerceproject.model.impl;
 
-import com.r1.ecommerceproject.dao.ProductDao;
+import com.r1.ecommerceproject.model.ProductDao;
 import com.r1.ecommerceproject.utils.DataSourceConnectionPool;
 import com.r1.ecommerceproject.model.ProductBean;
 import com.r1.ecommerceproject.model.ProductBean.Stato;
@@ -49,6 +49,7 @@ public class ProductDaoImpl implements ProductDao {
         bean.setGenere(rs.getString("gender"));
         bean.setTaglia(rs.getString("taglia"));
         bean.setMarca(rs.getString("marca"));
+        bean.setIvaPercentuale(rs.getBigDecimal("iva_percentuale"));
         bean.setPrezzo(rs.getBigDecimal("prezzo"));
         bean.setStato(Stato.valueOf(rs.getString("stato")));
         bean.setModello(rs.getString("modello"));
@@ -107,6 +108,7 @@ public class ProductDaoImpl implements ProductDao {
         for(Long id : cart.keySet()) {
             ProductBean product = doRetrieveById(id);
             if (product != null) {
+                product.setQuantity(cart.get(id));
                 products.put(product, cart.get(id));
             }
         }
@@ -263,8 +265,8 @@ public class ProductDaoImpl implements ProductDao {
     }
     @Override
     public void doSave(ProductBean product) throws SQLException {
-        String sql = "INSERT INTO prodotto (nome, marca, gender, modello, descrizione, taglia, materiale, prezzo, image_url, created_at, updated_at) " +
-                "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, NOW(), NOW())";
+        String sql = "INSERT INTO prodotto (nome, marca, gender, modello, descrizione, taglia, materiale, prezzo, image_url) " +
+                "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)";
 
         try (Connection con = DataSourceConnectionPool.getConnection();
              PreparedStatement ps = con.prepareStatement(sql)) {

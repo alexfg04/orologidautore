@@ -2,8 +2,8 @@
 <%@ page import="com.r1.ecommerceproject.model.OrderBean" %>
 <%@ page import="com.r1.ecommerceproject.model.ProductBean" %>
 <%@ page import="com.r1.ecommerceproject.model.AddressBean" %>
-<%@ page import="com.r1.ecommerceproject.dao.OrderDao" %>
-<%@ page import="com.r1.ecommerceproject.dao.impl.OrderDaoImpl" %>
+<%@ page import="com.r1.ecommerceproject.model.OrderDao" %>
+<%@ page import="com.r1.ecommerceproject.model.impl.OrderDaoImpl" %>
 <%@ page import="com.r1.ecommerceproject.utils.UserSession" %>
 <%@ page import="java.sql.SQLException" %>
 <%@ page contentType="text/html; charset=UTF-8" language="java" %>

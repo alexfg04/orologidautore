@@ -1,6 +1,6 @@
 package com.r1.ecommerceproject.servlet;
 
-import com.r1.ecommerceproject.dao.impl.AddressDaoImpl;
+import com.r1.ecommerceproject.model.impl.AddressDaoImpl;
 import com.r1.ecommerceproject.model.AddressBean;
 
 import javax.servlet.ServletException;

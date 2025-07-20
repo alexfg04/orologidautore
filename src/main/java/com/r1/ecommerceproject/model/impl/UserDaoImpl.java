@@ -1,6 +1,6 @@
-package com.r1.ecommerceproject.dao.impl;
+package com.r1.ecommerceproject.model.impl;
 
-import com.r1.ecommerceproject.dao.UserDao;
+import com.r1.ecommerceproject.model.UserDao;
 import com.r1.ecommerceproject.model.AddressBean;
 import com.r1.ecommerceproject.model.PhoneNumberBean;
 import com.r1.ecommerceproject.model.UserBean;

@@ -37,7 +37,7 @@ body {
 
 /* Colonna sinistra: Riepilogo Ordine (Prodotti e Totale) */
 .order-summary-section {
-    flex: 2; /* Occupa più spazio (es. 2/3 della larghezza disponibile) */
+    flex: 1; /* Occupa più spazio (es. 2/3 della larghezza disponibile) */
     padding-right: 20px; /* Spazio a destra per separazione */
     border-right: 1px solid var(--border-color); /* Separatore sottile */
 }
@@ -292,4 +292,8 @@ body {
     outline: none;
     border-color: #004a30;
     box-shadow: 0 0 0 2px rgba(0, 123, 255, 0.2);
+}
+
+#shippingOptions {
+    border: 1px solid #0a9396;
 }

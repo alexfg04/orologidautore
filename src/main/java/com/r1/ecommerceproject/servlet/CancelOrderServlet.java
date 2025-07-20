@@ -1,7 +1,7 @@
 package com.r1.ecommerceproject.servlet;
 
-import com.r1.ecommerceproject.dao.OrderDao;
-import com.r1.ecommerceproject.dao.impl.OrderDaoImpl;
+import com.r1.ecommerceproject.model.OrderDao;
+import com.r1.ecommerceproject.model.impl.OrderDaoImpl;
 
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;

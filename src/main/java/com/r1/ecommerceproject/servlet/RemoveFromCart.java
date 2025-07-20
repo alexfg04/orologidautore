@@ -19,7 +19,7 @@ public class RemoveFromCart extends HttpServlet {
         // return json response with cart size
         int cartSize = userSession.getCart().size();
         response.setContentType("application/json");
-        response.getWriter().write("{\"success\": true, \"itemCount\": " + cartSize + ", \"total\": " + userSession.getCartTotal() + "}\n");
+        response.getWriter().write("{\"success\": true, \"itemCount\": " + cartSize + ", \"total\": " + userSession.getCartTotaleLordo() + "}\n");
         response.getWriter().flush();
     }
 }

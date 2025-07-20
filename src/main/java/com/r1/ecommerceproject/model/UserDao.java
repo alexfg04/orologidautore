@@ -1,8 +1,4 @@
-package com.r1.ecommerceproject.dao;
-
-import com.r1.ecommerceproject.model.AddressBean;
-import com.r1.ecommerceproject.model.PhoneNumberBean;
-import com.r1.ecommerceproject.model.UserBean;
+package com.r1.ecommerceproject.model;
 
 import java.sql.SQLException;
 import java.util.List;

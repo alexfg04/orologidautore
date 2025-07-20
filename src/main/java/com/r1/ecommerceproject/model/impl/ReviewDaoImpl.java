@@ -1,6 +1,6 @@
-package com.r1.ecommerceproject.dao.impl;
+package com.r1.ecommerceproject.model.impl;
 
-import com.r1.ecommerceproject.dao.ReviewDao;
+import com.r1.ecommerceproject.model.ReviewDao;
 import com.r1.ecommerceproject.model.ReviewBean;
 import com.r1.ecommerceproject.utils.DataSourceConnectionPool;
 

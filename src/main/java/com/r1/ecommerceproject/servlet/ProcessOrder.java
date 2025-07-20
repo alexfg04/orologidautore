@@ -1,9 +1,9 @@
 package com.r1.ecommerceproject.servlet;
 
 import com.paypal.orders.*;
-import com.r1.ecommerceproject.dao.OrderDao;
-import com.r1.ecommerceproject.dao.impl.OrderDaoImpl;
-import com.r1.ecommerceproject.dao.impl.ProductDaoImpl;
+import com.r1.ecommerceproject.model.OrderDao;
+import com.r1.ecommerceproject.model.impl.OrderDaoImpl;
+import com.r1.ecommerceproject.model.impl.ProductDaoImpl;
 import com.r1.ecommerceproject.model.OrderBean;
 import com.r1.ecommerceproject.model.ProductBean;
 import com.r1.ecommerceproject.utils.PayPalClient;

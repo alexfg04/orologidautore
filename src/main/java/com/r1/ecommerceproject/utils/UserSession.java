@@ -1,7 +1,7 @@
 package com.r1.ecommerceproject.utils;
 
-import com.r1.ecommerceproject.dao.ProductDao;
-import com.r1.ecommerceproject.dao.impl.ProductDaoImpl;
+import com.r1.ecommerceproject.model.ProductDao;
+import com.r1.ecommerceproject.model.impl.ProductDaoImpl;
 import com.r1.ecommerceproject.model.ProductBean;
 
 import javax.servlet.http.HttpSession;
@@ -17,7 +17,8 @@ public class UserSession {
     private final String SESSION_CART_ATTRIBUTE = "cart";
     private final String SESSION_ADMIN_ATTRIBUTE = "admin";
     private final String SESSION_USER_ID_ATTRIBUTE = "userId";
-    private final String SESSION_CART_TOTAL_ATTRIBUTE = "cartTotal";
+    private final String SESSION_CART_TOTALE_NETTO_ATTRIBUTE = "cartTotal";
+    private final String SESSION_CART_TOTALE_LORDO_ATTRIBUTE = "cartTotal";
     private final HttpSession session;
     private final String FAVORITES_ATTRIBUTE = "favorites";
     private final String SESSION_FIRSTNAME_ATTRIBUTE = "firstName";
@@ -98,33 +99,42 @@ public class UserSession {
 
     public void computeTotal() {
         ProductDao model = new ProductDaoImpl();
-        BigDecimal total = BigDecimal.ZERO;
+        BigDecimal totaleNetto = BigDecimal.ZERO;
+        BigDecimal totaleLordo = BigDecimal.ZERO;
 
         if (session.getAttribute(SESSION_CART_ATTRIBUTE) != null) {
             HashMap<Long, Integer> cart = getCart();
             for (Long productId : cart.keySet()) {
                 try {
-                    total = total
-                            .add(model.doRetrieveById(productId)
-                                            .getPrezzo()
-                                            .multiply(BigDecimal.valueOf(cart.get(productId)))
-                            )
-                            .setScale(2, RoundingMode.HALF_UP);
-
+                    ProductBean product = model.doRetrieveById(productId);
+                    product.setQuantity(cart.get(productId));
+                    totaleNetto = totaleNetto.add(product.getSubtotaleNetto());
+                    totaleLordo = totaleLordo.add(product.getSubtotale());
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
             }
         }
-        this.setCartTotal(total);
+        System.out.println("totale netto: " + totaleNetto);
+        System.out.println("totale lordo: " + totaleLordo);
+        this.setCartTotaleNetto(totaleNetto);
+        this.setCartTotaleLordo(totaleLordo);
     }
 
-    public void setCartTotal(BigDecimal total) {
-        session.setAttribute(SESSION_CART_TOTAL_ATTRIBUTE, total);
+    public void setCartTotaleNetto(BigDecimal total) {
+        session.setAttribute(SESSION_CART_TOTALE_NETTO_ATTRIBUTE, total);
     }
 
-    public BigDecimal getCartTotal() {
-        return session.getAttribute(SESSION_CART_TOTAL_ATTRIBUTE) != null ? (BigDecimal) session.getAttribute(SESSION_CART_TOTAL_ATTRIBUTE) : BigDecimal.ZERO;
+    public BigDecimal getCartTotaleNetto() {
+        return session.getAttribute(SESSION_CART_TOTALE_NETTO_ATTRIBUTE) != null ? (BigDecimal) session.getAttribute(SESSION_CART_TOTALE_NETTO_ATTRIBUTE) : BigDecimal.ZERO;
+    }
+
+    public void setCartTotaleLordo(BigDecimal total) {
+        session.setAttribute(SESSION_CART_TOTALE_LORDO_ATTRIBUTE, total);
+    }
+
+    public BigDecimal getCartTotaleLordo() {
+        return session.getAttribute(SESSION_CART_TOTALE_LORDO_ATTRIBUTE) != null ? (BigDecimal) session.getAttribute(SESSION_CART_TOTALE_LORDO_ATTRIBUTE) : BigDecimal.ZERO;
     }
 
 
@@ -202,6 +212,15 @@ public class UserSession {
     //metodo di get per lastName
     public String getLastName() {
         Object attr = session.getAttribute(SESSION_LASTNAME_ATTRIBUTE);
+        return attr != null ? (String) attr : null;
+    }
+
+    public void setEmail(String email) {
+        session.setAttribute("email", email);
+    }
+
+    public String getEmail() {
+        Object attr = session.getAttribute("email");
         return attr != null ? (String) attr : null;
     }
 }

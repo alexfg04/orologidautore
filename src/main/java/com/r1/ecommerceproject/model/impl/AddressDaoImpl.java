@@ -1,6 +1,6 @@
-package com.r1.ecommerceproject.dao.impl;
+package com.r1.ecommerceproject.model.impl;
 
-import com.r1.ecommerceproject.dao.AddressDao;
+import com.r1.ecommerceproject.model.AddressDao;
 import com.r1.ecommerceproject.model.AddressBean;
 import com.r1.ecommerceproject.model.AddressBean.Tipo;
 import com.r1.ecommerceproject.utils.DataSourceConnectionPool;

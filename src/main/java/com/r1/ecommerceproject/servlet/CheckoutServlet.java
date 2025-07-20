@@ -1,10 +1,10 @@
 package com.r1.ecommerceproject.servlet;
 
-import com.r1.ecommerceproject.dao.AddressDao;
-import com.r1.ecommerceproject.dao.impl.AddressDaoImpl;
+import com.r1.ecommerceproject.model.AddressDao;
+import com.r1.ecommerceproject.model.impl.AddressDaoImpl;
 import com.r1.ecommerceproject.model.AddressBean;
 import com.r1.ecommerceproject.model.ProductBean;
-import com.r1.ecommerceproject.dao.impl.ProductDaoImpl; // Importa la tua implementazione DAO
+import com.r1.ecommerceproject.model.impl.ProductDaoImpl; // Importa la tua implementazione DAO
 import com.r1.ecommerceproject.utils.UserSession;
 
 import javax.servlet.ServletException;
@@ -57,7 +57,9 @@ public class CheckoutServlet extends HttpServlet {
             }
 
             // 3. Calcola il totale basandoti sulla Map con ProductBean
-            BigDecimal totalPrice = userSession.getCartTotal();
+            BigDecimal totalPrice = userSession.getCartTotaleLordo();
+            BigDecimal totaleNetto = userSession.getCartTotaleNetto();
+            BigDecimal Iva = totaleNetto.multiply(new BigDecimal("0.22"));
 
             AddressDao addressDao = new AddressDaoImpl();
             List<AddressBean> addresses = addressDao.doRetrieveAddressesByUserId(userSession.getUserId());
@@ -70,6 +72,7 @@ public class CheckoutServlet extends HttpServlet {
             request.setAttribute("cartItems", productQuantitiesForJSP);
             // Passiamo il totale calcolato
             request.setAttribute("totalPrice", totalPrice);
+            request.setAttribute("iva", Iva);
             // Passiamo gli inidrizzi e l'indirizzo di default
             request.setAttribute("userAddresses", addresses);
             request.setAttribute("defaultShippingAddress", defaultAddress);
