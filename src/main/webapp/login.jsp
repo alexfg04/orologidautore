@@ -83,7 +83,7 @@
             <input type="text" name="name" placeholder="Nome" />
             <input type="text" name="surname" placeholder="Cognome" />
             <input type="date" name="birthDate" placeholder="Data di nascita" />
-            <input type="email" name="email" placeholder="Email" />
+            <input type="email" id="email" name="email"  placeholder="email" onblur="checkEmailExists(this.value)" />
             <input type="password" name="password" placeholder="Password" />
             <button type="submit">Crea!</button>
         </form>
@@ -120,5 +120,18 @@
 
 <script src="assets/js/login_page.js"></script>
 <script src="assets/js/toast.js"></script>
+<script>function checkEmailExists(email) {
+    fetch('checkEmail?email=' + encodeURIComponent(email))
+        .then(response => response.json())
+        .then(data => {
+            if (data.exists) {
+                alert('Email già registrata!');
+            } else {
+                console.log('Email libera.');
+            }
+        })
+        .catch(error => console.error('Errore:', error));
+}</script>
+
 </body>
 </html>

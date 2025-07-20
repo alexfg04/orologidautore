@@ -22,13 +22,16 @@ public class SigninServlet extends HttpServlet {
         super();
     }
 
+    @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         String email = request.getParameter("email");
         String password = request.getParameter("password");
         UserBean user;
         UserSession userSession = new UserSession(request.getSession());
 
-        if(userSession.isLoggedIn()) {
+        // Se l'utente è già loggato, lo mandiamo alla pagina corretta
+        if (userSession.isLoggedIn()) {
+            // Potremmo recuperare il ruolo dalla sessione, ma qui semplifichiamo
             response.sendRedirect(request.getContextPath() + "/catalog");
             return;
         }
@@ -36,27 +39,30 @@ public class SigninServlet extends HttpServlet {
         try {
             user = model.doRetrieveByEmail(email);
         } catch (SQLException e) {
-            request.setAttribute("errorMessage", e.getMessage());
+            request.setAttribute("errorMessage", "Errore interno: " + e.getMessage());
             request.getRequestDispatcher("/login.jsp").forward(request, response);
             return;
-
         }
-        if(!Security.verifyPassword(password, user.getPassword())) {
+
+        if (user == null || !Security.verifyPassword(password, user.getPassword())) {
             request.setAttribute("errorMessage", "Email o password non validi");
             request.getRequestDispatcher("/login.jsp").forward(request, response);
             return;
         }
+
+        // Imposta la sessione utente
         userSession.setUser(user.getId());
         userSession.setFirstName(user.getNome());
         userSession.setLastName(user.getCognome());
         userSession.setEmail(user.getEmail());
-        System.out.println("Session userId: " + request.getSession().getAttribute("userId"));
-        /*
-        Questo metodo trasferisce tutti i preferiti presenti nel database nella sessione
-        per tracciare i preferiti più velocemente.s
-        */
         userSession.putAllFavoritesToSession();
-        response.sendRedirect(request.getContextPath() + "/catalog");
+
+        // ✅ Redirezione in base alla tipologia
+        if (user.getTipologia() == UserBean.Role.ADMIN) {
+            response.sendRedirect(request.getContextPath() + "/admin/dashboard.jsp");
+        } else {
+            response.sendRedirect(request.getContextPath() + "/catalog");
+        }
     }
 
     @Override

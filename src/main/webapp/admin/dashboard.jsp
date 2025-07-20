@@ -138,6 +138,7 @@
 
 </nav>
 
+
 <div class="overlay" id="overlay"></div>
 
 <main class="content" id="content">
@@ -146,13 +147,14 @@
             <img src="${pageContext.request.contextPath}/admin/Admin_IMG/logon.png" alt="Logo" />
         </div>
         <div class="user-header">
-            <span class="user-name">${UtenteLoggato}</span>
+            <span class="user-name"><%= session.getAttribute("firstName") %></span>
             <div class="dropdown">
                 <button onclick="toggleDropdown(this)">Menu &#x25BC;</button>
                 <div class="dropdown-menu">
                     <form action="${pageContext.request.contextPath}/logout" method="get" style="margin:0; padding:0;">
                         <button type="submit">&nbsp;&nbsp;Log Out</button>
                     </form>
+                    <button onclick="window.location.href='<%= request.getContextPath() %>/index.jsp'">Torna alla Home</button>
                 </div>
             </div>
         </div>

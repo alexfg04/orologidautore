@@ -165,7 +165,14 @@ public class UserDaoImpl implements UserDao {
                     user.setCognome(rs.getString("cognome"));
                     user.setEmail(rs.getString("email"));
                     user.setPassword(rs.getString("password"));
-                    user.setTipologia(UserBean.Role.valueOf(rs.getString("tipologia")));
+
+                    // Conversione sicura della tipologia
+                    String ruolo = rs.getString("tipologia");
+                    if (ruolo != null) {
+                        user.setTipologia(UserBean.Role.valueOf(ruolo.toUpperCase()));
+                    } else {
+                        user.setTipologia(UserBean.Role.UTENTE); // fallback predefinito
+                    }
                 } else {
                     throw new SQLException("Utente non trovato");
                 }
@@ -173,6 +180,7 @@ public class UserDaoImpl implements UserDao {
         }
         return user;
     }
+
 
     @Override
     public List<UserBean> getAllUsers() throws SQLException {
@@ -220,5 +228,17 @@ public class UserDaoImpl implements UserDao {
         }
         return null;
     }
+
+    public boolean emailExists(String email) throws SQLException {
+        String sql = "SELECT 1 FROM utente WHERE email = ?";
+        try (Connection con = DataSourceConnectionPool.getConnection();
+             PreparedStatement ps = con.prepareStatement(sql)) {
+            ps.setString(1, email);
+            try (ResultSet rs = ps.executeQuery()) {
+                return rs.next();
+            }
+        }
+    }
+
 
 }
