@@ -1,7 +1,7 @@
 <div class="container-product">
 
     <!-- Card cliccabile che chiama la servlet /product?id=1 -->
-    <a href="${pageContext.request.contextPath}/product?id=21" class="card">
+    <a href="catalog.jsp" class="card">
         <img src="https://www.watchshop.com/images/products/88466005_l.jpg" alt="Orologio 1">
         <div class="container-text">
             <h3>Orologio Classico</h3>
@@ -10,7 +10,7 @@
     </a>
 
     <!-- Puoi duplicare questa card e cambiare l'id per altri prodotti -->
-    <a href="${pageContext.request.contextPath}/product?id=10" class="card">
+    <a href="catalog.jsp" class="card">
         <img src="https://www.watchshop.com/images/imgzoom/86/86758201_xxl_a5.jpg" alt="Orologio 2">
         <div class="container-text">
             <h3>Orologio Sportivo</h3>
@@ -18,7 +18,7 @@
         </div>
     </a>
 
-    <a href="${pageContext.request.contextPath}/product?id=10" class="card">
+    <a href="catalog.jsp" class="card">
         <img src="https://tomasinifrancia.it/images/700/700/tomasini-francia/OROLOGI/tissot/PRX/Tissot-PRX-T1374101104100.png" alt="Orologio 2">
         <div class="container-text">
             <h3>Orologio Moderno</h3>
@@ -26,7 +26,7 @@
         </div>
     </a>
 
-    <a href="${pageContext.request.contextPath}/product?id=10" class="card">
+    <a href="catalog.jsp" class="card">
         <img src="https://www.watchshop.com/images/products/41498790_l.jpg" alt="Orologio 2">
         <div class="container-text">
             <h3>Orologio Raffinato</h3>
@@ -37,7 +37,7 @@
 <div class="container-product">
 
     <!-- Card cliccabile che chiama la servlet /product?id=1 -->
-    <a href="${pageContext.request.contextPath}/product?id=7" class="card">
+    <a href="catalog.jsp" class="card">
         <img src="https://www.watchshop.com/images/products/75255040_l.jpg" alt="Orologio 1">
         <div class="container-text">
             <h3>Orologio Vintage</h3>
@@ -46,7 +46,7 @@
     </a>
 
     <!-- Puoi duplicare questa card e cambiare l'id per altri prodotti -->
-    <a href="${pageContext.request.contextPath}/product?id=15" class="card">
+    <a href="catalog.jsp" class="card">
         <img src="https://www.watchshop.com/images/products/75698318_l.jpg" alt="Orologio 2">
         <div class="container-text">
             <h3>Orologi piu' richiesti</h3>
@@ -54,7 +54,7 @@
         </div>
     </a>
 
-    <a href="${pageContext.request.contextPath}/product?id=36" class="card">
+    <a href="catalog.jsp" class="card">
         <img src="https://www.watchshop.com/images/products/75567511_l.jpg" alt="Orologio 2">
         <div class="container-text">
             <h3>Orologio Economici</h3>
@@ -62,7 +62,7 @@
         </div>
     </a>
 
-    <a href="${pageContext.request.contextPath}/product?id=19" class="card">
+    <a href="catalog.jsp" class="card">
         <img src="https://www.watchshop.com/images/products/77354510_l.jpg" alt="Orologio 2">
         <div class="container-text">
             <h3>Orologio D'Oro</h3>
