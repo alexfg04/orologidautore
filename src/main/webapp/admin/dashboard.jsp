@@ -6,7 +6,6 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <title>Dashboard</title>
-    <link rel="stylesheet" href="${pageContext.request.contextPath}/assets/css/fonts.css"/>
     <link rel="stylesheet" href="${pageContext.request.contextPath}/admin/css/style.css"/>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" />
 
@@ -404,7 +403,7 @@
                                     "<td>" + user.email + "</td>" +
                                     "<td>" + user.tipologia + "</td>" +
                                     "<td>" +
-                                    "<button onclick=\"vaiAllaPaginaOrdini(" + user.id + ")\" style=\"border: 2px solid #004d40; background-color: white; color: #004d40; width: 50%; border-radius: 4px;\">Info</button>" +
+                                    "<button onclick=\"vaiAllaPaginaOrdini(" + user.id + ")\" style=\"border: 2px solid #004d40; background-color: white; color: #004d40; padding: 5px 10px; border-radius: 4px;\">Info</button>" +
                                     "</td>" +
                                     "</tr>";
                             });
