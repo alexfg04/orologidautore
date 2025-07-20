@@ -1,6 +1,8 @@
 document.addEventListener('DOMContentLoaded', () => {
     const AUTO_CLOSE_DELAY = 5000;
 
+    const [netCell, vatCell, grossCell] = document.querySelectorAll('.total-summary .amount');
+
     // Utility: fade out and remove an element
     const fadeOutAndRemove = (el, duration = 500) => {
         el.style.transition = `opacity ${duration}ms`;
@@ -62,7 +64,13 @@ document.addEventListener('DOMContentLoaded', () => {
         try {
             const data = await postXHR('updateQuantity', { productId, quantity: qty });
             if (data.success) {
-                document.querySelector('.total p strong').textContent = `€ ${parseFloat(data.total).toFixed(2)}`;
+                netCell.textContent = `€ ${parseFloat(data.totaleNetto).toFixed(2)}`;
+                vatCell.textContent = `€ ${parseFloat(data.iva).toFixed(2)}`;
+                if (grossCell.querySelector('strong')) {
+                    grossCell.querySelector('strong').textContent = `€ ${parseFloat(data.totaleLordo).toFixed(2)}`;
+                } else {
+                    grossCell.textContent = `€ ${parseFloat(data.totaleLordo).toFixed(2)}`;
+                }
                 showNotification('Quantità aggiornata correttamente');
             } else {
                 showNotification(`Errore: ${data.message}`, true);
@@ -89,7 +97,13 @@ document.addEventListener('DOMContentLoaded', () => {
             const data = await postXHR('removeFromCart', { productId });
             if (data.success) {
                 fadeOutAndRemove(cartItem, 300);
-                document.querySelector('.total p strong').textContent = `€ ${parseFloat(data.total).toFixed(2)}`;
+                netCell.textContent = `€ ${parseFloat(data.totaleNetto).toFixed(2)}`;
+                vatCell.textContent = `€ ${parseFloat(data.iva).toFixed(2)}`;
+                if (grossCell.querySelector('strong')) {
+                    grossCell.querySelector('strong').textContent = `€ ${parseFloat(data.totaleLordo).toFixed(2)}`;
+                } else {
+                    grossCell.textContent = `€ ${parseFloat(data.totaleLordo).toFixed(2)}`;
+                }
                 console.log(data.itemCount);
                 if (data.itemCount === 0) {
                     const cartContainer = document.querySelector('.cart-container');
