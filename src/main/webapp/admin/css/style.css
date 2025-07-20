@@ -403,12 +403,9 @@ canvas {
 
 /* Container form */
 #tableAddProduct form {
-    max-width: 600px;
+    width: 100%;
     margin: 20px auto;
-    background: #f9f9f9;
     padding: 20px 30px;
-    border-radius: 8px;
-    box-shadow: 0 2px 8px rgba(0,0,0,0.1);
     font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
 }
 

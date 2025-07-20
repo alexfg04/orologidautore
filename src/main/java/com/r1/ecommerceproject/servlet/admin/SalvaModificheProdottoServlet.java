@@ -35,6 +35,7 @@ public class SalvaModificheProdottoServlet extends HttpServlet {
         String taglia = request.getParameter("taglia");
         String materiale = request.getParameter("materiale");
         String iv = request.getParameter("iva");
+        String tipo = request.getParameter("tipo");
         BigDecimal iva = new BigDecimal(iv);
 
         // Popola il bean
@@ -49,6 +50,7 @@ public class SalvaModificheProdottoServlet extends HttpServlet {
         prodotto.setDescrizione(descrizione);
         prodotto.setTaglia(taglia);
         prodotto.setMateriale(materiale);
+        prodotto.setTipo(tipo);
 
         // DAO call
         ProductDao productDao = new ProductDaoImpl();

@@ -1,4 +1,4 @@
-
+<%@ page import="com.r1.ecommerceproject.utils.UserSession" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <!DOCTYPE html>
 <html lang="it">
@@ -45,17 +45,6 @@
 
         #filtro-date-container button:hover {
             background-color: #00332c;
-        }
-
-        /* Container form */
-        #tableAddProduct form {
-            max-width: 600px;
-            margin: 20px auto;
-            background: #f9f9f9;
-            padding: 20px 30px;
-            border-radius: 8px;
-            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
         }
 
         /* Form fields */
@@ -147,7 +136,7 @@
             <img src="${pageContext.request.contextPath}/admin/Admin_IMG/logon.png" alt="Logo" />
         </div>
         <div class="user-header">
-            <span class="user-name"><%= session.getAttribute("firstName") %></span>
+            <span class="user-name"><%= new UserSession(session).getFirstName() %></span>
             <div class="dropdown">
                 <button onclick="toggleDropdown(this)">Menu &#x25BC;</button>
                 <div class="dropdown-menu">
@@ -235,6 +224,10 @@
             <div>
                 <label for="modello">Modello:</label>
                 <input type="text" id="modello" name="modello" required />
+            </div>
+            <div>
+                <label for="tipo">Tipo</label>
+                <input type="text" id="tipo" name="tipo" required>
             </div>
             <div>
                 <label for="iva">Iva:</label>

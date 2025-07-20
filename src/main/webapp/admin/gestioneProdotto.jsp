@@ -141,7 +141,7 @@
             <li><strong>Descrizione:</strong> <%= prodotto.getDescrizione() %></li>
             <li><strong>Taglia:</strong> <%= prodotto.getTaglia() %></li>
             <li><strong>Materiale:</strong> <%= prodotto.getMateriale() %></li>
-            <li><strong>Materiale:</strong> <%= prodotto.getIvaPercentuale() %></li>
+            <li><strong>IVA:</strong> <%= prodotto.getIvaPercentuale() %></li>
             <li><strong>Immagine:</strong><br>
                 <img src="<%= prodotto.getImmagine() %>" alt="Immagine prodotto">
             </li>
@@ -170,6 +170,9 @@
             <label for="modello">Modello:</label>
             <input type="text" id="modello" name="modello" value="<%= prodotto.getModello() %>">
 
+            <label for="tipo">Tipo</label>
+            <input type="text" id="tipo" name="tipo" value="<%= prodotto.getTipo() %>">
+
             <label for="descrizione">Descrizione:</label>
             <textarea id="descrizione" name="descrizione"><%= prodotto.getDescrizione() %></textarea>
 
@@ -188,7 +191,7 @@
 
         </form>
         <div class="buttons">
-        <form action="${pageContext.request.contextPath}/admin/gestione" method="get"
+        <form action="${pageContext.request.contextPath}/admin/add-product" method="get"
               onsubmit="return confirm('Sei sicuro di voler eliminare questo prodotto?');">
             <input type="hidden" name="action" value="delete">
             <input type="hidden" name="product_id" value="<%= prodotto.getCodiceProdotto() %>">

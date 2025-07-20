@@ -18,6 +18,7 @@ public class ProductBean implements Serializable {
 	BigDecimal prezzo;
 	Stato stato;
 	String modello;
+	String tipo;
 	String descrizione;
 	String nome;
 	String immagine;
@@ -79,6 +80,13 @@ public class ProductBean implements Serializable {
 
 	public void setMarca(String marca) {
 		this.marca = marca;
+	}
+
+	public String getTipo() {
+		return tipo;
+	}
+	public void setTipo(String tipo) {
+		this.tipo = tipo;
 	}
 
 	public BigDecimal getPrezzo() {

@@ -53,6 +53,7 @@ public class ProductDaoImpl implements ProductDao {
         bean.setPrezzo(rs.getBigDecimal("prezzo"));
         bean.setStato(Stato.valueOf(rs.getString("stato")));
         bean.setModello(rs.getString("modello"));
+        bean.setTipo(rs.getString("tipo"));
         bean.setDescrizione(rs.getString("descrizione"));
         bean.setNome(rs.getString("nome"));
         bean.setImmagine(rs.getString("image_url"));
@@ -265,7 +266,7 @@ public class ProductDaoImpl implements ProductDao {
     }
     @Override
     public void doSave(ProductBean product) throws SQLException {
-        String sql = "INSERT INTO prodotti (nome, marca, genere, modello, descrizione, taglia, materiale, iva_percentuale, prezzo, immagine) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+        String sql = "INSERT INTO " + TABLE_NAME + "(nome, marca, gender, modello, descrizione, taglia, materiale, iva_percentuale, prezzo, image_url, tipo) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
 
         try (Connection connection = DataSourceConnectionPool.getConnection();
              PreparedStatement ps = connection.prepareStatement(sql)) {
@@ -280,6 +281,7 @@ public class ProductDaoImpl implements ProductDao {
             ps.setBigDecimal(8, product.getIvaPercentuale()); // IVA prima del prezzo
             ps.setBigDecimal(9, product.getPrezzo());
             ps.setString(10, product.getImmagine());
+            ps.setString(11, product.getTipo());
 
             ps.executeUpdate();
         }

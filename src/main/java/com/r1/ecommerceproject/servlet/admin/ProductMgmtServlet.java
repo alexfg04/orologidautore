@@ -21,7 +21,7 @@ import javax.servlet.http.Part;
 /**
  * Servlet implementation class ProductMgmtServlet
  */
-@WebServlet("/admin/gestione")
+@WebServlet("/admin/add-product")
 @MultipartConfig(fileSizeThreshold = 1024 * 1024 * 2, // 2MB
         maxFileSize = 1024 * 1024 * 10, // 10MB
         maxRequestSize = 1024 * 1024 * 50)
@@ -42,11 +42,7 @@ public class ProductMgmtServlet extends HttpServlet {
 
         try {
             if (action != null) {
-                if (action.equalsIgnoreCase("read")) {
-                    Long id = Long.parseLong(request.getParameter("product_id"));
-                    request.removeAttribute("product");
-                    request.setAttribute("product", model.doRetrieveById(id));
-                } else if (action.equalsIgnoreCase("delete")) {
+                if (action.equalsIgnoreCase("delete")) {
                     Long id = Long.parseLong(request.getParameter("product_id"));
                     model.doDelete(id);
                 }
@@ -64,6 +60,8 @@ public class ProductMgmtServlet extends HttpServlet {
             throws ServletException, IOException {
 
         String appPath = request.getServletContext().getRealPath("/");
+        String contextPath = request.getContextPath();
+        String urlPath = contextPath + SAVE_DIR;
         String savePath = appPath + SAVE_DIR;
 
         File fileSaveDir = new File(savePath);
@@ -86,19 +84,23 @@ public class ProductMgmtServlet extends HttpServlet {
                 String marca = request.getParameter("marca");
                 BigDecimal prezzo = new BigDecimal(request.getParameter("prezzo"));
                 String modello = request.getParameter("modello");
+                String tipo = request.getParameter("tipo");
                 String descrizione = request.getParameter("descrizione");
                 String nome = request.getParameter("nome");
+                BigDecimal iva = new BigDecimal(request.getParameter("iva"));
 
                 ProductBean bean = new ProductBean();
                 bean.setMateriale(materiale);
                 bean.setGenere(categoria);
                 bean.setTaglia(taglia);
                 bean.setMarca(marca);
+                bean.setIvaPercentuale(iva);
                 bean.setPrezzo(prezzo);
                 bean.setModello(modello);
+                bean.setTipo(tipo);
                 bean.setDescrizione(descrizione);
                 bean.setNome(nome);
-                String imagePath = SAVE_DIR + "/" + newFileName;
+                String imagePath = urlPath + "/" + newFileName;
                 bean.setImmagine(imagePath);
                 model.doSave(bean);
                 request.setAttribute("message", "Prodotto inserito con successo");

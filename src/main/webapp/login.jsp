@@ -55,7 +55,9 @@
         }
 
         /* Colori per il tipo di messaggio */
-        .error-notification.danger { background-color: #009688;}
+        .error-notification.danger {
+            background-color: #009688;
+        }
     </style>
 </head>
 <body>
@@ -75,16 +77,16 @@
 
 <div class="container <%=request.getAttribute("rp") != null ? "right-panel-active no-animation" : ""%>"
      id="container">
-<div class="form-container sign-up-container">
-        <form action="${pageContext.request.contextPath}/signup" method="post">
+    <div class="form-container sign-up-container">
+        <form id="signup-form" action="${pageContext.request.contextPath}/signup" method="post">
             <h1>Crea il tuo Account</h1>
             <br>
             <span>o accedi ad un profilo esistente</span>
-            <input type="text" name="name" placeholder="Nome" />
-            <input type="text" name="surname" placeholder="Cognome" />
-            <input type="date" name="birthDate" placeholder="Data di nascita" />
-            <input type="email" id="email" name="email"  placeholder="email" onblur="checkEmailExists(this.value)" />
-            <input type="password" name="password" placeholder="Password" />
+            <input type="text" name="name" placeholder="Nome"/>
+            <input type="text" name="surname" placeholder="Cognome"/>
+            <input type="date" name="birthDate" placeholder="Data di nascita"/>
+            <input type="email" id="email" name="email" placeholder="email" onblur="checkEmailExists(this.value)"/>
+            <input type="password" name="password" placeholder="Password"/>
             <button type="submit">Crea!</button>
         </form>
     </div>
@@ -94,8 +96,8 @@
             <h1>Accedi</h1>
             <br>
             <span>o crea un nuovo account</span>
-            <input type="email" name="email" placeholder="Email" required />
-            <input type="password" name="password" placeholder="Password" required />
+            <input type="email" name="email" placeholder="Email" required/>
+            <input type="password" name="password" placeholder="Password" required/>
             <a href="forgot_password.jsp">Non ricordi la password?</a>
             <button type="submit">Accedi</button>
         </form>
@@ -120,18 +122,52 @@
 
 <script src="assets/js/login_page.js"></script>
 <script src="assets/js/toast.js"></script>
-<script>function checkEmailExists(email) {
-    fetch('checkEmail?email=' + encodeURIComponent(email))
-        .then(response => response.json())
-        .then(data => {
-            if (data.exists) {
-                alert('Email già registrata!');
-            } else {
-                console.log('Email libera.');
-            }
-        })
-        .catch(error => console.error('Errore:', error));
-}</script>
+<script>
+    document.addEventListener('DOMContentLoaded', () => {
+        const AUTO_CLOSE_DELAY = 5000;
+
+        const fadeOutAndRemove = (el, duration = 500) => {
+            el.style.transition = `opacity ${duration}ms`;
+            el.style.opacity = '0';
+            setTimeout(() => el.remove(), duration);
+        };
+
+        const showNotification = (message) => {
+            const notification = document.createElement('div');
+            notification.className = 'error-notification danger';
+            notification.innerHTML = message + '<span class="close">&times;</span>';
+            document.body.appendChild(notification);
+            const closeBtn = notification.querySelector('.close');
+            closeBtn.addEventListener('click', () => fadeOutAndRemove(notification));
+            setTimeout(() => fadeOutAndRemove(notification), AUTO_CLOSE_DELAY);
+        };
+
+        const signupForm = document.getElementById('signup-form');
+        if (signupForm) {
+            signupForm.addEventListener('submit', async (e) => {
+                e.preventDefault();
+                const formData = new FormData(signupForm);
+                try {
+                    const resp = await fetch(signupForm.action, {
+                        method: 'POST',
+                        headers: {'X-Requested-With': 'XMLHttpRequest'},
+                        body: new URLSearchParams(formData)
+                    });
+                    const data = await resp.json();
+                    if (data.success) {
+                        showNotification(data.message);
+                        document.getElementById('signIn').click();
+                    } else {
+                        showNotification(data.message);
+                    }
+                } catch (err) {
+                    console.error(err);
+                    showNotification('Errore durante la registrazione');
+                }
+            });
+        }
+    });
+</script>
 
 </body>
 </html>
