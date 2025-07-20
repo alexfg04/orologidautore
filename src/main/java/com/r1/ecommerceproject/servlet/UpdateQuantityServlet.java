@@ -1,6 +1,8 @@
 package com.r1.ecommerceproject.servlet;
 
 import com.r1.ecommerceproject.utils.UserSession;
+import com.google.gson.Gson;
+import com.google.gson.JsonObject;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -32,11 +34,20 @@ public class UpdateQuantityServlet extends HttpServlet  {
             // 2. Perform business logic
             UserSession userSession = new UserSession(httpSession);
             userSession.updateProductInCart(productId, quantity);
-            BigDecimal total = userSession.getCartTotaleLordo();
 
-            // return json
+            BigDecimal totaleNetto = userSession.getCartTotaleNetto();
+            BigDecimal totaleLordo = userSession.getCartTotaleLordo();
+            BigDecimal iva = totaleNetto.multiply(new BigDecimal("0.22"));
+
+            Gson gson = new Gson();
+            JsonObject json = new JsonObject();
+            json.addProperty("success", true);
+            json.addProperty("totaleNetto", totaleNetto);
+            json.addProperty("totaleLordo", totaleLordo);
+            json.addProperty("iva", iva);
+
             response.setContentType("application/json");
-            response.getWriter().write("{\"success\": \"true\", \"total\": " + total + "}");
+            response.getWriter().write(gson.toJson(json));
             response.getWriter().flush();
 
         } catch (IllegalArgumentException e) {
