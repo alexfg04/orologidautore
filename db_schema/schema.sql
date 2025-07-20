@@ -109,7 +109,6 @@ CREATE TABLE Recensione
     commento        TEXT         NOT NULL,
     autore          VARCHAR(100) NOT NULL,
     valutazione     INT          NOT NULL,
-    interazioni     INT          NOT NULL,
     id_utente       INT          NOT NULL,
     codice_prodotto INT          NOT NULL,
     created_at      TIMESTAMP    NOT NULL DEFAULT CURRENT_TIMESTAMP,
