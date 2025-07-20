@@ -31,5 +31,3 @@
 </script>
 </body>
 </html>
-
-//scritta responsive, sfondo più sotto, bottone che tocca la scritta

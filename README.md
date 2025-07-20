@@ -10,7 +10,8 @@ Progetto E-Commerce per il corso di Tecnologie e Software per il Web presso l'un
 - [ ] Catalogo (la sidebar dei filtri)
 
 ## Area Admin
-- [ ] Modificare/rimuovere prodotti
+- [] Aggiungere prodotto
+- [X] Modificare/rimuovere prodotti
 - [X] Ricerca ordini per utente e linea temporale
 - [X] Rendere funzionante il grafico
 

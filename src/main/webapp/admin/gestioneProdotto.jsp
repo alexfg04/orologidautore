@@ -141,6 +141,7 @@
             <li><strong>Descrizione:</strong> <%= prodotto.getDescrizione() %></li>
             <li><strong>Taglia:</strong> <%= prodotto.getTaglia() %></li>
             <li><strong>Materiale:</strong> <%= prodotto.getMateriale() %></li>
+            <li><strong>Materiale:</strong> <%= prodotto.getIvaPercentuale() %></li>
             <li><strong>Immagine:</strong><br>
                 <img src="<%= prodotto.getImmagine() %>" alt="Immagine prodotto">
             </li>
@@ -177,6 +178,9 @@
 
             <label for="materiale">Materiale:</label>
             <input type="text" id="materiale" name="materiale" value="<%= prodotto.getMateriale() %>">
+
+            <label for="taglia">Iva:</label>
+            <input type="text" id="iva" name="iva" value="<%= prodotto.getIvaPercentuale() %>">
 
             <div class="buttons">
                 <input type="submit" class="save-btn" value="💾 Salva Modifiche">

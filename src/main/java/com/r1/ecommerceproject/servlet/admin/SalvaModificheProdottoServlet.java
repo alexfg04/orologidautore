@@ -34,6 +34,8 @@ public class SalvaModificheProdottoServlet extends HttpServlet {
         String descrizione = request.getParameter("descrizione");
         String taglia = request.getParameter("taglia");
         String materiale = request.getParameter("materiale");
+        String iv = request.getParameter("iva");
+        BigDecimal iva = BigDecimal.valueOf(Double.parseDouble(iv));
 
         response.setContentType("text/html;charset=UTF-8");
 
@@ -50,6 +52,7 @@ public class SalvaModificheProdottoServlet extends HttpServlet {
         out.println("<li>Descrizione: " + descrizione + "</li>");
         out.println("<li>Taglia: " + taglia + "</li>");
         out.println("<li>Materiale: " + materiale + "</li>");
+        out.println("<li>Iva: " + iva + "</li>");
         out.println("</ul>");
         out.println("</body></html>");
 
