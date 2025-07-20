@@ -62,14 +62,16 @@
             <!-- Icona cuore -->
             <a href="favorites.jsp">
                 <i data-lucide="heart" class="icon"></i>
-                <span class="badge favorites-badge" data-count="0"></span>
+                <span class="badge favorites-badge" data-count="<%= userSession.getFavoritesCount() %>">
+                    <%= userSession.getFavoritesCount() %>
+                </span>
             </a>
 
             <!-- Icona carrello -->
             <a href="cart.jsp" class="icon-with-badge">
                 <i data-lucide="shopping-cart" class="icon"></i>
                 <span class="badge cart-badge" data-count="<%= userSession.getCartSize()%>">
-                    <%=userSession.getCartSize()%>
+                    <%= userSession.getCartSize() %>
                 </span>
             </a>
         </div>
