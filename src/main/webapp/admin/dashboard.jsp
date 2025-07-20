@@ -404,7 +404,7 @@
                                     "<td>" + user.email + "</td>" +
                                     "<td>" + user.tipologia + "</td>" +
                                     "<td>" +
-                                    "<button onclick=\"vaiAllaPaginaOrdini(" + user.id + ")\">Info</button>" +
+                                    "<button onclick=\"vaiAllaPaginaOrdini(" + user.id + ")\" style=\"border: 2px solid #004d40; background-color: white; color: #004d40; width: 50%; border-radius: 4px;\">Info</button>" +
                                     "</td>" +
                                     "</tr>";
                             });

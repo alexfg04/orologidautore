@@ -20,3 +20,14 @@ Progetto E-Commerce per il corso di Tecnologie e Software per il Web presso l'un
 - [X] Cambiare urgentemente css alla pagina preferiti
 - [X] Aggiungere avviso di conferma su tutte le operazione di cancellazione
 - [ ] Servlet per la gestione delle recensioni
+
+-----
+
+
+Foteer
+I miei ordini
+Logout i miei ordini
+Filtro dashboard
+
+pagina 404
+errore carrello

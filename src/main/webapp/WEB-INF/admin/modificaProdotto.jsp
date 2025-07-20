@@ -14,7 +14,7 @@
     <title>Modifica Prodotto</title>
     <link rel="stylesheet" href="${pageContext.request.contextPath}/assets/css/fonts.css">
 </head>
-<body>A
+<body>
 <h2>Modifica Prodotto: <%= prodotto.getNome() %></h2>
 <form action="<%= request.getContextPath() %>/admin/salvaModificheProdotto" method="post">
     <input type="hidden" name="id" value="<%= prodotto.getCodiceProdotto() %>"/>
