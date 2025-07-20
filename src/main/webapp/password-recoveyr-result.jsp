@@ -3,6 +3,7 @@
 <html>
 <head>
     <title>Password Recuperata</title>
+    <link rel="stylesheet" href="assets/css/fonts.css">
 </head>
 <body>
 <% String password = (String) request.getAttribute("passwordRecuperata"); %>

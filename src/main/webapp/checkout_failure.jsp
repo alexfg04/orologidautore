@@ -5,6 +5,7 @@
 <head>
   <meta charset="UTF-8">
   <title>Ordine non completato</title>
+  <link rel="stylesheet" href="${pageContext.request.contextPath}/assets/css/fonts.css">
   <link rel="stylesheet" href="${pageContext.request.contextPath}/assets/css/footer.css">
   <link rel="stylesheet" href="${pageContext.request.contextPath}/assets/css/navbar.css">
   <style>
@@ -13,7 +14,7 @@
       padding: 0;
       min-height: 100vh;
       background-color: #fef2f2;
-      font-family: 'Segoe UI', sans-serif;
+      font-family: 'Lato', Arial, sans-serif;
       color: #b91c1c;
       display: flex;
       flex-direction: column;

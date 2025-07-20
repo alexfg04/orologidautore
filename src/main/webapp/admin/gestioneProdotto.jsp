@@ -8,11 +8,12 @@
 <head>
     <meta charset="UTF-8">
     <title>Gestione Prodotto</title>
+    <link rel="stylesheet" href="${pageContext.request.contextPath}/assets/css/fonts.css">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <style>
         body {
             margin: 0;
-            font-family: 'Segoe UI', sans-serif;
+            font-family: 'Lato', Arial, sans-serif;
             background-color: #e0f2f1;
             padding: 20px;
             color: #004d40;

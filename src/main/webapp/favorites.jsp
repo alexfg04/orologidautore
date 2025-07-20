@@ -27,6 +27,7 @@
 <head>
     <meta charset="UTF-8">
     <title>I miei preferiti</title>
+    <link rel="stylesheet" href="<%= request.getContextPath() %>/assets/css/fonts.css">
     <link rel="stylesheet" href="<%= request.getContextPath() %>/assets/css/navbar.css">
     <link rel="stylesheet" href="<%= request.getContextPath() %>/assets/css/footer.css">
     <link rel="stylesheet" href="<%= request.getContextPath() %>/assets/css/layout.css">

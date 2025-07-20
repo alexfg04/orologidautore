@@ -30,6 +30,7 @@
 <head>
     <meta charset="UTF-8">
     <title>I miei ordini</title>
+    <link rel="stylesheet" href="${pageContext.request.contextPath}/assets/css/fonts.css">
     <link rel="stylesheet" href="${pageContext.request.contextPath}/assets/css/catalog.css">
     <link rel="stylesheet" href="${pageContext.request.contextPath}/assets/css/navbar.css">
     <link rel="stylesheet" href="${pageContext.request.contextPath}/assets/css/footer.css">

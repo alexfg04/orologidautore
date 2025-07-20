@@ -31,6 +31,7 @@
 <head>
     <title>Carrello</title>
     <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="${pageContext.request.contextPath}/assets/css/fonts.css">
     <link rel="stylesheet" href="${pageContext.request.contextPath}/assets/css/cart.css">
     <link rel="stylesheet" href="${pageContext.request.contextPath}/assets/css/footer.css">
     <script src="https://unpkg.com/lucide@latest"></script>

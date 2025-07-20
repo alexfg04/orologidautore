@@ -12,6 +12,7 @@
 <head>
     <title><%= product.getNome() %> - Dettagli Prodotto</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="${pageContext.request.contextPath}/assets/css/fonts.css">
     <link rel="stylesheet" href="${pageContext.request.contextPath}/assets/css/product-detail.css">
 </head>
 <style>

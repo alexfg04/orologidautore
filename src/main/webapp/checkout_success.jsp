@@ -19,11 +19,12 @@
 <head>
     <meta charset="UTF-8">
     <title>Acquisto completato</title>
+    <link rel="stylesheet" href="${pageContext.request.contextPath}/assets/css/fonts.css">
     <link rel="stylesheet" href="${pageContext.request.contextPath}/assets/css/footer.css">
     <link rel="stylesheet" href="${pageContext.request.contextPath}/assets/css/navbar.css">
     <style>
         body {
-            font-family: 'Arial', sans-serif;
+            font-family: 'Lato', Arial, sans-serif;
             background-color: #f9f9f9;
             margin: 0;
             padding: 0;

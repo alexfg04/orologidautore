@@ -5,6 +5,7 @@
 <head>
     <meta charset="UTF-8">
     <title>Ordini utente</title>
+    <link rel="stylesheet" href="${pageContext.request.contextPath}/assets/css/fonts.css">
     <style>
         /* Reset base */
         * {
@@ -12,7 +13,7 @@
         }
 
         body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            font-family: 'Lato', Arial, sans-serif;
             background-color: #f9fafe;
             color: #333;
             margin: 20px;

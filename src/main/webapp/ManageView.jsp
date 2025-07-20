@@ -16,9 +16,10 @@
 <%@ page import="java.util.*, com.r1.ecommerceproject.model.ProductBean" %>
 
 <head>
-	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-	<link href="${pageContext.request.contextPath}/assets/css/admin-page.css" rel="stylesheet" type="text/css">
-	<title>Gestione Prodotti</title>
+        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+        <link rel="stylesheet" href="${pageContext.request.contextPath}/assets/css/fonts.css">
+        <link href="${pageContext.request.contextPath}/assets/css/admin-page.css" rel="stylesheet" type="text/css">
+        <title>Gestione Prodotti</title>
 </head>
 
 <body>

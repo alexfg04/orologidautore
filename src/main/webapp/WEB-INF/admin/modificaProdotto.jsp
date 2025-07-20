@@ -12,6 +12,7 @@
 <head>
     <meta charset="UTF-8" />
     <title>Modifica Prodotto</title>
+    <link rel="stylesheet" href="${pageContext.request.contextPath}/assets/css/fonts.css">
 </head>
 <body>A
 <h2>Modifica Prodotto: <%= prodotto.getNome() %></h2>

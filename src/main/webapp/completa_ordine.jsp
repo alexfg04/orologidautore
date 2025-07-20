@@ -49,6 +49,7 @@
 <html>
 <head>
     <title>Riepilogo Ordine e Pagamento</title>
+    <link rel="stylesheet" href="${pageContext.request.contextPath}/assets/css/fonts.css">
     <link rel="stylesheet" href="${pageContext.request.contextPath}/assets/css/checkout.css">
     <link rel="stylesheet" href="${pageContext.request.contextPath}/assets/css/navbar.css">
     <link rel="stylesheet" href="${pageContext.request.contextPath}/assets/css/footer.css">
@@ -171,7 +172,7 @@
             max-width: 400px;
             margin-bottom: 1rem;
             position: relative;
-            font-family: Arial, sans-serif;
+            font-family: 'Lato', Arial, sans-serif;
         }
 
         .custom-select-label {

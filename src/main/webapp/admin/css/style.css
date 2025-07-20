@@ -12,7 +12,7 @@
 
 body {
     margin: 0;
-    font-family: Arial, sans-serif;
+    font-family: 'Lato', Arial, sans-serif;
     display: flex;
     min-height: 100vh;
     background-color: white;
@@ -423,7 +423,7 @@ canvas {
     width: 100%;
     margin: 20px auto;
     padding: 20px 30px;
-    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    font-family: 'Lato', Arial, sans-serif;
 }
 
 /* Form fields */

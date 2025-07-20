@@ -81,14 +81,14 @@ p {
 }
 
 .column-header {
-    font-family: 'Calibri', sans-serif;
+    font-family: 'Playfair Display', serif;
     font-size: 14pt;
     font-weight: bold;
     text-align: center;
 }
 
 .column-content {
-    font-family: 'Calibri', sans-serif;
+    font-family: 'Lato', Arial, sans-serif;
     font-size: 13pt;
     text-align: left;
     color: #333;

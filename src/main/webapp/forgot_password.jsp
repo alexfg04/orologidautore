@@ -2,6 +2,7 @@
 <html>
 <head>
     <title>Recupera Password</title>
+    <link rel="stylesheet" href="assets/css/fonts.css">
 </head>
 <body>
  <h2>Password dimenticata</h2>
