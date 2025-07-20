@@ -115,8 +115,6 @@ public class UserSession {
                 }
             }
         }
-        System.out.println("totale netto: " + totaleNetto);
-        System.out.println("totale lordo: " + totaleLordo);
         this.setCartTotaleNetto(totaleNetto);
         this.setCartTotaleLordo(totaleLordo);
     }

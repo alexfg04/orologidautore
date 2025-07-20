@@ -22,10 +22,8 @@
     UserSession user = new UserSession(session);
     // Totale netto già calcolato dalla sessione
     BigDecimal totalNet = user.getCartTotaleNetto();
-    System.out.println("totale netto: " + totalNet);
     // Totale lordo = netto * (1 + VAT_RATE)
     BigDecimal totalGross = user.getCartTotaleLordo();
-    System.out.println("totale lordo: " + totalNet);
 %>
 
 <!DOCTYPE html>
@@ -97,17 +95,17 @@
         <table class="total-summary">
             <tr>
                 <td>Totale netto:</td>
-                <td class="amount">€ <%= totalNet.setScale(2, RoundingMode.HALF_UP) %></td>
+                <td class="amount">€ <%= String.format("%.2f", totalNet.setScale(2, RoundingMode.HALF_UP)) %></td>
             </tr>
             <tr>
                 <td>IVA (22%):</td>
                 <td class="amount">
-                    € <%= totalNet.multiply(VAT_RATE).setScale(2, RoundingMode.HALF_UP) %>
+                    € <%= String.format("%.2f", totalNet.multiply(VAT_RATE).setScale(2, RoundingMode.HALF_UP)) %>
                 </td>
             </tr>
             <tr class="grand-total">
                 <td><strong>Totale lordo:</strong></td>
-                <td class="amount"><strong>€ <%= totalGross %></strong></td>
+                <td class="amount"><strong>€ <%= String.format("%.2f", totalGross) %></strong></td>
             </tr>
         </table>
         <form action="${pageContext.request.contextPath}/checkout" method="post">

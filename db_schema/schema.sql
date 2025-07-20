@@ -51,15 +51,17 @@ CREATE TABLE Prodotto
 (
     codice_prodotto INT AUTO_INCREMENT PRIMARY KEY,
     materiale       VARCHAR(50)    NOT NULL,
-    categoria       VARCHAR(50)    NOT NULL,
+    gender          VARCHAR(50)    NOT NULL,
     taglia          VARCHAR(10)    NOT NULL,
     marca           VARCHAR(50)    NOT NULL,
     prezzo          DECIMAL(10, 2) NOT NULL,
+    iva_percentuale DECIMAL(4, 2)  NOT NULL DEFAULT 22.00,
     stato           ENUM ('ATTIVATO', 'DISATTIVATO') DEFAULT 'ATTIVATO' NOT NULL,
     modello         VARCHAR(50)    NOT NULL,
     descrizione     TEXT           NOT NULL,
     nome            VARCHAR(100)   NOT NULL,
     image_url       VARCHAR(255),
+    tipo            VARCHAR(50)    NOT NULL,
     created_at      TIMESTAMP      NOT NULL          DEFAULT CURRENT_TIMESTAMP,
     updated_at      TIMESTAMP      NOT NULL          DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
 );
