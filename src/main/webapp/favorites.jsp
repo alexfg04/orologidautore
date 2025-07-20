@@ -96,6 +96,7 @@
 <script src="https://unpkg.com/lucide@latest"></script>
 <script src="${pageContext.request.contextPath}/assets/js/toast.js"></script>
 <script src="${pageContext.request.contextPath}/assets/js/product-script.js"></script>
+<script src="${pageContext.request.contextPath}/assets/js/navbar.js"></script>
 <script>lucide.createIcons();</script>
 <script>
     function confirmRemove() {

@@ -2,7 +2,7 @@
   <div class="footer-main">
     <!-- Sezione Logo -->
     <div class="footer-section">
-      <img src="assets/img/Logo.png" style="width: 80%;" alt="Logo">
+      <img src="assets/img/Logo.png" class="footer-logo" alt="Logo">
     </div>
 
     <!-- Seconda Sezione -->

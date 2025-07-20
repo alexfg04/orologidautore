@@ -6,7 +6,6 @@
     font-weight: bold;
     color: #000;
     white-space: nowrap;
-    z-index: 1000;
 }
 
 /* Spazio sopra gli ordini per non sovrapporsi al titolo */

@@ -52,6 +52,30 @@
   text-decoration: none;   /* Rimuove la sottolineatura */
 }
 
+/* Logo nel footer */
+.footer-logo {
+  width: 80%;
+  max-width: 200px;
+  height: auto;
+  display: block;
+  margin: 0 auto;
+}
+
+/* Disposizione a due colonne su schermi medi */
+@media screen and (max-width: 992px) {
+  .footer-main {
+    flex-wrap: wrap;
+    justify-content: center;
+  }
+
+  .footer-section {
+    flex: 0 0 45%;
+    max-width: 45%;
+    text-align: center;
+    margin-bottom: 20px;
+  }
+}
+
 @media screen and (max-width: 768px) {
   .footer-main {
     flex-direction: column;
