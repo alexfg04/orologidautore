@@ -237,6 +237,10 @@
                 <input type="text" id="modello" name="modello" required />
             </div>
             <div>
+                <label for="iva">Iva:</label>
+                <input type="text" id="iva" name="iva" required />
+            </div>
+            <div>
                 <label for="descrizione">Descrizione:</label>
                 <textarea id="descrizione" name="descrizione" rows="3" required></textarea>
             </div>

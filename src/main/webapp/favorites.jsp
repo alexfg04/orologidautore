@@ -76,7 +76,8 @@
                 </form>
                 <form action="<%= request.getContextPath() %>/favorite" method="post">
                     <input type="hidden" name="productId" value="<%= prod.getCodiceProdotto() %>">
-                    <button type="submit" class="btn remove-favorite">Rimuovi</button>
+                    <button type="submit" class="btn remove-favorite" onclick="return confirmRemove()">Rimuovi</button>
+
                 </form>
             </div>
             </div>
@@ -93,5 +94,11 @@
 <script src="${pageContext.request.contextPath}/assets/js/toast.js"></script>
 <script src="${pageContext.request.contextPath}/assets/js/product-script.js"></script>
 <script>lucide.createIcons();</script>
+<script>
+    function confirmRemove() {
+        return confirm("Sei sicuro di voler rimuovere questo prodotto dai preferiti?");
+    }
+</script>
+
 </body>
 </html>

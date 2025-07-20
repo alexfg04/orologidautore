@@ -96,7 +96,7 @@
             <span>o crea un nuovo account</span>
             <input type="email" name="email" placeholder="Email" required />
             <input type="password" name="password" placeholder="Password" required />
-            <a href="#">Non ricordi la password?</a>
+            <a href="forgot_password.jsp">Non ricordi la password?</a>
             <button type="submit">Accedi</button>
         </form>
     </div>
