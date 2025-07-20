@@ -94,7 +94,7 @@
                 <img src="<%= p.getImmagine() %>" alt="<%= p.getNome() %>">
                 <div class="prod-details">
                     <h4><%= p.getNome() %></h4>
-                    <p class="price">€<%= String.format("%.2f", p.getPrezzo()) %></p>
+                    <p class="price">€<%= String.format("%.2f", p.getPrezzoUnitario()) %></p>
                 </div>
             </div>
             <% } %>

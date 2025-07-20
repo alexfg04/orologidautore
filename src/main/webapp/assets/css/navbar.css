@@ -105,6 +105,11 @@
     box-sizing: content-box;
 }
 
+.icon-with-badge {
+    position: relative;
+}
+
+
 .badge:empty,
 .badge[data-count="0"] {
     display: none;

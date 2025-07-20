@@ -60,7 +60,7 @@
             </div>
 
             <!-- Icona cuore -->
-            <a href="favorites.jsp">
+            <a href="favorites.jsp"  class="icon-with-badge">
                 <i data-lucide="heart" class="icon"></i>
                 <span class="badge favorites-badge" data-count="<%= userSession.getFavoritesCount() %>">
                     <%= userSession.getFavoritesCount() %>

@@ -37,7 +37,7 @@
 <body>
 <%@ include file="navbar.jsp" %>
 
-<main class="content">
+<main class="fav-content">
     <!-- Flash notification -->
     <%
         String flash = (String) session.getAttribute("flashMessage");
@@ -61,27 +61,29 @@
             for (ProductBean prod : favorites) {
         %>
         <div class="favorite-card">
-            <img class="favorite-img"
-                 src="<%= prod.getImmagine()%>"
-                 alt="Immagine di <%= prod.getNome() %>">
-            <div class="favorite-info">
-                <h3 class="favorite-name"><%= prod.getNome() %></h3>
-                <p class="favorite-price">€ <%= String.format("%.2f", prod.getPrezzo()) %></p>
-                <p class="favorite-description"><%= prod.getDescrizione() %></p>
+            <a href="<%= request.getContextPath() %>/product?id=<%= prod.getCodiceProdotto() %>">
+                <img class="favorite-img"
+                     src="<%= prod.getImmagine()%>"
+                     alt="Immagine di <%= prod.getNome() %>">
+                <div class="favorite-info">
+                    <h3 class="favorite-name"><%= prod.getNome() %></h3>
+                    <p class="favorite-price">€ <%= String.format("%.2f", prod.getPrezzo()) %></p>
+                    <p class="favorite-description"><%= prod.getDescrizione() %></p>
 
-            <div class="favorite-actions">
-                <form action="<%= request.getContextPath() %>/cart" method="post">
-                    <input type="hidden" name="product_id" value="<%= prod.getCodiceProdotto() %>">
-                    <input type="hidden" name="quantity" value="1">
-                    <button type="submit" class="btn add-to-cart">Aggiungi al Carrello</button>
-                </form>
-                <form action="<%= request.getContextPath() %>/favorite" method="post">
-                    <input type="hidden" name="productId" value="<%= prod.getCodiceProdotto() %>">
-                    <button type="submit" class="btn remove-favorite" onclick="return confirmRemove()">Rimuovi</button>
+                    <div class="favorite-actions">
+                        <form action="<%= request.getContextPath() %>/cart" method="post">
+                            <input type="hidden" name="product_id" value="<%= prod.getCodiceProdotto() %>">
+                            <input type="hidden" name="quantity" value="1">
+                            <button type="submit" class="btn add-to-cart">Aggiungi al Carrello</button>
+                        </form>
+                        <form action="<%= request.getContextPath() %>/favorite" method="post">
+                            <input type="hidden" name="productId" value="<%= prod.getCodiceProdotto() %>">
+                            <button type="submit" class="btn remove-favorite" onclick="return confirmRemove()">Rimuovi</button>
 
-                </form>
-            </div>
-            </div>
+                        </form>
+                    </div>
+                </div>
+            </a>
         </div>
         <%
                 }
