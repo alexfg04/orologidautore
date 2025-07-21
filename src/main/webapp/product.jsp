@@ -1,4 +1,5 @@
 <%@ page import="com.r1.ecommerceproject.model.ProductBean" %>
+<%@ page import="com.r1.ecommerceproject.utils.UserSession" %>
 <%@ page contentType="text/html; charset=UTF-8" %>
 <%
     response.setHeader("Cache-Control","no-cache, no-store, must-revalidate");
@@ -11,6 +12,8 @@
         response.sendRedirect(request.getContextPath() + "/catalog");
         return;
     }
+    UserSession user = new UserSession(session);
+    boolean isFavorite = user.isFavorite(product.getCodiceProdotto());
 %>
 <!DOCTYPE html>
 <html>
@@ -132,10 +135,11 @@
                 </div>
                 <button type="submit" class="add-to-cart-button">Aggiungi al Carrello</button>
             </form>
-            <form id="favForm"  action="${pageContext.request.contextPath}/favorite"  method="post" class="product-form">
-                <input type="hidden" name="productId" value="<%= product.getCodiceProdotto() %>">
-                <button type="submit" class="add-to-favorites-button">♡ Aggiungi ai Preferiti</button>
-            </form>
+            <button id="favBtn" data-product-id="<%= product.getCodiceProdotto() %>"
+                    class="add-to-favorites-button <%= isFavorite ? "favorited" : "" %>">
+                <span class="heart-icon"></span>
+                <%= isFavorite ? "Rimuovi dai Preferiti" : "Aggiungi ai Preferiti" %>
+            </button>
             <br>
             <div class="tabs">
                 <button class="tab-link active" data-tab="desc">Descrizione</button>

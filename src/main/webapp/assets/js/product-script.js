@@ -47,21 +47,41 @@ const postXHR = (url, data) => new Promise((resolve, reject) => {
 });
 
 document.addEventListener('DOMContentLoaded', () => {
-    // --- gestione Aggiungi preferiti su product-detail.jsp
-    const favForm = document.getElementById('favForm');
-    if (favForm) {
-        favForm.addEventListener('submit', async e => {
+    // --- gestione Aggiungi/Rimuovi preferiti su product.jsp
+    const favBtn = document.getElementById('favBtn');
+    if (favBtn) {
+        favBtn.addEventListener('click', async e => {
             e.preventDefault();
 
-            const productId = favForm.querySelector('input[name=productId]').value;
+            const productId = favBtn.getAttribute('data-product-id');
             try {
-                const data = await postXHR(favForm.action, { productId });
+                const data = await postXHR('favorite', { productId });
 
                 if (data.redirect) {
                     return window.location.href = data.redirect;
                 }
+
                 if (data.success) {
-                    return window.location.href = `${favForm.action.replace(/\/favorite$/, '')}/favorites.jsp`;
+                    const badge = document.querySelector('.favorites-badge');
+                    let count = badge ? parseInt(badge.dataset.count || badge.textContent, 10) : 0;
+
+                    if (data.removed) {
+                        favBtn.classList.remove('favorited');
+                        favBtn.innerHTML = '<span class="heart-icon"></span> Aggiungi ai Preferiti';
+                        count = Math.max(0, count - 1);
+                        showNotification('Prodotto rimosso dai preferiti');
+                    } else {
+                        favBtn.classList.add('favorited');
+                        favBtn.innerHTML = '<span class="heart-icon"></span> Rimuovi dai Preferiti';
+                        count += 1;
+                        showNotification('Prodotto aggiunto ai preferiti');
+                    }
+
+                    if (badge) {
+                        badge.dataset.count = count;
+                        badge.textContent = count;
+                    }
+                    return;
                 }
                 showNotification(`Errore: ${data.message}`, true);
             } catch (err) {
