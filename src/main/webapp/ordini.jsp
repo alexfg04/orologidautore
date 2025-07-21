@@ -19,12 +19,11 @@
         </thead>
         <tbody>
         <% for (OrderBean ordine : ordini) { %>
-        <% System.out.println(ordine.getIdOrder()); %>
-        <tr>
+        <tr class='clickable-row' onclick="window.location.href='<%= request.getContextPath() %>/admin/orderDetails?numeroOrdine=<%= ordine.getNumeroOrdine() %>'" style="cursor:pointer">
             <td><%= ordine.getIdOrder() %></td>
             <td><%= ordine.getNumeroOrdine() %></td>
             <td><%= ordine.getDataOrdine() %></td>
-            <td><%= ordine.getDataOrdine() %></td>
+            <td><%= ordine.getDataArrivo() %></td>
             <td><%= ordine.getTotale() %></td>
         </tr>
         <% } %>

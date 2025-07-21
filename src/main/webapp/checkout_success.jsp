@@ -135,7 +135,7 @@
         </div>
     </div>
 
-    <a class="btn-home" href="<%= request.getContextPath() %>/">Torna alla Home</a>
+    <a class="btn-home" href="<%= request.getContextPath() %>/orders.jsp">Vedi Ordini</a>
 </div>
 
 <%@ include file="footer.jsp" %>

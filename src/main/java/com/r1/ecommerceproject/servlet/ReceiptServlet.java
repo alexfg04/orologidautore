@@ -73,7 +73,7 @@ public class ReceiptServlet extends HttpServlet {
             // --- INTESTAZIONE AZIENDA ---
             Table header = new Table(UnitValue.createPercentArray(2)).useAllAvailableWidth();
             header.addCell(new Cell().setBorder(Border.NO_BORDER)
-                    .add(new Paragraph("Tech Solutions S.r.l.").setFont(bold).setFontSize(14))
+                    .add(new Paragraph("Orologi D'Autore S.r.l.").setFont(bold).setFontSize(14))
                     .add(new Paragraph("Via delle Innovazioni, 123"))
                     .add(new Paragraph("20100 Milano (MI) – Italia"))
                     .add(new Paragraph("P.IVA: 12345678901"))
