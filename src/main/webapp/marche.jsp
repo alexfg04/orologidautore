@@ -3,20 +3,19 @@
 <div class="most-searched-brands">
   <h2>Marche più cercate</h2>
   <div class="brand-row">
-    <button class="brand-button">Rolex</button>
-    <button class="brand-button">Audemars Piguet</button>
-    <button class="brand-button">Cartier</button>
-    <button class="brand-button">IWC</button>
-    <button class="brand-button">TAG Heuer</button>
+    <a href="catalog" ><button class="brand-button">Rolex</button></a>
+    <a href="catalog" ><button class="brand-button">Audemars Piguet</button></a>
+    <a href="catalog"> <button class="brand-button">Cartier</button></a>
+    <a href="catalog"> <button class="brand-button">IWC</button></a>
+    <a href="catalog" ><button class="brand-button">TAG Heuer</button></a>
   </div>
   <div class="brand-row">
-    <button class="brand-button">Omega</button>
-    <button class="brand-button" >Patek Philippe</button>
-    <button class="brand-button">Tudor</button>
-    <button class="brand-button">Breitling</button>
-    <button class="brand-button">Longines</button>
+    <a href="catalog"> <button class="brand-button">Omega</button></a>
+    <a href="catalog"> <button class="brand-button" >Patek Philippe</button></a>
+    <a href="catalog"> <button class="brand-button">Tudor</button></a>
+    <a href="catalog"> <button class="brand-button">Breitling</button></a>
+    <a href="catalog" ><button class="brand-button">Longines</button></a>
   </div>
-  <button class="show-all-button">Mostra tutte le marche</button>
 </div>
 <br>
 <section class="brand-table-section">
