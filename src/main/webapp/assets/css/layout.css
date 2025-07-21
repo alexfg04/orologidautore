@@ -33,9 +33,15 @@ header {
 }
 
 .favorites-container .empty {
-    width: 100%;            /* occupa tutta la larghezza */
-    text-align: center;     /* centra orizzontalmente */
-    font-size: 1.5rem;      /* aumenta la dimensione del font */
+    width: 100%; /* occupa tutta la larghezza */
+    height: 50vh;     /* centra orizzontalmente */
     color: #555;            /* colore leggermente grigio (opzionale) */
-    margin: 40px 0;         /* spazio sopra e sotto */
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+.favorites-container .empty p {
+    margin-top: 16px;
 }

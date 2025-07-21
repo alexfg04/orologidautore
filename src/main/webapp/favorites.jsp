@@ -55,7 +55,10 @@
         <%
             if (favorites.isEmpty()) {
         %>
-        <p class="empty">Non hai ancora aggiunto prodotti ai preferiti.</p>
+        <div class="empty">
+            <h2 >Nessun prodotto</h2>
+            <p>Non hai ancora aggiunto prodotti ai preferiti.</p>
+        </div>
         <%
         } else {
             for (ProductBean prod : favorites) {

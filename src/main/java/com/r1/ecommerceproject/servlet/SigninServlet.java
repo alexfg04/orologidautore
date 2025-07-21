@@ -57,6 +57,10 @@ public class SigninServlet extends HttpServlet {
         userSession.setEmail(user.getEmail());
         userSession.putAllFavoritesToSession();
 
+        if(user.getTipologia() == UserBean.Role.ADMIN) {
+            userSession.setAdmin(true);
+        }
+
         // ✅ Redirezione in base alla tipologia
         if (user.getTipologia() == UserBean.Role.ADMIN) {
             response.sendRedirect(request.getContextPath() + "/admin/dashboard.jsp");
