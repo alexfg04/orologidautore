@@ -19,6 +19,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="${pageContext.request.contextPath}/assets/css/fonts.css">
     <link rel="stylesheet" href="${pageContext.request.contextPath}/assets/css/product-detail.css">
+    <link rel="stylesheet" href="${pageContext.request.contextPath}/assets/css/navbar.css">
+    <link rel="stylesheet" href="${pageContext.request.contextPath}/assets/css/footer.css"
 </head>
 <style>
     .star-rating {
@@ -199,9 +201,8 @@
             %>
         </div>
     </div>
-
-
 </div>
+<%@ include file="footer.jsp" %>
 <script src="https://unpkg.com/lucide@latest"></script>
 <script src="${pageContext.request.contextPath}/assets/js/toast.js"></script>
 <script src="${pageContext.request.contextPath}/assets/js/product-script.js"></script>

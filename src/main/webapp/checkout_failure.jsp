@@ -102,47 +102,7 @@
   </style>
 </head>
 <body>
-
-<!-- NAVBAR SIMULATA -->
-<header>
-  <nav class="navbar">
-    <div class="navbar-left">
-      <img src="${pageContext.request.contextPath}/assets/img/Logo.png" alt="Logo">
-    </div>
-
-    <div class="navbar-center">
-      <a href="index.jsp">Home</a>
-      <a href="catalog.jsp">Novità</a>
-      <a href="about.jsp">Uomo</a>
-      <a href="contact.jsp">Donna</a>
-    </div>
-
-    <div class="navbar-right">
-      <div class="user-dropdown">
-        <span class="user-name">
-          JD
-          <i data-lucide="chevron-down"></i>
-        </span>
-        <ul class="dropdown-menu">
-          <li><a href="orders.jsp">I miei ordini</a></li>
-          <li><a href="account.jsp">Account</a></li>
-          <li><a href="${pageContext.request.contextPath}/logout">Logout</a></li>
-        </ul>
-      </div>
-
-      <a href="favorites.jsp">
-        <i data-lucide="heart" class="icon"></i>
-        <span class="badge favorites-badge" data-count="0"></span>
-      </a>
-
-      <a href="cart.jsp" class="icon-with-badge">
-        <i data-lucide="shopping-cart" class="icon"></i>
-        <span class="badge cart-badge" data-count="2">2</span>
-      </a>
-    </div>
-  </nav>
-</header>
-
+<%@ include file="navbar.jsp" %>
 <!-- CONTENUTO PRINCIPALE -->
 <main>
   <div class="container">
