@@ -24,7 +24,7 @@
     border-radius: 12px;
     box-shadow: 0 4px 8px rgba(0,0,0,0.1);
     overflow: hidden;
-    width: 100%; /* 🔁 si adatta alla colonna */
+    width: 90%; /* 🔁 si adatta alla colonna */
     max-width: 100%; /* evita overflow */
     text-decoration: none;
     color: #333;
@@ -37,8 +37,8 @@
 }
 
 .card img {
-    width: 90%;
-    height: 260px;
+    width: 100%;
+    height: 280px;
     object-fit: cover;
 }
 
